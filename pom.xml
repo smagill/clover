@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.kemitix.cossmass</groupId>
+    <artifactId>cossmass-clover</artifactId>
+    <name>root</name>
+    <version>DEV-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <maven.install.skip>true</maven.install.skip>
+    </properties>
+
+    <modules>
+        <module>parent</module>
+        <module>service</module>
+        <module>api</module>
+        <module>q-runner</module>
+        <module>q-tests</module>
+    </modules>
+
+</project>
