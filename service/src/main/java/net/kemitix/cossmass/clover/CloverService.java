@@ -4,7 +4,7 @@ import javax.enterprise.context.Dependent;
 import java.util.logging.Logger;
 
 @Dependent
-public class CloverService {
+public class CloverService implements Runnable {
 
     private static final Logger LOGGER =
             Logger.getLogger(
@@ -16,6 +16,7 @@ public class CloverService {
         this.config = config;
     }
 
+    @Override
     public void run() {
         LOGGER.info("Running...");
         LOGGER.info("IssueDir: " + config.issueDir);
