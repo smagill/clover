@@ -1,6 +1,8 @@
 package net.kemitix.cossmass.clover;
 
 import javax.enterprise.context.Dependent;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Instance;
 import java.util.logging.Logger;
 
 @Dependent
@@ -10,28 +12,22 @@ public class CloverService implements Runnable {
             Logger.getLogger(
                     CloverService.class.getName());
 
-    private final CloverConfig config;
     private final Issue issue;
+    private final Instance<CloverFormat> formats;
 
     public CloverService(
-            final CloverConfig config,
-            final Issue issue
+            final Issue issue,
+            @Any final Instance<CloverFormat> formats
     ) {
-        this.config = config;
+        this.formats = formats;
         this.issue = issue;
     }
 
     @Override
     public void run() {
-        LOGGER.info("Running...");
-        LOGGER.info("IssueDir: " + config.issueDir);
-        LOGGER.info("Page Width: " + config.width);
-        LOGGER.info("Page Height: " + config.height);
-        LOGGER.info("Inches to PX: " + config.inchesToPX);
-        LOGGER.info("Drop Shadow X Offset: " + config.dropShadowXOffset);
-        LOGGER.info("Drop Shadow Y Offset: " + config.dropShadowYOffset);
-        LOGGER.info("Image Types: " +
-                String.join(", ", config.getImageTypes()));
-        LOGGER.info("Issue.issue: " + issue.issue);
+        LOGGER.info(String.format("Clover - Issue %s - %s",
+                issue.issue,
+                issue.date));
+        formats.forEach(CloverFormat::write);
     }
 }
