@@ -28,6 +28,6 @@ public class CloverService implements Runnable {
         LOGGER.info(String.format("Clover - Issue %s - %s",
                 issue.issue,
                 issue.date));
-        formats.forEach(CloverFormat::write);
+        formats.stream().forEach(CloverFormat::write);
     }
 }
