@@ -11,9 +11,14 @@ public class CloverService implements Runnable {
                     CloverService.class.getName());
 
     private final CloverConfig config;
+    private final Issue issue;
 
-    public CloverService(final CloverConfig config) {
+    public CloverService(
+            final CloverConfig config,
+            final Issue issue
+    ) {
         this.config = config;
+        this.issue = issue;
     }
 
     @Override
@@ -27,5 +32,6 @@ public class CloverService implements Runnable {
         LOGGER.info("Drop Shadow Y Offset: " + config.dropShadowYOffset);
         LOGGER.info("Image Types: " +
                 String.join(", ", config.getImageTypes()));
+        LOGGER.info("Issue.issue: " + issue.issue);
     }
 }
