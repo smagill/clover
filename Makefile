@@ -1,8 +1,5 @@
 ISSUE_DIR="-Dissue-dir=${HOME}/cossmass/issues/002-2020-05-may/"
 
-clean:
-	mvn clean
-
 install:
 	mvn install
 
@@ -15,5 +12,9 @@ native: install
 run-native:
 	q-runner/target/clover-runner-DEV-SNAPSHOT-runner ${ISSUE_DIR}
 
-run-jar: install
+run: install
 	java -jar q-runner/target/clover-runner-DEV-SNAPSHOT-runner.jar ${ISSUE_DIR}
+
+clean:
+	mvn clean
+
