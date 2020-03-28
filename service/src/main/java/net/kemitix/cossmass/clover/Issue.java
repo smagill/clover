@@ -21,8 +21,6 @@ public class Issue {
     @JsonbProperty("text-colour")
     String textColour;
     float spine;
-    @JsonbProperty("cover-art")
-    String coverArt;
     @JsonbProperty("paperback-x-offset")
     int paperbackXOffset;
     @JsonbProperty("paperback-y-offset")
@@ -42,5 +40,10 @@ public class Issue {
     List<List<String>> fantasyStories;
     @JsonbProperty("reprint-stories")
     List<List<String>> reprintStories;
+    @JsonbProperty("cover-art")
+    private String coverArt;
 
+    String coverArt() {
+        return "/cossmass/" + coverArt;
+    }
 }
