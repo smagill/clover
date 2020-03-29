@@ -19,13 +19,16 @@
         <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-api</artifactId>
-            <version>8.0.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.microprofile.config</groupId>
             <artifactId>microprofile-config-api</artifactId>
-            <version>1.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.kemitix.cossmass</groupId>
+            <artifactId>clover-spi</artifactId>
         </dependency>
 
         <dependency>
@@ -39,12 +42,6 @@
             <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>net.imglib2</groupId>
-            <artifactId>imglib2</artifactId>
-            <version>${imglib2.version}</version>
-        </dependency>
-
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -74,6 +71,11 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>net.imagej</groupId>
+            <artifactId>ij</artifactId>
+            <version>1.52u</version>
+        </dependency>
     </dependencies>
 
     <properties>
@@ -83,7 +85,6 @@
         <mockito.version>3.3.3</mockito.version>
         <yasson.version>1.0.6</yasson.version>
         <lombok.version>1.18.12</lombok.version>
-        <imglib2.version>5.8.0</imglib2.version>
     </properties>
 
 </project>

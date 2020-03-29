@@ -20,6 +20,8 @@
         <module>api</module>
         <module>q-runner</module>
         <module>q-tests</module>
+        <module>clover-images</module>
+        <module>clover-spi</module>
     </modules>
 
 </project>

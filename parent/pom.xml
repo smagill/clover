@@ -31,10 +31,24 @@
         <junit.version>5.6.1</junit.version>
         <assertj.version>3.15.0</assertj.version>
         <file-reader-writer.version>1.0.0</file-reader-writer.version>
+        <jakartaee-api.version>8.0.0</jakartaee-api.version>
+        <microprofile-config-api.version>1.4</microprofile-config-api.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>jakarta.platform</groupId>
+                <artifactId>jakarta.jakartaee-api</artifactId>
+                <version>${jakartaee-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.microprofile.config</groupId>
+                <artifactId>microprofile-config-api</artifactId>
+                <version>${microprofile-config-api.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>net.kemitix.cossmass</groupId>
                 <artifactId>clover-api</artifactId>
@@ -48,6 +62,16 @@
             <dependency>
                 <groupId>net.kemitix.cossmass</groupId>
                 <artifactId>clover-runner</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.kemitix.cossmass</groupId>
+                <artifactId>clover-spi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.kemitix.cossmass</groupId>
+                <artifactId>clover-images</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

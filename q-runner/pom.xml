@@ -16,10 +16,14 @@
     <version>DEV-SNAPSHOT</version>
 
     <dependencies>
-        <!-- nakor -->
+        <!-- clover -->
         <dependency>
             <groupId>net.kemitix.cossmass</groupId>
-            <artifactId>clover-api</artifactId>
+            <artifactId>clover-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.kemitix.cossmass</groupId>
+            <artifactId>clover-images</artifactId>
         </dependency>
 
         <!-- quarkus -->
