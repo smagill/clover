@@ -1,8 +1,10 @@
 package net.kemitix.cossmass.clover;
 
+import net.kemitix.cossmass.clover.images.Image;
 import net.kemitix.cossmass.clover.images.ImageService;
 
 import javax.enterprise.context.Dependent;
+import java.util.function.Function;
 import java.util.logging.Logger;
 
 @Dependent
@@ -31,5 +33,17 @@ public class Paperback extends CloverFormat {
     @Override
     protected int getCropXOffset() {
         return issue.paperbackXOffset;
+    }
+
+    @Override
+    protected Function<Image, Image> backCover() {
+        //TODO draw back cover
+        return super.backCover();
+    }
+
+    @Override
+    protected Function<Image, Image> spine() {
+        //TODO draw spine
+        return super.spine();
     }
 }

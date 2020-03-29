@@ -23,6 +23,7 @@ public class ImgLibImage implements Image {
             final int width
     ) {
         LOGGER.info(String.format("Scaling to cover: %d x, %d", height, width));
+        //TODO scale to cover
         return this;
     }
 
@@ -37,6 +38,7 @@ public class ImgLibImage implements Image {
                 xOffset, yOffset,
                 width, height
         ));
+        //TODO crop
         return this;
     }
 

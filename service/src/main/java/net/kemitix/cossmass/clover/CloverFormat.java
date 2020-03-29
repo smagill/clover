@@ -44,23 +44,26 @@ public abstract class CloverFormat {
                 .apply(backCover());
     }
 
-    private Function<Image, Image> backCover() {
+    protected Function<Image, Image> backCover() {
         return image -> {
             LOGGER.info("Drawing the Back Cover");
+            // Do nothing - subclasses should override if they want a back cover
             return image;
         };
     }
 
-    private Function<Image, Image> spine() {
+    protected Function<Image, Image> spine() {
         return image -> {
             LOGGER.info("Drawing the Spine");
+            // Do nothing - subclasses should override if they want a spine
             return image;
         };
     }
 
-    private Function<Image, Image> frontCover() {
+    protected Function<Image, Image> frontCover() {
         return image -> {
             LOGGER.info("Drawing the Front Cover");
+            //TODO draw front cover
             return image;
         };
     }
