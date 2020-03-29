@@ -9,6 +9,8 @@ import java.util.List;
 @Dependent
 public class CloverConfig {
 
+    @ConfigProperty(name = "base-dir")
+    public String baseDir;
     @ConfigProperty(name = "image-types")
     String imageTypes;
     @ConfigProperty(name = "issue-dir")
