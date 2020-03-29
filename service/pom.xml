@@ -36,7 +36,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
+            <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
 
@@ -76,6 +76,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <mockito.version>3.3.3</mockito.version>
         <yasson.version>1.0.6</yasson.version>
+        <lombok.version>1.18.12</lombok.version>
     </properties>
 
 </project>
