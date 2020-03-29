@@ -1,5 +1,6 @@
 package net.kemitix.cossmass.clover.images.imglib;
 
+import ij.ImagePlus;
 import net.kemitix.cossmass.clover.images.Image;
 
 import java.util.logging.Logger;
@@ -10,6 +11,11 @@ public class ImgLibImage implements Image {
     private static final Logger LOGGER =
             Logger.getLogger(
                     ImgLibImage.class.getName());
+    private final ImagePlus imagePlus;
+
+    public ImgLibImage(final ImagePlus imagePlus) {
+        this.imagePlus = imagePlus;
+    }
 
     @Override
     public Image scaleToCover(
