@@ -2,13 +2,11 @@ package net.kemitix.cossmass.clover;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.json.bind.annotation.JsonbProperty;
 import java.util.List;
 
 @Setter
-@ToString
 @NoArgsConstructor
 public class Issue {
 
