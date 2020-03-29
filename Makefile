@@ -3,6 +3,9 @@ ISSUE_DIR="-Dissue-dir=${HOME}/cossmass/issues/002-2020-05-may/"
 install:
 	mvn install
 
+test:
+	mvn test ${ISSUE_DIR}
+
 dev:
 	mvn -pl q-runner quarkus:dev ${ISSUE_DIR}
 
