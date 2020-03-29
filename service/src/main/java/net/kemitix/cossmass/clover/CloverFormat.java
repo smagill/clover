@@ -5,6 +5,7 @@ import net.kemitix.cossmass.clover.images.ImageService;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.function.Function;
 import java.util.logging.Logger;
@@ -30,7 +31,7 @@ public abstract class CloverFormat {
     }
 
     @PostConstruct
-    public void create() {
+    public void create() throws IOException {
         LOGGER.info("create()");
         final File coverArtFile =
                 Paths.get(config.baseDir, issue.coverArt())

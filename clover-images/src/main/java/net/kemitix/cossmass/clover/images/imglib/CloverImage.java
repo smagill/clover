@@ -1,20 +1,21 @@
 package net.kemitix.cossmass.clover.images.imglib;
 
-import ij.ImagePlus;
 import net.kemitix.cossmass.clover.images.Image;
 
+import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 
-public class ImgLibImage implements Image {
+class CloverImage implements Image {
 
 
     private static final Logger LOGGER =
             Logger.getLogger(
-                    ImgLibImage.class.getName());
-    private final ImagePlus imagePlus;
+                    CloverImage.class.getName());
 
-    public ImgLibImage(final ImagePlus imagePlus) {
-        this.imagePlus = imagePlus;
+    private final BufferedImage image;
+
+    CloverImage(final BufferedImage image) {
+        this.image = image;
     }
 
     @Override
@@ -38,16 +39,16 @@ public class ImgLibImage implements Image {
         }
         LOGGER.info(String.format("Resizing to %dx%d",
                 newWidth, newHeight));
-        final ImagePlus resized = imagePlus.resize(newWidth, newHeight, "");
-        return new ImgLibImage(resized);
+        //TODO final BufferedImage resized = image.resize(newWidth, newHeight);
+        return new CloverImage(image);
     }
 
     public int getHeight() {
-        return imagePlus.getHeight();
+        return image.getHeight();
     }
 
     public int getWidth() {
-        return imagePlus.getWidth();
+        return image.getWidth();
     }
 
     @Override
@@ -61,8 +62,8 @@ public class ImgLibImage implements Image {
                 xOffset, yOffset,
                 width, height
         ));
-        //TODO crop
-        return this;
+        //TODO final BufferedImage cropped = image.crop(xOffset, yOffset, width, height);
+        return new CloverImage(image);
     }
 
 }

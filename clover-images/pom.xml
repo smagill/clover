@@ -26,15 +26,19 @@
         </dependency>
 
         <dependency>
-            <groupId>net.imglib2</groupId>
-            <artifactId>imglib2</artifactId>
-            <version>${imglib2.version}</version>
+            <groupId>com.twelvemonkeys.imageio</groupId>
+            <artifactId>imageio-jpeg</artifactId>
+            <version>3.5</version>
         </dependency>
         <dependency>
-            <groupId>net.imagej</groupId>
-            <artifactId>ij</artifactId>
-            <version>${ij.version}</version>
-            <scope>compile</scope>
+            <groupId>com.twelvemonkeys.imageio</groupId>
+            <artifactId>imageio-pdf</artifactId>
+            <version>3.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.sejda.imageio</groupId>
+            <artifactId>webp-imageio</artifactId>
+            <version>0.1.1</version>
         </dependency>
     </dependencies>
 

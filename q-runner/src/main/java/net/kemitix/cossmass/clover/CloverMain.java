@@ -2,7 +2,7 @@ package net.kemitix.cossmass.clover;
 
 import io.quarkus.runtime.StartupEvent;
 import net.kemitix.cossmass.clover.images.ImageService;
-import net.kemitix.cossmass.clover.images.imglib.ImgLibImageService;
+import net.kemitix.cossmass.clover.images.imglib.CloverImageService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
@@ -19,7 +19,7 @@ public class CloverMain {
 
     @Produces
     ImageService imageService() {
-        return new ImgLibImageService();
+        return new CloverImageService();
     }
 
     void onStart(@Observes final StartupEvent ev) {
