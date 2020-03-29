@@ -16,8 +16,11 @@ public class CloverMain {
 
     void onStart(@Observes final StartupEvent ev) {
         new Thread(() -> {
-            service.run();
-            System.exit(0);
+            try {
+                service.run();
+            } finally {
+                System.exit(0);
+            }
         }).start();
     }
 
