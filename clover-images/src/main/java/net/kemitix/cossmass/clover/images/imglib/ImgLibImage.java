@@ -23,8 +23,31 @@ public class ImgLibImage implements Image {
             final int width
     ) {
         LOGGER.info(String.format("Scaling to cover: %d x %d", height, width));
-        //TODO scale to cover
-        return this;
+        final int originalWidth = getWidth();
+        final int originalHeight = getHeight();
+        final int ratio = originalWidth / originalHeight;
+        LOGGER.info("Ratio: " + ratio);
+        final int newWidth;
+        final int newHeight;
+        if (ratio > 1) { // is wide
+            newWidth = height * ratio;
+            newHeight = height;
+        } else { // is tall
+            newWidth = width;
+            newHeight = width / ratio;
+        }
+        LOGGER.info(String.format("Resizing to %dx%d",
+                newWidth, newHeight));
+        final ImagePlus resized = imagePlus.resize(newWidth, newHeight, "");
+        return new ImgLibImage(resized);
+    }
+
+    public int getHeight() {
+        return imagePlus.getHeight();
+    }
+
+    public int getWidth() {
+        return imagePlus.getWidth();
     }
 
     @Override
