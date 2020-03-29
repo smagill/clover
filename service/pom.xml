@@ -29,6 +29,11 @@
         </dependency>
 
         <dependency>
+            <groupId>net.kemitix</groupId>
+            <artifactId>file-reader-writer</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.12</version>

@@ -24,11 +24,13 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8
+        <project.reporting.outputEncoding>
+            UTF-8
         </project.reporting.outputEncoding>
 
         <junit.version>5.6.1</junit.version>
         <assertj.version>3.15.0</assertj.version>
+        <file-reader-writer.version>1.0.0</file-reader-writer.version>
     </properties>
 
     <dependencyManagement>
@@ -47,6 +49,12 @@
                 <groupId>net.kemitix.cossmass</groupId>
                 <artifactId>clover-runner</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>net.kemitix</groupId>
+                <artifactId>file-reader-writer</artifactId>
+                <version>${file-reader-writer.version}</version>
             </dependency>
 
             <dependency>
