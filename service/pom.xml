@@ -39,6 +39,12 @@
             <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>net.imglib2</groupId>
+            <artifactId>imglib2</artifactId>
+            <version>${imglib2.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -77,6 +83,7 @@
         <mockito.version>3.3.3</mockito.version>
         <yasson.version>1.0.6</yasson.version>
         <lombok.version>1.18.12</lombok.version>
+        <imglib2.version>5.8.0</imglib2.version>
     </properties>
 
 </project>
