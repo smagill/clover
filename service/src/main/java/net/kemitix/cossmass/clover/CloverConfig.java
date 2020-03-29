@@ -30,4 +30,11 @@ public class CloverConfig {
         return Arrays.asList(imageTypes.split(","));
     }
 
+    public int height() {
+        return height * inchesToPX;
+    }
+
+    public int width() {
+        return width * inchesToPX;
+    }
 }

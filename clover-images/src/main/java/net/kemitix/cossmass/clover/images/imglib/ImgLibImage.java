@@ -22,7 +22,7 @@ public class ImgLibImage implements Image {
             final int height,
             final int width
     ) {
-        LOGGER.info(String.format("Scaling to cover: %d x, %d", height, width));
+        LOGGER.info(String.format("Scaling to cover: %d x %d", height, width));
         //TODO scale to cover
         return this;
     }
