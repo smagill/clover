@@ -50,7 +50,7 @@ class CloverImage implements Image {
         LOGGER.info(String.format("Resizing to %dx%d",
                 newWidth, newHeight));
         //TODO final BufferedImage resized = image.resize(newWidth, newHeight);
-        return new CloverImage(image);
+        return new CloverImage(image, config);
     }
 
     public int getHeight() {
