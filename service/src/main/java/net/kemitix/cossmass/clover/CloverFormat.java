@@ -76,6 +76,7 @@ public abstract class CloverFormat {
 
     public void write() {
         LOGGER.info("write()");
+        cover.write(Paths.get(config.getIssueDir()), getName());
     }
 
     protected abstract String getName();

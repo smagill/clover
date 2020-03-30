@@ -3,7 +3,11 @@ package net.kemitix.cossmass.clover.images.imglib;
 import net.kemitix.cossmass.clover.images.CloverConfig;
 import net.kemitix.cossmass.clover.images.Image;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.logging.Logger;
 
 class CloverImage implements Image {
@@ -70,6 +74,31 @@ class CloverImage implements Image {
         ));
         //TODO final BufferedImage cropped = image.crop(xOffset, yOffset, width, height);
         return new CloverImage(image, config);
+    }
+
+    @Override
+    public void write(
+            final Path path,
+            final String name
+    ) {
+        LOGGER.info(String.format("Writing %s to %s", name, path));
+        config.getImageTypes()
+                .forEach(format -> {
+                    final File file = path.resolve(name + "." + format).toFile();
+                    write(format, file);
+                });
+    }
+
+    private void write(
+            final String format,
+            final File file
+    ) {
+        LOGGER.info(String.format("Writing %s file as %s", format, file));
+        try {
+            ImageIO.write(image, format, file);
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
