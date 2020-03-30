@@ -16,10 +16,12 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class IssueLoaderTest {
 
-    private final CloverConfig cloverConfig = new CloverConfig();
+    private final CloverConfigProperties cloverConfig =
+            new CloverConfigProperties();
     private final String issueNumber = UUID.randomUUID().toString();
     private final Jsonb jsonb = JsonbBuilder.create();
-    private final IssueLoader issueLoader = new IssueLoader(cloverConfig, jsonb);
+    private final IssueLoader issueLoader =
+            new IssueLoader(cloverConfig, jsonb);
     @TempDir
     Path directory;
 

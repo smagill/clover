@@ -1,5 +1,6 @@
 package net.kemitix.cossmass.clover;
 
+import net.kemitix.cossmass.clover.images.CloverConfig;
 import net.kemitix.cossmass.clover.images.Image;
 import net.kemitix.cossmass.clover.images.ImageService;
 
@@ -34,11 +35,11 @@ public abstract class CloverFormat {
     public void create() throws IOException {
         LOGGER.info("create()");
         final File coverArtFile =
-                Paths.get(config.baseDir, issue.coverArt())
+                Paths.get(config.getBaseDir(), issue.coverArt())
                         .toFile();
 
         cover = imageService.load(coverArtFile)
-                .scaleToCover(config.height(), config.width())
+                .scaleToCover(config.width(), config.height())
                 .crop(getCropXOffset(), getCropYOffset(), config.width(), config.height())
                 .apply(frontCover())
                 .apply(spine())
@@ -64,7 +65,7 @@ public abstract class CloverFormat {
     protected Function<Image, Image> frontCover() {
         return image -> {
             LOGGER.info("Drawing the Front Cover");
-            //TODO draw front cover
+            // Do nothing - subclasses should override if they want a spine
             return image;
         };
     }
@@ -75,5 +76,8 @@ public abstract class CloverFormat {
 
     public void write() {
         LOGGER.info("write()");
+        cover.write(Paths.get(config.getIssueDir()), getName());
     }
+
+    protected abstract String getName();
 }

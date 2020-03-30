@@ -1,5 +1,6 @@
 package net.kemitix.cossmass.clover;
 
+import net.kemitix.cossmass.clover.images.CloverConfig;
 import net.kemitix.cossmass.clover.images.Image;
 import net.kemitix.cossmass.clover.images.ImageService;
 
@@ -8,7 +9,7 @@ import java.util.function.Function;
 import java.util.logging.Logger;
 
 @Dependent
-public class Paperback extends CloverFormat {
+public class Paperback extends FrontCoverFormat {
 
     private static final Logger LOGGER =
             Logger.getLogger(
@@ -33,6 +34,11 @@ public class Paperback extends CloverFormat {
     @Override
     protected int getCropXOffset() {
         return issue.paperbackXOffset;
+    }
+
+    @Override
+    protected String getName() {
+        return "paperback";
     }
 
     @Override

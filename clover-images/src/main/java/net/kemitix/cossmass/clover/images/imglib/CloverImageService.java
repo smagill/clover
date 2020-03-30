@@ -1,5 +1,6 @@
 package net.kemitix.cossmass.clover.images.imglib;
 
+import net.kemitix.cossmass.clover.images.CloverConfig;
 import net.kemitix.cossmass.clover.images.Image;
 import net.kemitix.cossmass.clover.images.ImageService;
 
@@ -14,11 +15,19 @@ public class CloverImageService implements ImageService {
     private static final Logger LOGGER =
             Logger.getLogger(
                     CloverImageService.class.getName());
+    private final CloverConfig config;
+
+    public CloverImageService(final CloverConfig config) {
+        this.config = config;
+    }
 
     @Override
     public Image load(final File file) throws IOException {
         LOGGER.info("Loading " + file);
         final BufferedImage image = ImageIO.read(file);
-        return new CloverImage(image);
+        LOGGER.info(String.format("Loaded: (%dx%d)",
+                image.getWidth(),
+                image.getHeight()));
+        return new CloverImage(image, config);
     }
 }

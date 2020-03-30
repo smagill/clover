@@ -1,12 +1,13 @@
 package net.kemitix.cossmass.clover;
 
+import net.kemitix.cossmass.clover.images.CloverConfig;
 import net.kemitix.cossmass.clover.images.ImageService;
 
 import javax.enterprise.context.Dependent;
 import java.util.logging.Logger;
 
 @Dependent
-public class Kindle extends CloverFormat {
+public class Kindle extends FrontCoverFormat {
 
     private static final Logger LOGGER =
             Logger.getLogger(
@@ -31,5 +32,10 @@ public class Kindle extends CloverFormat {
     @Override
     protected int getCropXOffset() {
         return issue.kindleXOffset;
+    }
+
+    @Override
+    protected String getName() {
+        return "kindle";
     }
 }

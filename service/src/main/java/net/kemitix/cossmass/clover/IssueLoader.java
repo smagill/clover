@@ -1,6 +1,8 @@
 package net.kemitix.cossmass.clover;
 
 
+import net.kemitix.cossmass.clover.images.CloverConfig;
+
 import javax.enterprise.inject.Produces;
 import javax.json.bind.Jsonb;
 import java.io.FileNotFoundException;
@@ -29,7 +31,7 @@ public class IssueLoader {
 
     @Produces
     public Issue loadIssueJson() throws FileNotFoundException {
-        final Path cloverJsonPath = Paths.get(config.issueDir, CLOVER_JSON);
+        final Path cloverJsonPath = Paths.get(config.getIssueDir(), CLOVER_JSON);
         LOGGER.info("Reading: " + cloverJsonPath);
         final FileReader reader = new FileReader(cloverJsonPath.toFile());
         return jsonb.fromJson(reader, Issue.class);

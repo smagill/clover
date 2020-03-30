@@ -1,5 +1,6 @@
 package net.kemitix.cossmass.clover;
 
+import net.kemitix.cossmass.clover.images.CloverConfig;
 import net.kemitix.cossmass.clover.images.Image;
 import net.kemitix.cossmass.clover.images.ImageService;
 
@@ -12,7 +13,6 @@ public class PaperbackPreview extends Paperback {
     private static final Logger LOGGER =
             Logger.getLogger(
                     Kindle.class.getName());
-    private final Issue issue;
 
     protected PaperbackPreview(
             final CloverConfig config,
@@ -20,8 +20,12 @@ public class PaperbackPreview extends Paperback {
             final ImageService imageService
     ) {
         super(config, issue, imageService);
-        this.issue = issue;
         LOGGER.info("PaperbackPreview");
+    }
+
+    @Override
+    protected String getName() {
+        return super.getName() + "-preview";
     }
 
     @Override
