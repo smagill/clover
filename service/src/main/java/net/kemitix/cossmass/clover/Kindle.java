@@ -7,7 +7,7 @@ import javax.enterprise.context.Dependent;
 import java.util.logging.Logger;
 
 @Dependent
-public class Kindle extends CloverFormat {
+public class Kindle extends FrontCoverFormat {
 
     private static final Logger LOGGER =
             Logger.getLogger(

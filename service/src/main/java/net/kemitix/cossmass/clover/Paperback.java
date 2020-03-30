@@ -9,7 +9,7 @@ import java.util.function.Function;
 import java.util.logging.Logger;
 
 @Dependent
-public class Paperback extends CloverFormat {
+public class Paperback extends FrontCoverFormat {
 
     private static final Logger LOGGER =
             Logger.getLogger(
