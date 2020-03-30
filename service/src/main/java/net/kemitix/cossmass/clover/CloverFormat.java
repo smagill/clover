@@ -77,4 +77,6 @@ public abstract class CloverFormat {
     public void write() {
         LOGGER.info("write()");
     }
+
+    protected abstract String getName();
 }

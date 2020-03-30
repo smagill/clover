@@ -26,6 +26,11 @@ public class PaperbackPreview extends Paperback {
     }
 
     @Override
+    protected String getName() {
+        return super.getName() + "-preview";
+    }
+
+    @Override
     protected Function<Image, Image> backCover() {
         return super.backCover()
                 .andThen(image -> {

@@ -33,4 +33,9 @@ public class Kindle extends FrontCoverFormat {
     protected int getCropXOffset() {
         return issue.kindleXOffset;
     }
+
+    @Override
+    protected String getName() {
+        return "kindle";
+    }
 }

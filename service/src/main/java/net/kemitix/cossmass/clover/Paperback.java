@@ -37,6 +37,11 @@ public class Paperback extends FrontCoverFormat {
     }
 
     @Override
+    protected String getName() {
+        return "paperback";
+    }
+
+    @Override
     protected Function<Image, Image> backCover() {
         //TODO draw back cover
         return super.backCover();
