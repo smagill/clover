@@ -25,6 +25,9 @@ public class CloverImageService implements ImageService {
     public Image load(final File file) throws IOException {
         LOGGER.info("Loading " + file);
         final BufferedImage image = ImageIO.read(file);
+        LOGGER.info(String.format("Loaded: (%dx%d)",
+                image.getWidth(),
+                image.getHeight()));
         return new CloverImage(image, config);
     }
 }

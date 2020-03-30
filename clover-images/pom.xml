@@ -29,6 +29,7 @@
             <groupId>com.twelvemonkeys.imageio</groupId>
             <artifactId>imageio-jpeg</artifactId>
             <version>3.5</version>
+            <!-- FIXME: Neither this not the PDF libs are being registered correctly -->
         </dependency>
         <dependency>
             <groupId>com.twelvemonkeys.imageio</groupId>

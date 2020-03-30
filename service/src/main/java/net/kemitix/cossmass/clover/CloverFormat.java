@@ -39,7 +39,7 @@ public abstract class CloverFormat {
                         .toFile();
 
         cover = imageService.load(coverArtFile)
-                .scaleToCover(config.height(), config.width())
+                .scaleToCover(config.width(), config.height())
                 .crop(getCropXOffset(), getCropYOffset(), config.width(), config.height())
                 .apply(frontCover())
                 .apply(spine())

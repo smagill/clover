@@ -4,7 +4,7 @@ import java.nio.file.Path;
 import java.util.function.Function;
 
 public interface Image {
-    Image scaleToCover(int height, int width);
+    Image scaleToCover(int width, int height);
 
     Image crop(int xOffset, int yOffset, int width, int height);
 

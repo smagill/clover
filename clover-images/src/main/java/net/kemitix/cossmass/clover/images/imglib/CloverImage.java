@@ -4,11 +4,14 @@ import net.kemitix.cossmass.clover.images.CloverConfig;
 import net.kemitix.cossmass.clover.images.Image;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.logging.Logger;
+
+import static java.awt.Image.SCALE_SMOOTH;
 
 class CloverImage implements Image {
 
@@ -30,10 +33,10 @@ class CloverImage implements Image {
 
     @Override
     public Image scaleToCover(
-            final int height,
-            final int width
+            final int width,
+            final int height
     ) {
-        LOGGER.info(String.format("Scaling to cover: %d x %d", height, width));
+        LOGGER.info(String.format("Scaling to cover: %d x %d", width, height));
         final int originalWidth = getWidth();
         final int originalHeight = getHeight();
         final int ratio = originalWidth / originalHeight;
@@ -49,8 +52,15 @@ class CloverImage implements Image {
         }
         LOGGER.info(String.format("Resizing to %dx%d",
                 newWidth, newHeight));
-        //TODO final BufferedImage resized = image.resize(newWidth, newHeight);
-        return new CloverImage(image, config);
+        return scaleTo(newWidth, newHeight);
+    }
+
+    private Image scaleTo(final int width, final int height) {
+        final BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        final Graphics2D g2d = resized.createGraphics();
+        g2d.drawImage(image.getScaledInstance(width, height, SCALE_SMOOTH), 0, 0, null);
+        g2d.dispose();
+        return new CloverImage(resized, config);
     }
 
     public int getHeight() {
@@ -95,9 +105,13 @@ class CloverImage implements Image {
     ) {
         LOGGER.info(String.format("Writing %s file as %s", format, file));
         try {
-            ImageIO.write(image, format, file);
+            if (ImageIO.write(image, format, file)) {
+                LOGGER.info("Wrote: " + file);
+            } else {
+                LOGGER.severe("No writer found for " + format);
+            }
         } catch (final IOException e) {
-            e.printStackTrace();
+            LOGGER.severe("Failed to write " + file);
         }
     }
 
