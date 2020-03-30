@@ -13,7 +13,6 @@ public class PaperbackPreview extends Paperback {
     private static final Logger LOGGER =
             Logger.getLogger(
                     Kindle.class.getName());
-    private final Issue issue;
 
     protected PaperbackPreview(
             final CloverConfig config,
@@ -21,7 +20,6 @@ public class PaperbackPreview extends Paperback {
             final ImageService imageService
     ) {
         super(config, issue, imageService);
-        this.issue = issue;
         LOGGER.info("PaperbackPreview");
     }
 
