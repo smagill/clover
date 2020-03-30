@@ -1,5 +1,7 @@
 package net.kemitix.cossmass.clover;
 
+import lombok.Getter;
+import net.kemitix.cossmass.clover.images.CloverConfig;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.Dependent;
@@ -7,7 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @Dependent
-public class CloverConfig {
+@Getter
+public class CloverConfigProperties implements CloverConfig {
 
     @ConfigProperty(name = "base-dir")
     public String baseDir;
@@ -26,14 +29,17 @@ public class CloverConfig {
     @ConfigProperty(name = "drop-shadow-y-offset")
     int dropShadowYOffset;
 
+    @Override
     public List<String> getImageTypes() {
         return Arrays.asList(imageTypes.split(","));
     }
 
+    @Override
     public int height() {
         return height * inchesToPX;
     }
 
+    @Override
     public int width() {
         return width * inchesToPX;
     }

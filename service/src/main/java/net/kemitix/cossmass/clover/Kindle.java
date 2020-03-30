@@ -1,5 +1,6 @@
 package net.kemitix.cossmass.clover;
 
+import net.kemitix.cossmass.clover.images.CloverConfig;
 import net.kemitix.cossmass.clover.images.ImageService;
 
 import javax.enterprise.context.Dependent;

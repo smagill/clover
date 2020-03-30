@@ -1,5 +1,6 @@
 package net.kemitix.cossmass.clover.images.imglib;
 
+import net.kemitix.cossmass.clover.images.CloverConfig;
 import net.kemitix.cossmass.clover.images.Image;
 
 import java.awt.image.BufferedImage;
@@ -13,9 +14,14 @@ class CloverImage implements Image {
                     CloverImage.class.getName());
 
     private final BufferedImage image;
+    private final CloverConfig config;
 
-    CloverImage(final BufferedImage image) {
+    CloverImage(
+            final BufferedImage image,
+            final CloverConfig config
+    ) {
         this.image = image;
+        this.config = config;
     }
 
     @Override
@@ -63,7 +69,7 @@ class CloverImage implements Image {
                 width, height
         ));
         //TODO final BufferedImage cropped = image.crop(xOffset, yOffset, width, height);
-        return new CloverImage(image);
+        return new CloverImage(image, config);
     }
 
 }

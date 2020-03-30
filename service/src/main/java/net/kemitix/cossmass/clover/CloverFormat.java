@@ -1,5 +1,6 @@
 package net.kemitix.cossmass.clover;
 
+import net.kemitix.cossmass.clover.images.CloverConfig;
 import net.kemitix.cossmass.clover.images.Image;
 import net.kemitix.cossmass.clover.images.ImageService;
 
@@ -34,7 +35,7 @@ public abstract class CloverFormat {
     public void create() throws IOException {
         LOGGER.info("create()");
         final File coverArtFile =
-                Paths.get(config.baseDir, issue.coverArt())
+                Paths.get(config.getBaseDir(), issue.coverArt())
                         .toFile();
 
         cover = imageService.load(coverArtFile)

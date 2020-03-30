@@ -1,12 +1,9 @@
 package net.kemitix.cossmass.clover;
 
 import io.quarkus.runtime.StartupEvent;
-import net.kemitix.cossmass.clover.images.ImageService;
-import net.kemitix.cossmass.clover.images.imglib.CloverImageService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Produces;
 
 @ApplicationScoped
 public class CloverMain {
@@ -15,11 +12,6 @@ public class CloverMain {
 
     public CloverMain(final CloverService service) {
         this.service = service;
-    }
-
-    @Produces
-    ImageService imageService() {
-        return new CloverImageService();
     }
 
     void onStart(@Observes final StartupEvent ev) {
