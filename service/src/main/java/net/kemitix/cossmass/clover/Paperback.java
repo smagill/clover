@@ -23,17 +23,16 @@ public class Paperback extends FrontCoverFormat {
     ) {
         super(config, issue, imageService);
         this.issue = issue;
-        LOGGER.info("Paperback");
     }
 
     @Override
     protected int getCropYOffset() {
-        return issue.paperbackYOffset;
+        return issue.getPaperbackYOffset();
     }
 
     @Override
     protected int getCropXOffset() {
-        return issue.paperbackXOffset;
+        return issue.getPaperbackXOffset();
     }
 
     @Override

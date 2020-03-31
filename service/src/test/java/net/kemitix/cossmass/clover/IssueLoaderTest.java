@@ -39,7 +39,7 @@ public class IssueLoaderTest {
         //when
         final Issue issue = issueLoader.loadIssueJson();
         //then
-        assertThat(issue.issue).isEqualTo(issueNumber);
+        assertThat(issue.getIssue()).isEqualTo(issueNumber);
     }
 
     @Test

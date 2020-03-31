@@ -33,7 +33,6 @@ public abstract class CloverFormat {
 
     @PostConstruct
     public void create() throws IOException {
-        LOGGER.info("create()");
         final File coverArtFile =
                 Paths.get(config.getBaseDir(), issue.coverArt())
                         .toFile();
@@ -75,7 +74,6 @@ public abstract class CloverFormat {
     protected abstract int getCropXOffset();
 
     public void write() {
-        LOGGER.info("write()");
         cover.write(Paths.get(config.getIssueDir()), getName());
     }
 

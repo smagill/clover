@@ -1,5 +1,6 @@
 package net.kemitix.cossmass.clover;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -7,37 +8,38 @@ import javax.json.bind.annotation.JsonbProperty;
 import java.util.List;
 
 @Setter
+@Getter
 @NoArgsConstructor
 public class Issue {
 
-    String issue;
-    String date;
+    private String issue;
+    private String date;
     @JsonbProperty("title-colour")
-    String titleColour;
+    private String titleColour;
     @JsonbProperty("sub-title-colour")
-    String subTitleColour;
+    private String subTitleColour;
     @JsonbProperty("text-colour")
-    String textColour;
-    float spine;
+    private String textColour;
+    private float spine;
     @JsonbProperty("paperback-x-offset")
-    int paperbackXOffset;
+    private int paperbackXOffset;
     @JsonbProperty("paperback-y-offset")
-    int paperbackYOffset;
+    private int paperbackYOffset;
     @JsonbProperty("kindle-x-offset")
-    int kindleXOffset;
+    private int kindleXOffset;
     @JsonbProperty("kindle-y-offset")
-    int kindleYOffset;
+    private int kindleYOffset;
     @JsonbProperty("authors-x-offset")
-    int authorsXOffset;
+    private int authorsXOffset;
     @JsonbProperty("authors-y-offset")
-    int authorsYOffset;
-    List<String> authors;
+    private int authorsYOffset;
+    private List<String> authors;
     @JsonbProperty("sf-stories")
-    List<List<String>> sfStories;
+    private List<List<String>> sfStories;
     @JsonbProperty("fantasy-stories")
-    List<List<String>> fantasyStories;
+    private List<List<String>> fantasyStories;
     @JsonbProperty("reprint-stories")
-    List<List<String>> reprintStories;
+    private List<List<String>> reprintStories;
     @JsonbProperty("cover-art")
     private String coverArt;
 

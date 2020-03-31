@@ -21,17 +21,16 @@ public class Kindle extends FrontCoverFormat {
     ) {
         super(config, issue, imageService);
         this.issue = issue;
-        LOGGER.info("Kindle");
     }
 
     @Override
     protected int getCropYOffset() {
-        return issue.kindleYOffset;
+        return issue.getKindleYOffset();
     }
 
     @Override
     protected int getCropXOffset() {
-        return issue.kindleXOffset;
+        return issue.getKindleXOffset();
     }
 
     @Override

@@ -12,4 +12,6 @@ public interface CloverConfig {
     String getBaseDir();
 
     String getIssueDir();
+
+    String getConfigFile();
 }

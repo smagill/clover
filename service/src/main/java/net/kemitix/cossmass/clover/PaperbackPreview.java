@@ -20,7 +20,6 @@ public class PaperbackPreview extends Paperback {
             final ImageService imageService
     ) {
         super(config, issue, imageService);
-        LOGGER.info("PaperbackPreview");
     }
 
     @Override

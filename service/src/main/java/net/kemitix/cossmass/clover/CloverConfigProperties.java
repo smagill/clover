@@ -14,6 +14,8 @@ public class CloverConfigProperties implements CloverConfig {
 
     @ConfigProperty(name = "base-dir")
     public String baseDir;
+    @ConfigProperty(name = "config-file")
+    String configFile;
     @ConfigProperty(name = "image-types")
     String imageTypes;
     @ConfigProperty(name = "issue-dir")

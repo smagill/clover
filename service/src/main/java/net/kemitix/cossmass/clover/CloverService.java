@@ -26,8 +26,8 @@ public class CloverService implements Runnable {
     @Override
     public void run() {
         LOGGER.info(String.format("Clover - Issue %s - %s",
-                issue.issue,
-                issue.date));
+                issue.getIssue(),
+                issue.getDate()));
         formats.stream()
                 .forEach(CloverFormat::write);
     }
