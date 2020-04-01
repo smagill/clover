@@ -13,4 +13,9 @@ public interface Image {
     }
 
     void write(Path path, String name);
+
+    Image withText(
+            String title,
+            XY xy,
+            FontFace fontFace);
 }

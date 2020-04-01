@@ -24,6 +24,11 @@ public class Kindle extends FrontCoverFormat {
     }
 
     @Override
+    protected int frontPageXOffset() {
+        return 0;
+    }
+
+    @Override
     protected int getCropYOffset() {
         return issue.getKindleYOffset();
     }

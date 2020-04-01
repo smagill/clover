@@ -1,6 +1,7 @@
 ISSUE_DIR="-Dissue-dir=${HOME}/cossmass/issues/002-2020-05-may/"
 BASE_DIR="-Dbase-dir=${HOME}/repos-kemitix/"
-RUN_PARAMS=${ISSUE_DIR} ${BASE_DIR}
+FONT_FILE="-Dfont-file=${HOME}/cossmass/binder/fonts/Snowslider/SnowSL_Std.OTF"
+RUN_PARAMS=${ISSUE_DIR} ${BASE_DIR} ${FONT_FILE}
 
 install:
 	mvn install

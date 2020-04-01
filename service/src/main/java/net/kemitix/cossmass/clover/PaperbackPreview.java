@@ -4,11 +4,10 @@ import net.kemitix.cossmass.clover.images.CloverConfig;
 import net.kemitix.cossmass.clover.images.Image;
 import net.kemitix.cossmass.clover.images.ImageService;
 
-import javax.enterprise.context.Dependent;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
-@Dependent
+//@Dependent
 public class PaperbackPreview extends Paperback {
     private static final Logger LOGGER =
             Logger.getLogger(

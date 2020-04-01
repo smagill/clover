@@ -26,6 +26,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.beryx</groupId>
+            <artifactId>awt-color-factory</artifactId>
+            <version>${awt-color-factory.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.twelvemonkeys.imageio</groupId>
             <artifactId>imageio-jpeg</artifactId>
             <version>3.5</version>
@@ -41,11 +47,37 @@
             <artifactId>webp-imageio</artifactId>
             <version>0.1.1</version>
         </dependency>
+
+        <!-- tests -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <properties>
-        <imglib2.version>5.8.0</imglib2.version>
-        <ij.version>1.52u</ij.version>
+        <awt-color-factory.version>1.0.1</awt-color-factory.version>
     </properties>
 
 </project>

@@ -36,6 +36,7 @@ public class IssueLoaderTest {
                         directory.resolve("clover.json").toFile(),
                         content);
         cloverConfig.issueDir = directory.toString();
+        cloverConfig.configFile = "clover.json";
         //when
         final Issue issue = issueLoader.loadIssueJson();
         //then
@@ -46,6 +47,7 @@ public class IssueLoaderTest {
     @DisplayName("When clover.json is missing throws an exception")
     public void whenMissingThenThrow() {
         cloverConfig.issueDir = directory.toString();
+        cloverConfig.configFile = "clover.json";
         //then
         assertThatExceptionOfType(IOException.class)
                 .isThrownBy(issueLoader::loadIssueJson);

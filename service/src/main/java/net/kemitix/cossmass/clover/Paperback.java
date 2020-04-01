@@ -4,17 +4,17 @@ import net.kemitix.cossmass.clover.images.CloverConfig;
 import net.kemitix.cossmass.clover.images.Image;
 import net.kemitix.cossmass.clover.images.ImageService;
 
-import javax.enterprise.context.Dependent;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
-@Dependent
+//@Dependent
 public class Paperback extends FrontCoverFormat {
 
     private static final Logger LOGGER =
             Logger.getLogger(
                     Paperback.class.getName());
     private final Issue issue;
+    private final CloverConfig config;
 
     protected Paperback(
             final CloverConfig config,
@@ -22,7 +22,13 @@ public class Paperback extends FrontCoverFormat {
             final ImageService imageService
     ) {
         super(config, issue, imageService);
+        this.config = config;
         this.issue = issue;
+    }
+
+    @Override
+    protected int frontPageXOffset() {
+        return (int) ((config.width() + issue.getSpine()) / 2);
     }
 
     @Override

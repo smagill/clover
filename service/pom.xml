@@ -39,7 +39,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
 
@@ -55,8 +54,12 @@
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -65,26 +68,13 @@
             <version>${yasson.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.imagej</groupId>
-            <artifactId>ij</artifactId>
-            <version>1.52u</version>
-        </dependency>
     </dependencies>
 
     <properties>
         <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <mockito.version>3.3.3</mockito.version>
         <yasson.version>1.0.6</yasson.version>
-        <lombok.version>1.18.12</lombok.version>
     </properties>
 
 </project>
