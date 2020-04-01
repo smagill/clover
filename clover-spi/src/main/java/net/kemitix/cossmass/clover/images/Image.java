@@ -1,12 +1,15 @@
 package net.kemitix.cossmass.clover.images;
 
+import net.kemitix.cossmass.clover.Area;
+
 import java.nio.file.Path;
+import java.util.List;
 import java.util.function.Function;
 
 public interface Image {
-    Image scaleToCover(int width, int height);
+    Image scaleToCover(Area area);
 
-    Image crop(int xOffset, int yOffset, int width, int height);
+    Image crop(XY cropOffset, Area area);
 
     default Image apply(final Function<Image, Image> function) {
         return function.apply(this);
@@ -16,6 +19,17 @@ public interface Image {
 
     Image withText(
             String title,
-            XY xy,
+            XY topLeft,
             FontFace fontFace);
+
+    Image withText(
+            List<String> title,
+            XY topLeft,
+            FontFace fontFace);
+
+    Image rescale(float scale);
+
+    Image withFilledArea(XY topLeft, Area area, String fillColour);
+
+    Image withRotatedCenteredText(String text, XY topLeft, Area area, FontFace fontFace);
 }

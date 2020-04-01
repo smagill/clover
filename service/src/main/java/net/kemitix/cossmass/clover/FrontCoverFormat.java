@@ -2,7 +2,6 @@ package net.kemitix.cossmass.clover;
 
 import net.kemitix.cossmass.clover.images.*;
 
-import java.io.File;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
@@ -34,39 +33,69 @@ public abstract class FrontCoverFormat extends CloverFormat {
     }
 
     private Function<Image, Image> drawTitle() {
-        final File font = config.getFontFile();
-        final int size = 217;
-        final String colour = issue.getTitleColour();
-        final XY shadowOffset = XY.at(
-                config.getDropShadowXOffset(),
-                config.getDropShadowYOffset());
+        final FontFace fontFace =
+                FontFace.of(
+                        config.getFontFile(),
+                        217,
+                        issue.getTitleColour(),
+                        XY.at(
+                                config.getDropShadowXOffset(),
+                                config.getDropShadowYOffset()));
         return image -> {
             LOGGER.info("Drawing title...");
             return image
                     .withText(
                             "Cossmass",
                             XY.at(60 + frontPageXOffset(), 90),
-                            FontFace.of(font, size, colour, shadowOffset))
+                            fontFace)
                     .withText(
                             "Infinities",
                             XY.at(130 + frontPageXOffset(), 307),
-                            FontFace.of(font, size, colour, shadowOffset));
+                            fontFace);
         };
     }
 
     protected abstract int frontPageXOffset();
 
     private Function<Image, Image> drawSubTitles() {
+        final FontFace fontFace =
+                FontFace.of(
+                        config.getFontFile(),
+                        36,
+                        issue.getSubTitleColour(),
+                        XY.at(
+                                config.getDropShadowXOffset(),
+                                config.getDropShadowYOffset()));
         return image -> {
             LOGGER.info("Drawing subtitle...");
-            return image;
+            return image
+                    .withText(String.format("Issue %s", issue.getIssue()),
+                            XY.at(60 + frontPageXOffset(), 485), fontFace)
+                    .withText(issue.getDate(),
+                            //TODO use a right-edge and the text width to find X
+                            XY.at(1200 + frontPageXOffset(), 485), fontFace)
+                    .withText("Science Fiction and Fantasy",
+                            XY.at(760 + frontPageXOffset(), 109), fontFace);
         };
     }
 
     private Function<Image, Image> drawAuthors() {
+        final FontFace fontFace =
+                FontFace.of(
+                        config.getFontFile(),
+                        48,
+                        issue.getTextColour(),
+                        XY.at(
+                                config.getDropShadowXOffset(),
+                                config.getDropShadowYOffset()));
         return image -> {
             LOGGER.info("Drawing authors...");
-            return image;
+            return image
+                    .withText(issue.getAuthors(),
+                            XY.at(
+                                    issue.getAuthorsXOffset() + frontPageXOffset(),
+                                    issue.getAuthorsYOffset()),
+                            fontFace);
         };
     }
 

@@ -1,17 +1,22 @@
 package net.kemitix.cossmass.clover.images.imglib;
 
+import net.kemitix.cossmass.clover.Area;
 import net.kemitix.cossmass.clover.images.Image;
 import net.kemitix.cossmass.clover.images.*;
 import org.beryx.awt.color.ColorFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.font.LineMetrics;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.logging.Logger;
 
 import static java.awt.Image.SCALE_SMOOTH;
@@ -37,10 +42,9 @@ class CloverImage implements Image {
     }
 
     @Override
-    public Image scaleToCover(
-            final int width,
-            final int height
-    ) {
+    public Image scaleToCover(final Area area) {
+        final int width = area.getWidth();
+        final int height = area.getHeight();
         LOGGER.info(String.format("Scaling to cover: %d x %d", width, height));
         final int originalWidth = getWidth();
         final int originalHeight = getHeight();
@@ -57,10 +61,12 @@ class CloverImage implements Image {
         }
         LOGGER.info(String.format("Resizing to %dx%d",
                 newWidth, newHeight));
-        return scaleTo(newWidth, newHeight);
+        return scaleTo(Area.of(newWidth, newHeight));
     }
 
-    private Image scaleTo(final int width, final int height) {
+    private Image scaleTo(final Area area) {
+        final int width = area.getWidth();
+        final int height = area.getHeight();
         final BufferedImage resized =
                 new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         resized.createGraphics()
@@ -72,21 +78,23 @@ class CloverImage implements Image {
         return new CloverImage(resized, config, fontCache);
     }
 
-    public int getHeight() {
+    private int getHeight() {
         return image.getHeight();
     }
 
-    public int getWidth() {
+    private int getWidth() {
         return image.getWidth();
     }
 
     @Override
     public Image crop(
-            final int xOffset,
-            final int yOffset,
-            final int width,
-            final int height
+            final XY cropOffset,
+            final Area area
     ) {
+        final int xOffset = cropOffset.getX();
+        final int yOffset = cropOffset.getY();
+        final int width = area.getWidth();
+        final int height = area.getHeight();
         LOGGER.info(String.format("Cropping from %d x %d by %d x %d",
                 xOffset, yOffset,
                 width, height
@@ -120,34 +128,147 @@ class CloverImage implements Image {
     @Override
     public Image withText(
             final String text,
-            final XY xy,
+            final XY topLeft,
             final FontFace fontFace
     ) {
+        if ("".equals(text)) {
+            return this;
+        }
         LOGGER.info(String.format("Drawing text: %s at %dx%d - %d",
                 text,
-                xy.getX(),
-                xy.getY(),
+                topLeft.getX(),
+                topLeft.getY(),
                 fontFace.getSize()));
         final BufferedImage withText = copyImage();
         final Graphics2D graphics = withText.createGraphics();
+        drawText(text, framing -> topLeft, fontFace, graphics);
+        return new CloverImage(withText, config, fontCache);
+    }
+
+    private void drawText(
+            final String text,
+            final Function<Framing, XY> positioning,
+            final FontFace fontFace,
+            final Graphics2D graphics
+    ) {
         final Font font = fontCache.loadFont(fontFace);
         graphics.setFont(font);
         final Rectangle2D stringBounds =
                 font.getStringBounds(text, graphics.getFontRenderContext());
+        final XY topLeft = positioning.apply(Framing.builder()
+                .outer(Area.of(image.getWidth(), image.getHeight()))
+                .inner(Area.of(((int) stringBounds.getWidth()), ((int) stringBounds.getHeight())))
+                .build());
         // Drop Shadow
         final XY shadowOffset = fontFace.getShadowOffset();
         if (shadowOffset.getX() != 0 || shadowOffset.getY() != 0) {
             graphics.setPaint(getColor(fontFace.getShadowColour()));
             graphics.drawString(text,
-                    xy.getX() + shadowOffset.getX(),
-                    (int) (xy.getY() - stringBounds.getY() + shadowOffset.getY()));
+                    topLeft.getX() + shadowOffset.getX(),
+                    (int) (topLeft.getY() - stringBounds.getY() + shadowOffset.getY()));
         }
         // Text
         graphics.setPaint(getColor(fontFace.getColour()));
         graphics.drawString(text,
-                xy.getX(),
-                (int) (xy.getY() - stringBounds.getY()));
+                topLeft.getX(),
+                (int) (topLeft.getY() - stringBounds.getY()));
+//        if (config.drawBoundingBoxes) {
+//            graphics.setPaint(getColor("red"));
+//            graphics.drawRect(topLeft.getX(), topLeft.getY(), ((int) stringBounds.getWidth()), ((int) stringBounds.getHeight()));
+//        }
+    }
+
+    @Override
+    public Image withText(
+            final List<String> text,
+            final XY topLeft,
+            final FontFace fontFace
+    ) {
+        return head(text)
+                .map(head ->
+                        withText(head, topLeft, fontFace)
+                                .withText(
+                                        tail(text),
+                                        XY.at(
+                                                topLeft.getX(),
+                                                topLeft.getY() + lineHeight(head, fontFace)),
+                                        fontFace))
+                .orElse(this);
+    }
+
+    @Override
+    public Image rescale(final float scale) {
+        return scaleTo(Area.of(
+                ((int) (getWidth() * scale)),
+                ((int) (getHeight() * scale))));
+    }
+
+    @Override
+    public Image withFilledArea(
+            final XY topLeft,
+            final Area area,
+            final String fillColour
+    ) {
+        LOGGER.fine(String.format("Filled Area: %dx%d by %dx%d",
+                topLeft.getX(), topLeft.getY(),
+                area.getWidth(), area.getHeight()));
+        final BufferedImage withFilledArea = copyImage();
+        final Graphics2D graphics = withFilledArea.createGraphics();
+        graphics.setPaint(getColor(fillColour));
+        graphics.fillRect(topLeft.getX(), topLeft.getY(), area.getWidth(), area.getHeight());
+        return new CloverImage(withFilledArea, config, fontCache);
+    }
+
+    @Override
+    public Image withRotatedCenteredText(
+            final String text,
+            final XY topLeft,
+            final Area area,
+            final FontFace fontFace
+    ) {
+        LOGGER.info(String.format("Drawing text: %s - %d",
+                text, fontFace.getSize()));
+        final BufferedImage withText = copyImage();
+        final Graphics2D graphics = withText.createGraphics();
+        graphics.rotate(Math.PI / 2);
+        drawText(text,
+                framing -> framing
+                        .toBuilder()
+                        .outer(Area.builder()
+                                .width(area.getHeight())
+                                .height(area.getWidth())
+                                .build())
+                        .build()
+                        .centered()
+                        .map(xy -> XY.at(xy.getX() + topLeft.getY(), framing.getInner().getHeight() + topLeft.getX() + xy.getY()))
+                        .map(xy -> XY.at(xy.getX(), -xy.getY())),
+                fontFace, graphics);
         return new CloverImage(withText, config, fontCache);
+    }
+
+    private int lineHeight(
+            final String head,
+            final FontFace fontFace
+    ) {
+        final Graphics2D graphics = image.createGraphics();
+        final FontMetrics fontMetrics = graphics.getFontMetrics(fontCache.loadFont(fontFace));
+        final LineMetrics lineMetrics = fontMetrics.getLineMetrics(head, graphics);
+        final float height = lineMetrics.getHeight();
+        return (int) height;
+    }
+
+    private List<String> tail(final List<String> list) {
+        if (list.size() < 1) {
+            return Collections.emptyList();
+        }
+        return list.subList(1, list.size());
+    }
+
+    private Optional<String> head(final List<String> list) {
+        if (list.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(list.get(0));
     }
 
     private Color getColor(final String colour) {

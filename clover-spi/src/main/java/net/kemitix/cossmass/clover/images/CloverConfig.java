@@ -21,4 +21,6 @@ public interface CloverConfig {
     int getDropShadowXOffset();
 
     int getDropShadowYOffset();
+
+    int getInchesToPX();
 }

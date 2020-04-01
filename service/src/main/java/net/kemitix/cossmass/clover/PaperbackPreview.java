@@ -16,9 +16,10 @@ public class PaperbackPreview extends Paperback {
     protected PaperbackPreview(
             final CloverConfig config,
             final Issue issue,
-            final ImageService imageService
+            final ImageService imageService,
+            final StoryListFormatter storyListFormatter
     ) {
-        super(config, issue, imageService);
+        super(config, issue, imageService, storyListFormatter);
     }
 
     @Override

@@ -3,6 +3,7 @@ package net.kemitix.cossmass.clover;
 import net.kemitix.cossmass.clover.images.CloverConfig;
 import net.kemitix.cossmass.clover.images.Image;
 import net.kemitix.cossmass.clover.images.ImageService;
+import net.kemitix.cossmass.clover.images.XY;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -36,14 +37,18 @@ public abstract class CloverFormat {
         final File coverArtFile =
                 Paths.get(config.getBaseDir(), issue.coverArt())
                         .toFile();
-
-        final Image scaled = imageService.load(coverArtFile).scaleToCover(config.width(), config.height());
-        final Image cropped = scaled.crop(getCropXOffset(), getCropYOffset(), config.width(), config.height());
-        final Image withFrontCover = cropped.apply(frontCover());
-        final Image withSpine = withFrontCover.apply(spine());
-        final Image withBackCover = withSpine.apply(backCover());
-        cover = withBackCover;
+        final Area area = Area.of(getWidth(), getHeight());
+        cover = imageService.load(coverArtFile)
+                .scaleToCover(area)
+                .crop(XY.at(getCropXOffset(), getCropYOffset()), area)
+                .apply(frontCover())
+                .apply(spine())
+                .apply(backCover());
     }
+
+    protected abstract int getHeight();
+
+    protected abstract int getWidth();
 
     protected Function<Image, Image> backCover() {
         return image -> {
@@ -74,9 +79,11 @@ public abstract class CloverFormat {
     protected abstract int getCropXOffset();
 
     public void write() {
-        cover.write(Paths.get(config.getIssueDir()), getName());
+        cover.rescale(writeScale())
+                .write(Paths.get(config.getIssueDir()), getName());
     }
 
     protected abstract String getName();
 
+    protected abstract float writeScale();
 }

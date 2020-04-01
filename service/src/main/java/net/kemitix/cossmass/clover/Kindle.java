@@ -13,6 +13,7 @@ public class Kindle extends FrontCoverFormat {
             Logger.getLogger(
                     Kindle.class.getName());
     private final Issue issue;
+    private final CloverConfig config;
 
     protected Kindle(
             final CloverConfig config,
@@ -20,7 +21,18 @@ public class Kindle extends FrontCoverFormat {
             final ImageService imageService
     ) {
         super(config, issue, imageService);
+        this.config = config;
         this.issue = issue;
+    }
+
+    @Override
+    protected int getHeight() {
+        return config.height();
+    }
+
+    @Override
+    protected int getWidth() {
+        return config.width();
     }
 
     @Override
@@ -41,5 +53,10 @@ public class Kindle extends FrontCoverFormat {
     @Override
     protected String getName() {
         return "kindle";
+    }
+
+    @Override
+    protected float writeScale() {
+        return 1;
     }
 }

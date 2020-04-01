@@ -30,7 +30,7 @@ public class FontCache {
     }
 
     public Font loadFont(final FontFace fontFace) {
-        LOGGER.info(String.format("Requesting %s %d",
+        LOGGER.finest(String.format("Requesting %s %d",
                 fontFace.getFont(), fontFace.getSize()));
         final Font baseFont =
                 fileCache.computeIfAbsent(
@@ -45,7 +45,7 @@ public class FontCache {
             final FontFace fontFace
     ) {
         return file -> {
-            LOGGER.info(String.format("Loading %s", fontFace.getFont()));
+            LOGGER.fine(String.format("Loading %s", fontFace.getFont()));
             return fontLoader.loadFont(fontFace);
         };
     }
@@ -53,7 +53,7 @@ public class FontCache {
 
     private Function<FontAndSize, Font> resizeFont() {
         return fontAndSize -> {
-            LOGGER.info(String.format("Resizing %s to %d",
+            LOGGER.finer(String.format("Resizing %s to %d",
                     fontAndSize.getFont().getName(), fontAndSize.getSize()));
             return fontAndSize.font
                     .deriveFont(Font.PLAIN, fontAndSize.getSize());
