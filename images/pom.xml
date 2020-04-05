@@ -11,9 +11,7 @@
         <relativePath>../parent</relativePath>
     </parent>
 
-    <artifactId>clover-service</artifactId>
-    <name>clover-service</name>
-    <version>DEV-SNAPSHOT</version>
+    <artifactId>clover-images</artifactId>
 
     <dependencies>
         <dependency>
@@ -21,35 +19,39 @@
             <artifactId>jakarta.jakartaee-api</artifactId>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.microprofile.config</groupId>
-            <artifactId>microprofile-config-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
+
         <dependency>
             <groupId>net.kemitix.clover</groupId>
             <artifactId>clover-spi</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>net.kemitix</groupId>
-            <artifactId>file-reader-writer</artifactId>
+            <groupId>org.beryx</groupId>
+            <artifactId>awt-color-factory</artifactId>
+            <version>${awt-color-factory.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <groupId>com.twelvemonkeys.imageio</groupId>
+            <artifactId>imageio-jpeg</artifactId>
+            <version>3.5</version>
+            <!-- FIXME: Neither this not the PDF libs are being registered correctly -->
+        </dependency>
+        <dependency>
+            <groupId>com.twelvemonkeys.imageio</groupId>
+            <artifactId>imageio-pdf</artifactId>
+            <version>3.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.sejda.imageio</groupId>
+            <artifactId>webp-imageio</artifactId>
+            <version>0.1.1</version>
         </dependency>
 
+        <!-- tests -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -63,18 +65,19 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.eclipse</groupId>
-            <artifactId>yasson</artifactId>
-            <version>${yasson.version}</version>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
     <properties>
-        <java.version>11</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <yasson.version>1.0.6</yasson.version>
+        <awt-color-factory.version>1.0.1</awt-color-factory.version>
     </properties>
 
 </project>

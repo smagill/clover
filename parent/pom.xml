@@ -11,7 +11,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>net.kemitix.cossmass</groupId>
+    <groupId>net.kemitix.clover</groupId>
     <artifactId>clover-parent</artifactId>
     <name>clover-parent</name>
     <version>DEV-SNAPSHOT</version>
@@ -52,27 +52,27 @@
             </dependency>
 
             <dependency>
-                <groupId>net.kemitix.cossmass</groupId>
+                <groupId>net.kemitix.clover</groupId>
                 <artifactId>clover-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>net.kemitix.cossmass</groupId>
+                <groupId>net.kemitix.clover</groupId>
                 <artifactId>clover-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>net.kemitix.cossmass</groupId>
+                <groupId>net.kemitix.clover</groupId>
                 <artifactId>clover-runner</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>net.kemitix.cossmass</groupId>
+                <groupId>net.kemitix.clover</groupId>
                 <artifactId>clover-spi</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>net.kemitix.cossmass</groupId>
+                <groupId>net.kemitix.clover</groupId>
                 <artifactId>clover-images</artifactId>
                 <version>${project.version}</version>
             </dependency>

@@ -10,16 +10,16 @@ test:
 	mvn test ${RUN_PARAMS}
 
 dev:
-	mvn -pl q-runner quarkus:dev ${RUN_PARAMS}
+	mvn -pl runner quarkus:dev ${RUN_PARAMS}
 
 native: install
-	mvn -pl q-runner -Pnative package
+	mvn -pl runner -Pnative package
 
 run-native:
-	q-runner/target/clover-runner-DEV-SNAPSHOT-runner ${RUN_PARAMS}
+	runner/target/clover-runner-DEV-SNAPSHOT-runner ${RUN_PARAMS}
 
 run: install
-	java -jar q-runner/target/clover-runner-DEV-SNAPSHOT-runner.jar ${RUN_PARAMS}
+	java -jar runner/target/clover-runner-DEV-SNAPSHOT-runner.jar ${RUN_PARAMS}
 
 clean:
 	mvn clean

@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>net.kemitix.cossmass</groupId>
-    <artifactId>cossmass-clover</artifactId>
-    <name>root</name>
+    <groupId>net.kemitix.clover</groupId>
+    <artifactId>clover-root</artifactId>
+    <name>clover-root</name>
     <version>DEV-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -17,11 +17,9 @@
     <modules>
         <module>parent</module>
         <module>service</module>
-        <module>api</module>
-        <module>q-runner</module>
-        <module>q-tests</module>
-        <module>clover-images</module>
-        <module>clover-spi</module>
+        <module>runner</module>
+        <module>images</module>
+        <module>spi</module>
     </modules>
 
 </project>
