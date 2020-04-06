@@ -18,6 +18,10 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>net.kemitix</groupId>
+            <artifactId>typed-properties</artifactId>
+        </dependency>
 
         <!--test -->
         <dependency>

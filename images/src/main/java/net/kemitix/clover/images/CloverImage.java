@@ -2,9 +2,9 @@ package net.kemitix.clover.images;
 
 import net.kemitix.clover.spi.CloverConfig;
 import net.kemitix.clover.spi.FatalCloverError;
-import net.kemitix.clover.spi.TypedProperties;
 import net.kemitix.clover.spi.images.Image;
 import net.kemitix.clover.spi.images.*;
+import net.kemitix.properties.typed.TypedProperties;
 import org.beryx.awt.color.ColorFactory;
 
 import javax.enterprise.inject.Instance;

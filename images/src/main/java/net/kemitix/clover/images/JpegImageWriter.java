@@ -1,6 +1,6 @@
 package net.kemitix.clover.images;
 
-import net.kemitix.clover.spi.TypedProperties;
+import net.kemitix.properties.typed.TypedProperties;
 
 import javax.enterprise.context.Dependent;
 import java.awt.image.BufferedImage;

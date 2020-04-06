@@ -1,11 +1,11 @@
 package net.kemitix.clover.service;
 
 import net.kemitix.clover.spi.CloverConfig;
-import net.kemitix.clover.spi.TypedProperties;
 import net.kemitix.clover.spi.images.Area;
 import net.kemitix.clover.spi.images.Image;
 import net.kemitix.clover.spi.images.ImageService;
 import net.kemitix.clover.spi.images.XY;
+import net.kemitix.properties.typed.TypedProperties;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -87,7 +87,7 @@ public abstract class CloverFormat {
     }
 
     protected TypedProperties getImageProperties() {
-        return new TypedProperties();
+        return TypedProperties.create();
     }
 
     protected abstract String getName();

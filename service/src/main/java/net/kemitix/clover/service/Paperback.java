@@ -3,8 +3,8 @@ package net.kemitix.clover.service;
 import net.kemitix.clover.spi.CloverConfig;
 import net.kemitix.clover.spi.PdfHeight;
 import net.kemitix.clover.spi.PdfWidth;
-import net.kemitix.clover.spi.TypedProperties;
 import net.kemitix.clover.spi.images.*;
+import net.kemitix.properties.typed.TypedProperties;
 
 import javax.enterprise.context.Dependent;
 import java.util.function.Function;
@@ -167,7 +167,7 @@ public class Paperback extends FrontCoverFormat {
         final int scaledWidth = (int) (pdfWidth * scale);
         final int scaledHeight = (int) (height * scale);
         return super.getImageProperties()
-                .set(PdfWidth.class, scaledWidth)
-                .set(PdfHeight.class, scaledHeight);
+                .with(PdfWidth.class, scaledWidth)
+                .with(PdfHeight.class, scaledHeight);
     }
 }
