@@ -25,7 +25,7 @@ public class PdfImageWriter implements ImageWriter {
     private static final String FORMAT_NAME = "pdf";
     private static final Logger LOGGER =
             Logger.getLogger(
-                    WebpImageWriter.class.getName());
+                    PdfImageWriter.class.getName());
 
     @Override
     public boolean accepts(final String format) {
