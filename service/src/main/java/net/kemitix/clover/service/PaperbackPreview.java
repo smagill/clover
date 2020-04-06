@@ -1,17 +1,21 @@
 package net.kemitix.clover.service;
 
 import net.kemitix.clover.spi.CloverConfig;
+import net.kemitix.clover.spi.images.Area;
 import net.kemitix.clover.spi.images.Image;
 import net.kemitix.clover.spi.images.ImageService;
+import net.kemitix.clover.spi.images.XY;
 
+import javax.enterprise.context.Dependent;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
-//@Dependent
+@Dependent
 public class PaperbackPreview extends Paperback {
     private static final Logger LOGGER =
             Logger.getLogger(
                     Kindle.class.getName());
+    private final CloverConfig config;
 
     protected PaperbackPreview(
             final CloverConfig config,
@@ -20,6 +24,7 @@ public class PaperbackPreview extends Paperback {
             final StoryListFormatter storyListFormatter
     ) {
         super(config, issue, imageService, storyListFormatter);
+        this.config = config;
     }
 
     @Override
@@ -30,9 +35,19 @@ public class PaperbackPreview extends Paperback {
     @Override
     protected Function<Image, Image> backCover() {
         return super.backCover()
-                .andThen(image -> {
-                    //TODO: draw barcode space indicator
-                    return image;
-                });
+                .andThen(drawBarcodeSpacer());
+    }
+
+    private Function<Image, Image> drawBarcodeSpacer() {
+        final XY topLeft = XY.at(
+                config.getBarcodeLeft(),
+                config.getBarcodeTop());
+        final Area area = Area.builder()
+                .width(config.getBarcodeWidth())
+                .height(config.getBarcodeHeight())
+                .build();
+        final String fillColour = config.getBarcodeFillColour();
+        return image ->
+                image.withFilledArea(topLeft, area, fillColour);
     }
 }

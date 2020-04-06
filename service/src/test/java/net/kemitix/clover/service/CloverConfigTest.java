@@ -36,14 +36,14 @@ public class CloverConfigTest {
         //given
         final Random random = new Random();
         final int height = random.nextInt();
-        final int inchesToPX = random.nextInt();
+        final int dpi = random.nextInt();
         cloverConfig.height = height;
-        cloverConfig.inchesToPX = inchesToPX;
+        cloverConfig.dpi = dpi;
         //when
         final int result = cloverConfig.height();
         //then
         assertThat(result)
-                .isEqualTo(height * inchesToPX);
+                .isEqualTo(height * dpi);
     }
 
     @Test
@@ -52,14 +52,14 @@ public class CloverConfigTest {
         //given
         final Random random = new Random();
         final int width = random.nextInt();
-        final int inchesToPX = random.nextInt();
+        final int dpi = random.nextInt();
         cloverConfig.width = width;
-        cloverConfig.inchesToPX = inchesToPX;
+        cloverConfig.dpi = dpi;
         //when
         final int result = cloverConfig.width();
         //then
         assertThat(result)
-                .isEqualTo(width * inchesToPX);
+                .isEqualTo(width * dpi);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class CloverConfigTest {
         final Random random = new Random();
         final int width = random.nextInt();
         final int height = random.nextInt();
-        final int inchesToPX = random.nextInt();
+        final int dpi = random.nextInt();
         final int dropShadowXOffset = random.nextInt();
         final int dropShadowYOffset = random.nextInt();
         //when
@@ -80,7 +80,7 @@ public class CloverConfigTest {
         config.issueDir = issueDir;
         config.width = width;
         config.height = height;
-        config.inchesToPX = inchesToPX;
+        config.dpi = dpi;
         config.dropShadowXOffset = dropShadowXOffset;
         config.dropShadowYOffset = dropShadowYOffset;
         //then
@@ -89,7 +89,7 @@ public class CloverConfigTest {
             s.assertThat(config.getIssueDir()).isEqualTo(issueDir);
             s.assertThat(config.getWidth()).isEqualTo(width);
             s.assertThat(config.getHeight()).isEqualTo(height);
-            s.assertThat(config.getInchesToPX()).isEqualTo(inchesToPX);
+            s.assertThat(config.getDpi()).isEqualTo(dpi);
             s.assertThat(config.getDropShadowXOffset()).isEqualTo(dropShadowXOffset);
             s.assertThat(config.getDropShadowYOffset()).isEqualTo(dropShadowYOffset);
         });

@@ -38,7 +38,7 @@ public class Paperback extends FrontCoverFormat {
     }
 
     private int getSpine() {
-        return (int) (issue.getSpine() * config.getInchesToPX());
+        return (int) (issue.getSpine() * config.getDpi());
     }
 
     @Override
@@ -161,7 +161,7 @@ public class Paperback extends FrontCoverFormat {
     protected TypedProperties getImageProperties() {
         final int width = config.width();
         final int height = config.height();
-        final float spine = issue.getSpine() * config.getInchesToPX();
+        final float spine = issue.getSpine() * config.getDpi();
         final int pdfWidth = (int) ((width * 2) + spine);
         final float scale = 119f / 512;
         final int scaledWidth = (int) (pdfWidth * scale);
