@@ -24,3 +24,5 @@ run: install
 clean:
 	mvn clean
 
+quick-build:
+	mvn clean install -DskipTests -DskipITs

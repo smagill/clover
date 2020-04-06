@@ -35,17 +35,23 @@
             <groupId>com.twelvemonkeys.imageio</groupId>
             <artifactId>imageio-jpeg</artifactId>
             <version>3.5</version>
-            <!-- FIXME: Neither this not the PDF libs are being registered correctly -->
+            <!-- FIXME: This not being registered correctly -->
         </dependency>
         <dependency>
-            <groupId>com.twelvemonkeys.imageio</groupId>
-            <artifactId>imageio-pdf</artifactId>
-            <version>3.5</version>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>pdfa</artifactId>
+            <version>${itextpdf.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>layout</artifactId>
+            <version>${itextpdf.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.sejda.imageio</groupId>
             <artifactId>webp-imageio</artifactId>
-            <version>0.1.1</version>
+            <version>${webp-imageio.version}</version>
         </dependency>
 
         <!-- tests -->
@@ -78,6 +84,8 @@
 
     <properties>
         <awt-color-factory.version>1.0.1</awt-color-factory.version>
+        <itextpdf.version>7.1.10</itextpdf.version>
+        <webp-imageio.version>0.1.1</webp-imageio.version>
     </properties>
 
 </project>

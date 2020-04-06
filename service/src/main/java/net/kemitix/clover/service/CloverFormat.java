@@ -1,6 +1,7 @@
 package net.kemitix.clover.service;
 
 import net.kemitix.clover.spi.CloverConfig;
+import net.kemitix.clover.spi.TypedProperties;
 import net.kemitix.clover.spi.images.Area;
 import net.kemitix.clover.spi.images.Image;
 import net.kemitix.clover.spi.images.ImageService;
@@ -80,8 +81,13 @@ public abstract class CloverFormat {
     protected abstract int getCropXOffset();
 
     public void write() {
+        final TypedProperties properties = getImageProperties();
         cover.rescale(writeScale())
-                .write(Paths.get(config.getIssueDir()), getName());
+                .write(Paths.get(config.getIssueDir()), getName(), properties);
+    }
+
+    protected TypedProperties getImageProperties() {
+        return new TypedProperties();
     }
 
     protected abstract String getName();

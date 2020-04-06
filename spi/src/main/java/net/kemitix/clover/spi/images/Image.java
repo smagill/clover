@@ -1,5 +1,7 @@
 package net.kemitix.clover.spi.images;
 
+import net.kemitix.clover.spi.TypedProperties;
+
 import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Function;
@@ -13,7 +15,7 @@ public interface Image {
         return function.apply(this);
     }
 
-    void write(Path path, String name);
+    void write(Path path, String name, TypedProperties properties);
 
     Image withText(
             String title,

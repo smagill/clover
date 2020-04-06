@@ -23,7 +23,7 @@ public class CloverMain {
         this.service = service;
     }
 
-    void onStart(@Observes final StartupEvent ev) throws InterruptedException {
+    void onStart(@Observes final StartupEvent ev) {
         Executors.newSingleThreadExecutor()
                 .submit(() -> {
                     try {
@@ -33,6 +33,9 @@ public class CloverMain {
                         Optional.ofNullable(e.getCause())
                                 .ifPresent(cause ->
                                         LOGGER.severe(cause.getMessage()));
+                    } catch (final Exception e) {
+                        LOGGER.severe("Unexpected error");
+                        e.printStackTrace();
                     } finally {
                         System.exit(0);
                     }
