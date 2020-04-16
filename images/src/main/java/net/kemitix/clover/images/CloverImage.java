@@ -157,6 +157,9 @@ class CloverImage implements Image {
             final Graphics2D graphics
     ) {
         final Font font = fontCache.loadFont(fontFace);
+        graphics.setRenderingHint(
+                RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
         graphics.setFont(font);
         final Rectangle2D stringBounds =
                 font.getStringBounds(text, graphics.getFontRenderContext());
