@@ -1,20 +1,26 @@
 package net.kemitix.clover.service;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
+import javax.inject.Inject;
 import java.util.logging.Logger;
 
-@Dependent
+@ApplicationScoped
 public class CloverService implements Runnable {
 
     private static final Logger LOGGER =
             Logger.getLogger(
                     CloverService.class.getName());
 
-    private final Issue issue;
-    private final Instance<CloverFormat> formats;
+    private Issue issue;
+    private Instance<CloverFormat> formats;
 
+    public CloverService() {
+    }
+
+    @Inject
     public CloverService(
             final Issue issue,
             @Any final Instance<CloverFormat> formats

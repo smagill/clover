@@ -4,8 +4,8 @@
     "allDeclaredConstructors": false,
     "allPublicConstructors": true,
     "allDeclaredMethods": false,
-    "allPublicMethods": false,
-    "allDeclaredFields": false,
+    "allPublicMethods": true,
+    "allDeclaredFields": true,
     "allPublicFields": false
   }
 ]

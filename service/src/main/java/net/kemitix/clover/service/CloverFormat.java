@@ -20,27 +20,22 @@ public abstract class CloverFormat {
             Logger.getLogger(
                     CloverFormat.class.getName());
 
-    private final CloverConfig config;
-    private final Issue issue;
-    private final ImageService imageService;
+    protected abstract CloverConfig getCloverConfig();
+    protected abstract Issue getIssue();
+    protected abstract ImageService getImageService();
     private Image cover;
-
-    protected CloverFormat(
-            final CloverConfig config,
-            final Issue issue,
-            final ImageService imageService) {
-        this.config = config;
-        this.issue = issue;
-        this.imageService = imageService;
-    }
 
     @PostConstruct
     public void create() throws IOException {
+        String issueDir = getCloverConfig().getIssueDir();
+        String coverArt = getIssue().getCoverArt();
+        LOGGER.info(String.format("coverArt: %s/%s", issueDir, coverArt));
         final File coverArtFile =
-                Paths.get(config.getBaseDir(), issue.coverArt())
+                Paths.get(issueDir, coverArt)
                         .toFile();
+        LOGGER.info(String.format("Cover Art: %s", coverArtFile));
         final Area area = Area.of(getWidth(), getHeight());
-        cover = imageService.load(coverArtFile)
+        cover = getImageService().load(coverArtFile)
                 .scaleToCover(area)
                 .crop(XY.at(getCropXOffset(), getCropYOffset()), area)
                 .apply(frontCover())
@@ -83,7 +78,8 @@ public abstract class CloverFormat {
     public void write() {
         final TypedProperties properties = getImageProperties();
         cover.rescale(writeScale())
-                .write(Paths.get(config.getIssueDir()), getName(), properties);
+                .write(Paths.get(getCloverConfig().getIssueDir()),
+                        getName(), properties);
     }
 
     protected TypedProperties getImageProperties() {

@@ -35,6 +35,10 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-jsonb</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-core</artifactId>
+        </dependency>
 
         <!-- other -->
 
@@ -44,7 +48,7 @@
         <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <quarkus.version>1.3.0.Final</quarkus.version>
+        <quarkus.version>1.4.1.Final</quarkus.version>
 
         <!-- disabled until there is some code to mutate -->
         <pitest.skip>true</pitest.skip>

@@ -1,7 +1,6 @@
-ISSUE_DIR="-Dissue-dir=${HOME}/cossmass/issues/002-2020-05-may/"
-BASE_DIR="-Dbase-dir=${HOME}/repos-kemitix/"
-FONT_FILE="-Dfont-file=${HOME}/cossmass/binder/fonts/Snowslider/SnowSL_Std.OTF"
-RUN_PARAMS=${ISSUE_DIR} ${BASE_DIR} ${FONT_FILE}
+ISSUE_DIR=-Dissue-dir=${HOME}/cossmass/issues/002-2020-05-may
+FONT_FILE=-Dfont-file=${HOME}/cossmass/binder/fonts/Snowslider/SnowSL_Std.OTF
+RUN_PARAMS=${ISSUE_DIR} ${FONT_FILE}
 
 install:
 	mvn install
@@ -19,7 +18,7 @@ run-native:
 	runner/target/clover-runner-DEV-SNAPSHOT-runner ${RUN_PARAMS}
 
 run: install
-	java -jar runner/target/clover-runner-DEV-SNAPSHOT-runner.jar ${RUN_PARAMS}
+	java ${RUN_PARAMS} -jar runner/target/clover-runner-DEV-SNAPSHOT-runner.jar
 
 clean:
 	mvn clean

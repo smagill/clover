@@ -4,12 +4,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.enterprise.inject.Vetoed;
 import javax.json.bind.annotation.JsonbProperty;
 import java.util.List;
 
+@Vetoed
 @Setter
 @Getter
-@NoArgsConstructor
 public class Issue {
 
     private String issue;
@@ -45,7 +46,4 @@ public class Issue {
     @JsonbProperty("publication-title")
     private String publicationTitle;
 
-    String coverArt() {
-        return "/cossmass/" + coverArt;
-    }
 }

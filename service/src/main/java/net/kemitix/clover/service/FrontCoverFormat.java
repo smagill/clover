@@ -1,9 +1,7 @@
 package net.kemitix.clover.service;
 
-import net.kemitix.clover.spi.CloverConfig;
 import net.kemitix.clover.spi.images.FontFace;
 import net.kemitix.clover.spi.images.Image;
-import net.kemitix.clover.spi.images.ImageService;
 import net.kemitix.clover.spi.images.XY;
 
 import java.util.function.Function;
@@ -14,19 +12,6 @@ public abstract class FrontCoverFormat extends CloverFormat {
     private static final Logger LOGGER =
             Logger.getLogger(
                     FrontCoverFormat.class.getName());
-
-    private final Issue issue;
-    private final CloverConfig config;
-
-    protected FrontCoverFormat(
-            final CloverConfig config,
-            final Issue issue,
-            final ImageService imageService
-    ) {
-        super(config, issue, imageService);
-        this.config = config;
-        this.issue = issue;
-    }
 
     @Override
     protected Function<Image, Image> frontCover() {
@@ -39,12 +24,12 @@ public abstract class FrontCoverFormat extends CloverFormat {
     private Function<Image, Image> drawTitle() {
         final FontFace fontFace =
                 FontFace.of(
-                        config.getFontFile(),
+                        getCloverConfig().getFontFile(),
                         217,
-                        issue.getTitleColour(),
+                        getIssue().getTitleColour(),
                         XY.at(
-                                config.getDropShadowXOffset(),
-                                config.getDropShadowYOffset()));
+                                getCloverConfig().getDropShadowXOffset(),
+                                getCloverConfig().getDropShadowYOffset()));
         return image -> {
             LOGGER.info("Drawing title...");
             // TODO - get the title from Issue, line-split it and use
@@ -66,18 +51,18 @@ public abstract class FrontCoverFormat extends CloverFormat {
     private Function<Image, Image> drawSubTitles() {
         final FontFace fontFace =
                 FontFace.of(
-                        config.getFontFile(),
+                        getCloverConfig().getFontFile(),
                         36,
-                        issue.getSubTitleColour(),
+                        getIssue().getSubTitleColour(),
                         XY.at(
-                                config.getDropShadowXOffset(),
-                                config.getDropShadowYOffset()));
+                                getCloverConfig().getDropShadowXOffset(),
+                                getCloverConfig().getDropShadowYOffset()));
         return image -> {
             LOGGER.info("Drawing subtitle...");
             return image
-                    .withText(String.format("Issue %s", issue.getIssue()),
+                    .withText(String.format("Issue %s", getIssue().getIssue()),
                             XY.at(60 + frontPageXOffset(), 485), fontFace)
-                    .withText(issue.getDate(),
+                    .withText(getIssue().getDate(),
                             //TODO use a right-edge and the text width to find X
                             XY.at(1200 + frontPageXOffset(), 485), fontFace)
                     .withText("Science Fiction and Fantasy",
@@ -88,19 +73,19 @@ public abstract class FrontCoverFormat extends CloverFormat {
     private Function<Image, Image> drawAuthors() {
         final FontFace fontFace =
                 FontFace.of(
-                        config.getFontFile(),
+                        getCloverConfig().getFontFile(),
                         48,
-                        issue.getTextColour(),
+                        getIssue().getTextColour(),
                         XY.at(
-                                config.getDropShadowXOffset(),
-                                config.getDropShadowYOffset()));
+                                getCloverConfig().getDropShadowXOffset(),
+                                getCloverConfig().getDropShadowYOffset()));
         return image -> {
             LOGGER.info("Drawing authors...");
             return image
-                    .withText(issue.getAuthors(),
+                    .withText(getIssue().getAuthors(),
                             XY.at(
-                                    issue.getAuthorsXOffset() + frontPageXOffset(),
-                                    issue.getAuthorsYOffset()),
+                                    getIssue().getAuthorsXOffset() + frontPageXOffset(),
+                                    getIssue().getAuthorsYOffset()),
                             fontFace);
         };
     }

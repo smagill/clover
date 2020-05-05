@@ -76,7 +76,6 @@ public class CloverConfigTest {
         final int dropShadowYOffset = random.nextInt();
         //when
         final CloverConfigProperties config = new CloverConfigProperties();
-        config.baseDir = baseDir;
         config.issueDir = issueDir;
         config.width = width;
         config.height = height;
@@ -85,7 +84,6 @@ public class CloverConfigTest {
         config.dropShadowYOffset = dropShadowYOffset;
         //then
         SoftAssertions.assertSoftly(s -> {
-            s.assertThat(config.getBaseDir()).isEqualTo(baseDir);
             s.assertThat(config.getIssueDir()).isEqualTo(issueDir);
             s.assertThat(config.getWidth()).isEqualTo(width);
             s.assertThat(config.getHeight()).isEqualTo(height);

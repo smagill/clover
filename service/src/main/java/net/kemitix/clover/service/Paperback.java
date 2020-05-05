@@ -6,29 +6,36 @@ import net.kemitix.clover.spi.PdfWidth;
 import net.kemitix.clover.spi.images.*;
 import net.kemitix.properties.typed.TypedProperties;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
-@Dependent
+@ApplicationScoped
 public class Paperback extends FrontCoverFormat {
 
     private static final Logger LOGGER =
             Logger.getLogger(
                     Paperback.class.getName());
-    private final Issue issue;
-    private final CloverConfig config;
-    private final StoryListFormatter storyListFormatter;
+    private Issue issue;
+    private CloverConfig config;
+    private ImageService imageService;
+    private StoryListFormatter storyListFormatter;
 
+    public Paperback() {
+    }
+
+    @Inject
     protected Paperback(
             final CloverConfig config,
             final Issue issue,
             final ImageService imageService,
             final StoryListFormatter storyListFormatter
     ) {
-        super(config, issue, imageService);
         this.config = config;
         this.issue = issue;
+        this.imageService = imageService;
         this.storyListFormatter = storyListFormatter;
     }
 
@@ -59,6 +66,21 @@ public class Paperback extends FrontCoverFormat {
     @Override
     protected float writeScale() {
         return 1;
+    }
+
+    @Override
+    protected CloverConfig getCloverConfig() {
+        return config;
+    }
+
+    @Override
+    protected Issue getIssue() {
+        return issue;
+    }
+
+    @Override
+    protected ImageService getImageService() {
+        return imageService;
     }
 
     @Override

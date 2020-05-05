@@ -10,8 +10,6 @@ public interface CloverConfig {
 
     int width();
 
-    String getBaseDir();
-
     String getIssueDir();
 
     String getConfigFile();
