@@ -21,13 +21,17 @@ public class Framing {
 
     public XY centered() {
         if (inner.getHeight() > outer.getHeight()) {
-            throw new FatalCloverError(String.format("Inner is taller than outer: outer=%s, inner=%s", outer, inner));
+            throw new FatalCloverError(String.format(
+                    "Inner is taller than outer: outer=%s, inner=%s",
+                    outer, inner));
         }
         if (inner.getWidth() > outer.getWidth()) {
-            throw new FatalCloverError(String.format("Inner is wider than outer: outer=%s, inner=%s", outer, inner));
+            throw new FatalCloverError(String.format(
+                    "Inner is wider than outer: outer=%s, inner=%s",
+                    outer, inner));
         }
-        final int x = (outer.getWidth() - inner.getWidth()) / 2;
-        final int y = (outer.getHeight() - inner.getHeight()) / 2;
+        final int x = (int) (outer.getWidth() - inner.getWidth()) / 2;
+        final int y = (int) (outer.getHeight() - inner.getHeight()) / 2;
         return XY.at(x, y);
     }
 }

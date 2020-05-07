@@ -1,113 +1,85 @@
 package net.kemitix.clover.service;
 
-import net.kemitix.clover.spi.CloverConfig;
+import lombok.Getter;
+import net.kemitix.clover.spi.CloverProperties;
 import net.kemitix.clover.spi.PdfHeight;
 import net.kemitix.clover.spi.PdfWidth;
 import net.kemitix.clover.spi.images.*;
 import net.kemitix.properties.typed.TypedProperties;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
 @ApplicationScoped
-public class Paperback extends FrontCoverFormat {
+public class Paperback implements CloverFormat {
 
     private static final Logger LOGGER =
             Logger.getLogger(
                     Paperback.class.getName());
-    private Issue issue;
-    private CloverConfig config;
-    private ImageService imageService;
+
+    private CloverProperties cloverProperties;
+    private IssueConfig issueConfig;
+    private Dimensions dimensions;
+    private Image coverArtImage;
     private StoryListFormatter storyListFormatter;
+    @Getter
+    private Image image;
 
     public Paperback() {
     }
 
     @Inject
     protected Paperback(
-            final CloverConfig config,
-            final Issue issue,
-            final ImageService imageService,
-            final StoryListFormatter storyListFormatter
-    ) {
-        this.config = config;
-        this.issue = issue;
-        this.imageService = imageService;
+            final CloverProperties cloverProperties,
+            final IssueConfig issueConfig,
+            final Dimensions dimensions,
+            final Image coverArtImage,
+            final StoryListFormatter storyListFormatter) {
+        this.cloverProperties = cloverProperties;
+        this.issueConfig = issueConfig;
+        this.dimensions = dimensions;
+        this.coverArtImage = coverArtImage;
         this.storyListFormatter = storyListFormatter;
     }
 
-    @Override
-    protected int frontPageXOffset() {
-        return config.width() + getSpine();
+    @PostConstruct
+    public void init() {
+        image = rescale(dimensions.getScaleFromOriginal())
+                .andThen(crop(dimensions.getWrapCrop()))
+                .andThen(frontCover())
+                .andThen(spine())
+                .andThen(backCover())
+                .apply(coverArtImage);
     }
 
-    private int getSpine() {
-        return (int) (issue.getSpine() * config.getDpi());
+    private Function<Image, Image> crop(Region cropRegion) {
+        return image -> image.crop(cropRegion);
+    }
+
+    private Function<Image, Image> rescale(float factor) {
+        return image -> image.rescale(factor);
     }
 
     @Override
-    protected int getCropYOffset() {
-        return issue.getPaperbackYOffset();
-    }
-
-    @Override
-    protected int getCropXOffset() {
-        return issue.getPaperbackXOffset();
-    }
-
-    @Override
-    protected String getName() {
+    public String getName() {
         return "paperback";
     }
 
-    @Override
-    protected float writeScale() {
-        return 1;
-    }
-
-    @Override
-    protected CloverConfig getCloverConfig() {
-        return config;
-    }
-
-    @Override
-    protected Issue getIssue() {
-        return issue;
-    }
-
-    @Override
-    protected ImageService getImageService() {
-        return imageService;
-    }
-
-    @Override
-    protected int getHeight() {
-        return config.height();
-    }
-
-    @Override
-    protected int getWidth() {
-        return (int) ((config.width() * 2) + getSpine());
-    }
-
-    @Override
     protected Function<Image, Image> backCover() {
         final FontFace fontFace =
                 FontFace.of(
-                        config.getFontFile(),
+                        cloverProperties.getFontFile(),
                         48,
-                        issue.getTextColour(),
+                        issueConfig.getTextColour(),
                         XY.at(
-                                config.getDropShadowXOffset(),
-                                config.getDropShadowYOffset()));
-        return super.backCover()
-                .andThen(drawSFStories(fontFace))
+                                cloverProperties.getDropShadowXOffset(),
+                                cloverProperties.getDropShadowYOffset()));
+        return drawSFStories(fontFace)
                 .andThen(drawFantasyStories(fontFace))
-                .andThen(drawReprintStories(fontFace))
-                ;
+                .andThen(drawReprintStories(fontFace));
     }
 
     private Function<Image, Image> drawSFStories(final FontFace fontFace) {
@@ -117,7 +89,7 @@ public class Paperback extends FrontCoverFormat {
                     .withText(
                             storyListFormatter.format(
                                     "Science Fiction Stories",
-                                    issue.getSfStories()),
+                                    issueConfig.getSfStories()),
                             XY.at(150, 200),
                             fontFace);
         };
@@ -130,7 +102,7 @@ public class Paperback extends FrontCoverFormat {
                     .withText(
                             storyListFormatter.format(
                                     "Fantasy Stories",
-                                    issue.getFantasyStories()),
+                                    issueConfig.getFantasyStories()),
                             XY.at(500, 1100),
                             fontFace);
         };
@@ -143,53 +115,118 @@ public class Paperback extends FrontCoverFormat {
                     .withText(
                             storyListFormatter.format(
                                     "Plus",
-                                    issue.getReprintStories()),
+                                    issueConfig.getReprintStories()),
                             XY.at(150, 1800),
                             fontFace);
         };
     }
 
-    @Override
     protected Function<Image, Image> spine() {
         final FontFace fontFace =
                 FontFace.of(
-                        config.getFontFile(),
+                        cloverProperties.getFontFile(),
                         62,
                         "yellow",
                         XY.at(
-                                config.getDropShadowXOffset(),
-                                config.getDropShadowYOffset()));
+                                cloverProperties.getDropShadowXOffset(),
+                                cloverProperties.getDropShadowYOffset()));
         final String spineText = String.format(
                 "%s - Issue %s - %s",
-                issue.getPublicationTitle(),
-                issue.getIssue(),
-                issue.getDate());
-        return super.spine()
-                .andThen(image ->
-                        image.withFilledArea(
-                                XY.at(config.width(), 0),
-                                Area.of(getSpine(), getHeight()),
-                                "black"
-                        ))
-                .andThen(image ->
-                        image.withRotatedCenteredText(
-                                spineText,
-                                XY.at(config.width(), 0),
-                                Area.of(getSpine(), getHeight()),
-                                fontFace));
+                issueConfig.getPublicationTitle(),
+                issueConfig.getIssue(),
+                issueConfig.getDate());
+        return image -> image.withFilledArea(
+                dimensions.getSpineCrop(),
+                "black"
+        ).withRotatedCenteredText(
+                spineText,
+                dimensions.getSpineCrop(),
+                fontFace);
     }
 
     @Override
-    protected TypedProperties getImageProperties() {
-        final int width = config.width();
-        final int height = config.height();
-        final float spine = issue.getSpine() * config.getDpi();
-        final int pdfWidth = (int) ((width * 2) + spine);
-        final float scale = 119f / 512;
-        final int scaledWidth = (int) (pdfWidth * scale);
-        final int scaledHeight = (int) (height * scale);
-        return super.getImageProperties()
-                .with(PdfWidth.class, scaledWidth)
-                .with(PdfHeight.class, scaledHeight);
+    public TypedProperties getImageProperties() {
+        Region wrapCrop = dimensions.getWrapCrop();
+        return TypedProperties.create()
+                .with(PdfWidth.class, (int) wrapCrop.getWidth())
+                .with(PdfHeight.class, (int) wrapCrop.getHeight());
+    }
+
+    protected Function<Image, Image> frontCover() {
+        return drawTitle()
+                .andThen(drawSubTitles())
+                .andThen(drawAuthors())
+                ;
+    }
+
+    private Function<Image, Image> drawTitle() {
+        final FontFace fontFace =
+                FontFace.of(
+                        cloverProperties.getFontFile(),
+                        217,
+                        issueConfig.getTitleColour(),
+                        XY.at(
+                                cloverProperties.getDropShadowXOffset(),
+                                cloverProperties.getDropShadowYOffset()));
+        return image -> {
+            LOGGER.info("Drawing title...");
+            // TODO - get the title from Issue, line-split it and use
+            //  Framing to center
+            return image
+                    .withText(
+                            "Cossmass",
+                            XY.at(60 + frontLeftEdge(), 90),
+                            fontFace)
+                    .withText(
+                            "Infinities",
+                            XY.at(130 + frontLeftEdge(), 307),
+                            fontFace);
+        };
+    }
+
+    private int frontLeftEdge() {
+        return dimensions.getFrontCrop().getLeft();
+    }
+
+    private Function<Image, Image> drawSubTitles() {
+        final FontFace fontFace =
+                FontFace.of(
+                        cloverProperties.getFontFile(),
+                        36,
+                        issueConfig.getSubTitleColour(),
+                        XY.at(
+                                cloverProperties.getDropShadowXOffset(),
+                                cloverProperties.getDropShadowYOffset()));
+        return image -> {
+            LOGGER.info("Drawing subtitle...");
+            return image
+                    .withText(String.format("Issue %s", issueConfig.getIssue()),
+                            XY.at(60 + frontLeftEdge(), 485), fontFace)
+                    .withText(issueConfig.getDate(),
+                            //TODO use a right-edge and the text width to find X
+                            XY.at(1200 + frontLeftEdge(), 485), fontFace)
+                    .withText("Science Fiction and Fantasy",
+                            XY.at(760 + frontLeftEdge(), 109), fontFace);
+        };
+    }
+
+    private Function<Image, Image> drawAuthors() {
+        final FontFace fontFace =
+                FontFace.of(
+                        cloverProperties.getFontFile(),
+                        48,
+                        issueConfig.getTextColour(),
+                        XY.at(
+                                cloverProperties.getDropShadowXOffset(),
+                                cloverProperties.getDropShadowYOffset()));
+        return image -> {
+            LOGGER.info("Drawing authors...");
+            return image
+                    .withText(issueConfig.getAuthors(),
+                            XY.at(
+                                    issueConfig.getAuthorsXOffset() + frontLeftEdge(),
+                                    issueConfig.getAuthorsYOffset()),
+                            fontFace);
+        };
     }
 }

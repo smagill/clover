@@ -1,14 +1,22 @@
 package net.kemitix.clover.spi;
 
+import net.kemitix.clover.spi.images.Area;
+
 import java.io.File;
 import java.util.List;
 
-public interface CloverConfig {
+public interface CloverProperties {
     List<String> getImageTypes();
 
-    int height();
+    /**
+     * Front cover height in inches.
+     */
+    float getHeight();
 
-    int width();
+    /**
+     * Front cover width in inches.
+     */
+    float getWidth();
 
     String getIssueDir();
 
@@ -31,4 +39,6 @@ public interface CloverConfig {
     int getBarcodeHeight();
 
     String getBarcodeFillColour();
+
+    Area getKindleFrontArea();
 }

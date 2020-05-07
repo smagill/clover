@@ -9,7 +9,7 @@ import java.util.function.Function;
 public interface Image {
     Image scaleToCover(Area area);
 
-    Image crop(XY cropOffset, Area area);
+    Image crop(Region region);
 
     default Image apply(final Function<Image, Image> function) {
         return function.apply(this);
@@ -29,7 +29,11 @@ public interface Image {
 
     Image rescale(float scale);
 
-    Image withFilledArea(XY topLeft, Area area, String fillColour);
+    Image withFilledArea(Region region, String fillColour);
 
-    Image withRotatedCenteredText(String text, XY topLeft, Area area, FontFace fontFace);
+    Image withRotatedCenteredText(String text, Region region, FontFace fontFace);
+
+    Area getArea();
+
+    Region getRegion();
 }

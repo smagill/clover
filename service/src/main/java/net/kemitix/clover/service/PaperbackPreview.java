@@ -1,103 +1,57 @@
 package net.kemitix.clover.service;
 
-import net.kemitix.clover.spi.CloverConfig;
-import net.kemitix.clover.spi.images.Area;
+import net.kemitix.clover.spi.CloverProperties;
 import net.kemitix.clover.spi.images.Image;
-import net.kemitix.clover.spi.images.ImageService;
-import net.kemitix.clover.spi.images.XY;
+import net.kemitix.clover.spi.images.Region;
+import net.kemitix.properties.typed.TypedProperties;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.function.Function;
-import java.util.logging.Logger;
 
 @ApplicationScoped
-public class PaperbackPreview extends FrontCoverFormat {
-    private static final Logger LOGGER =
-            Logger.getLogger(
-                    Kindle.class.getName());
+public class PaperbackPreview implements CloverFormat {
 
+    private CloverProperties cloverProperties;
     private Paperback paperback;
 
     public PaperbackPreview() {
     }
 
     @Inject
-    public PaperbackPreview(Paperback paperback) {
+    public PaperbackPreview(
+            final CloverProperties cloverProperties,
+            final Paperback paperback
+    ) {
+        this.cloverProperties = cloverProperties;
         this.paperback = paperback;
     }
 
     @Override
-    protected String getName() {
+    public Image getImage() {
+        return drawBarcodeSpacer()
+                .apply(paperback.getImage());
+    }
+
+    @Override
+    public String getName() {
         return paperback.getName() + "-preview";
     }
 
     @Override
-    protected float writeScale() {
-        return paperback.writeScale();
-    }
-
-    @Override
-    protected CloverConfig getCloverConfig() {
-        return paperback.getCloverConfig();
-    }
-
-    @Override
-    protected Issue getIssue() {
-        return paperback.getIssue();
-    }
-
-    @Override
-    protected ImageService getImageService() {
-        return paperback.getImageService();
-    }
-
-    @Override
-    protected int getHeight() {
-        return paperback.getHeight();
-    }
-
-    @Override
-    protected int getWidth() {
-        return paperback.getWidth();
-    }
-
-    @Override
-    protected Function<Image, Image> spine() {
-        return paperback.spine();
-    }
-
-    @Override
-    protected Function<Image, Image> backCover() {
-        return paperback.backCover()
-                .andThen(drawBarcodeSpacer());
-    }
-
-    @Override
-    protected int getCropYOffset() {
-        return paperback.getCropYOffset();
-    }
-
-    @Override
-    protected int getCropXOffset() {
-        return paperback.getCropXOffset();
+    public TypedProperties getImageProperties() {
+        return paperback.getImageProperties();
     }
 
     private Function<Image, Image> drawBarcodeSpacer() {
-        final XY topLeft = XY.at(
-                getCloverConfig().getBarcodeLeft(),
-                getCloverConfig().getBarcodeTop());
-        final Area area = Area.builder()
-                .width(getCloverConfig().getBarcodeWidth())
-                .height(getCloverConfig().getBarcodeHeight())
+        final Region region = Region.builder()
+                .top(cloverProperties.getBarcodeTop())
+                .left(cloverProperties.getBarcodeLeft())
+                .width(cloverProperties.getBarcodeWidth())
+                .height(cloverProperties.getBarcodeHeight())
                 .build();
-        final String fillColour = getCloverConfig().getBarcodeFillColour();
-        return image ->
-                image.withFilledArea(topLeft, area, fillColour);
+        final String fillColour = cloverProperties.getBarcodeFillColour();
+        return image -> image.withFilledArea(region, fillColour);
     }
 
-    @Override
-    protected int frontPageXOffset() {
-        return paperback.frontPageXOffset();
-    }
 }

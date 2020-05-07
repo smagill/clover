@@ -23,16 +23,16 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class IssueLoaderTest {
+public class IssueConfigLoaderTest {
 
-    private final CloverConfigProperties cloverConfig =
-            new CloverConfigProperties();
+    private final ServiceCloverProperties cloverConfig =
+            new ServiceCloverProperties();
     private final String issueNumber = UUID.randomUUID().toString();
     private final Jsonb jsonb = JsonbBuilder.create();
-    private final IssueLoader issueLoader = new IssueLoader();
+    private final IssueConfigLoader issueLoader = new IssueConfigLoader();
     private final FileReader fileReader;
 
-    public IssueLoaderTest(@Mock FileReader fileReader) {
+    public IssueConfigLoaderTest(@Mock FileReader fileReader) {
         this.fileReader = fileReader;
     }
 
@@ -50,7 +50,8 @@ public class IssueLoaderTest {
                         "}", issueNumber);
         given(fileReader.read(any())).willReturn(content);
         //when
-        final Issue issue = issueLoader.loadIssueJson(cloverConfig, fileReader, jsonb);
+        final IssueConfig issue =
+                issueLoader.loadIssueJson(cloverConfig, fileReader, jsonb);
         //then
         assertThat(issue.getIssue()).isEqualTo(issueNumber);
         assertThat(issue.getTitleColour()).isEqualTo("red");

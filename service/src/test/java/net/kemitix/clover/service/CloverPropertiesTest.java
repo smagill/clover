@@ -10,10 +10,10 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CloverConfigTest {
+public class CloverPropertiesTest {
 
-    private final CloverConfigProperties cloverConfig =
-            new CloverConfigProperties();
+    private final ServiceCloverProperties cloverConfig =
+            new ServiceCloverProperties();
 
     @Test
     @DisplayName("ImageTypes are parsed as comma-delimited")
@@ -31,35 +31,31 @@ public class CloverConfigTest {
     }
 
     @Test
-    @DisplayName("Height has been converted from inches to PX")
-    public void heightIsInPX() {
+    @DisplayName("Height has NOT been converted from inches to PX")
+    public void heightIsInInches() {
         //given
         final Random random = new Random();
         final int height = random.nextInt();
-        final int dpi = random.nextInt();
         cloverConfig.height = height;
-        cloverConfig.dpi = dpi;
         //when
-        final int result = cloverConfig.height();
+        final float result = cloverConfig.getHeight();
         //then
         assertThat(result)
-                .isEqualTo(height * dpi);
+                .isEqualTo(height);
     }
 
     @Test
-    @DisplayName("Width has been converted from inches to PX")
-    public void widthIsInPX() {
+    @DisplayName("Width has NOT been converted from inches to PX")
+    public void widthIsInInches() {
         //given
         final Random random = new Random();
         final int width = random.nextInt();
-        final int dpi = random.nextInt();
         cloverConfig.width = width;
-        cloverConfig.dpi = dpi;
         //when
-        final int result = cloverConfig.width();
+        final float result = cloverConfig.getWidth();
         //then
         assertThat(result)
-                .isEqualTo(width * dpi);
+                .isEqualTo(width);
     }
 
     @Test
@@ -75,7 +71,7 @@ public class CloverConfigTest {
         final int dropShadowXOffset = random.nextInt();
         final int dropShadowYOffset = random.nextInt();
         //when
-        final CloverConfigProperties config = new CloverConfigProperties();
+        final ServiceCloverProperties config = new ServiceCloverProperties();
         config.issueDir = issueDir;
         config.width = width;
         config.height = height;

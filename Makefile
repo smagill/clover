@@ -1,4 +1,4 @@
-ISSUE_DIR=-Dissue-dir=${HOME}/cossmass/issues/002-2020-05-may
+ISSUE_DIR=-Dissue-dir=${HOME}/cossmass/issues/003-2020-09-september
 FONT_FILE=-Dfont-file=${HOME}/cossmass/binder/fonts/Snowslider/SnowSL_Std.OTF
 RUN_PARAMS=${ISSUE_DIR} ${FONT_FILE}
 

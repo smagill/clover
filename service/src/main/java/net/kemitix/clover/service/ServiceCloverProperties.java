@@ -1,7 +1,8 @@
 package net.kemitix.clover.service;
 
 import lombok.Getter;
-import net.kemitix.clover.spi.CloverConfig;
+import net.kemitix.clover.spi.CloverProperties;
+import net.kemitix.clover.spi.images.Area;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.annotation.PostConstruct;
@@ -15,11 +16,11 @@ import java.util.logging.Logger;
 
 @ApplicationScoped
 @Getter
-public class CloverConfigProperties implements CloverConfig {
+public class ServiceCloverProperties implements CloverProperties {
 
     private static final Logger LOGGER =
             Logger.getLogger(
-                    CloverConfigProperties.class.getName());
+                    ServiceCloverProperties.class.getName());
 
     @ConfigProperty(name = "config-file")
     String configFile;
@@ -62,16 +63,6 @@ public class CloverConfigProperties implements CloverConfig {
     }
 
     @Override
-    public int height() {
-        return (int) (height * dpi);
-    }
-
-    @Override
-    public int width() {
-        return (int) (width * dpi);
-    }
-
-    @Override
     public File getFontFile() {
         return new File(fontFile);
     }
@@ -84,5 +75,12 @@ public class CloverConfigProperties implements CloverConfig {
     @Override
     public int getBarcodeHeight() {
         return (int) (barcodeHeight * dpi);
+    }
+
+    @Override
+    public Area getKindleFrontArea() {
+        return Area.builder()
+                .width((int) getWidth())
+                .height((int) getHeight()).build();
     }
 }

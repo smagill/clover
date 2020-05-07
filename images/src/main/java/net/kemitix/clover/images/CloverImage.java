@@ -1,6 +1,6 @@
 package net.kemitix.clover.images;
 
-import net.kemitix.clover.spi.CloverConfig;
+import net.kemitix.clover.spi.CloverProperties;
 import net.kemitix.clover.spi.FatalCloverError;
 import net.kemitix.clover.spi.images.Image;
 import net.kemitix.clover.spi.images.*;
@@ -29,13 +29,13 @@ class CloverImage implements Image {
                     CloverImage.class.getName());
 
     private final BufferedImage image;
-    private final CloverConfig config;
+    private final CloverProperties config;
     private final FontCache fontCache;
     private final Instance<ImageWriter> imageWriters;
 
     CloverImage(
             final BufferedImage image,
-            final CloverConfig config,
+            final CloverProperties config,
             final FontCache fontCache,
             final Instance<ImageWriter> imageWriters
     ) {
@@ -47,15 +47,15 @@ class CloverImage implements Image {
 
     @Override
     public Image scaleToCover(final Area area) {
-        final int width = area.getWidth();
-        final int height = area.getHeight();
-        LOGGER.info(String.format("Scaling to cover: %d x %d", width, height));
-        final int originalWidth = getWidth();
-        final int originalHeight = getHeight();
-        final int ratio = originalWidth / originalHeight;
+        final float width = area.getWidth();
+        final float height = area.getHeight();
+        LOGGER.info(String.format("Scaling to cover: %f x %f", width, height));
+        final float originalWidth = getWidth();
+        final float originalHeight = getHeight();
+        final float ratio = originalWidth / originalHeight;
         LOGGER.info("Ratio: " + ratio);
-        final int newWidth;
-        final int newHeight;
+        final float newWidth;
+        final float newHeight;
         if (ratio > 1) { // is wide
             newWidth = height * ratio;
             newHeight = height;
@@ -63,14 +63,14 @@ class CloverImage implements Image {
             newWidth = width;
             newHeight = width / ratio;
         }
-        LOGGER.info(String.format("Resizing to %dx%d",
+        LOGGER.info(String.format("Resizing to %fx%f",
                 newWidth, newHeight));
         return scaleTo(Area.of(newWidth, newHeight));
     }
 
     private Image scaleTo(final Area area) {
-        final int width = area.getWidth();
-        final int height = area.getHeight();
+        final int width = (int) area.getWidth();
+        final int height = (int) area.getHeight();
         final BufferedImage resized =
                 new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         resized.createGraphics()
@@ -91,27 +91,31 @@ class CloverImage implements Image {
     }
 
     @Override
-    public Image crop(
-            final XY cropOffset,
-            final Area area
-    ) {
-        final int xOffset = cropOffset.getX();
-        final int yOffset = cropOffset.getY();
-        final int width = area.getWidth();
-        final int height = area.getHeight();
-        LOGGER.info(String.format("Cropping from %d x %d by %d x %d",
-                xOffset, yOffset,
-                width, height
-        ));
+    public Image crop(final Region region) {
+        LOGGER.info(String.format("Cropping %s", getRegion()));
+        LOGGER.info(String.format("      to %s", region));
+        getRegion().mustContain(region);
         final BufferedImage cropped =
-                new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+                new BufferedImage(
+                        (int) region.getWidth(), (int) region.getHeight(),
+                        BufferedImage.TYPE_INT_ARGB);
         cropped.createGraphics()
-                .drawImage(
-                        image.getSubimage(xOffset, yOffset, width, height),
-                        0,
-                        0,
-                        null);
+                .drawImage(image.getSubimage(
+                        (int) region.getLeft(),
+                        (int) region.getTop(),
+                        (int) region.getWidth(),
+                        (int) region.getHeight()),
+                        0, 0, null);
+        LOGGER.info("cropped");
         return new CloverImage(cropped, config, fontCache, imageWriters);
+    }
+
+    @Override
+    public Region getRegion() {
+        return Region.builder()
+                .width(image.getWidth())
+                .height(image.getHeight())
+                .build();
     }
 
     @Override
@@ -206,32 +210,37 @@ class CloverImage implements Image {
 
     @Override
     public Image rescale(final float scale) {
-        return scaleTo(Area.of(
-                ((int) (getWidth() * scale)),
-                ((int) (getHeight() * scale))));
+        LOGGER.info("Rescale from: " + getRegion());
+        LOGGER.info(" by: " + scale);
+        Area area = Area.of(
+                (int) (getWidth() * scale),
+                (int) (getHeight() * scale));
+        LOGGER.info(" to: " + area);
+        return scaleTo(area);
     }
 
     @Override
     public Image withFilledArea(
-            final XY topLeft,
-            final Area area,
+            final Region region,
             final String fillColour
     ) {
+        final int top = (int) region.getTop();
+        final int left = (int) region.getLeft();
+        final int width = (int) region.getWidth();
+        final int height = (int) region.getHeight();
         LOGGER.fine(String.format("Filled Area: %dx%d by %dx%d",
-                topLeft.getX(), topLeft.getY(),
-                area.getWidth(), area.getHeight()));
+                left, top, width, height));
         final BufferedImage withFilledArea = copyImage();
         final Graphics2D graphics = withFilledArea.createGraphics();
         graphics.setPaint(getColor(fillColour));
-        graphics.fillRect(topLeft.getX(), topLeft.getY(), area.getWidth(), area.getHeight());
+        graphics.fillRect(left, top, width, height);
         return new CloverImage(withFilledArea, config, fontCache, imageWriters);
     }
 
     @Override
     public Image withRotatedCenteredText(
             final String text,
-            final XY topLeft,
-            final Area area,
+            final Region region,
             final FontFace fontFace
     ) {
         LOGGER.info(String.format("Drawing text: %s - %d",
@@ -243,15 +252,24 @@ class CloverImage implements Image {
                 framing -> framing
                         .toBuilder()
                         .outer(Area.builder()
-                                .width(area.getHeight())
-                                .height(area.getWidth())
+                                .width(region.getHeight())
+                                .height(region.getWidth())
                                 .build())
                         .build()
                         .centered()
-                        .map(xy -> XY.at(xy.getX() + topLeft.getY(), framing.getInner().getHeight() + topLeft.getX() + xy.getY()))
+                        .map(xy -> XY.at(
+                                (int) (xy.getX() + region.getTop()),
+                                (int) (framing.getInner().getHeight() + region.getLeft() + xy.getY())))
                         .map(xy -> XY.at(xy.getX(), -xy.getY())),
                 fontFace, graphics);
         return new CloverImage(withText, config, fontCache, imageWriters);
+    }
+
+    @Override
+    public Area getArea() {
+        return Area.builder()
+                .width(image.getWidth())
+                .height(image.getHeight()).build();
     }
 
     private int lineHeight(
