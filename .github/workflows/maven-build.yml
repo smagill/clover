@@ -23,24 +23,3 @@ jobs:
           java-version: ${{ matrix.java }}
       - name: install
         run: mvn -B install
-#  native:
-#    runs-on: ubuntu-latest
-#    strategy:
-#      matrix:
-#        java: [ 11 ]
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: setup-java-${{ matrix.java }}
-#        uses: actions/setup-java@v1
-#        with:
-#          java-version: ${{ matrix.java }}
-#      - name: setup-graalvm-ce
-#        uses: rinx/setup-graalvm-ce@v0.0.1
-#        with:
-#          graalvm-version: "20.0.0.r${{ matrix.java }}"
-#          java-version: java${{ matrix.java }}
-#      - name: setup-native-image
-#        run: |
-#          gu install native-image
-#      - name: native-package
-#        run: mvn -B package -Pnative

@@ -11,12 +11,6 @@ test:
 dev:
 	mvn -pl runner quarkus:dev ${RUN_PARAMS}
 
-native: install
-	mvn -pl runner -Pnative package
-
-run-native:
-	runner/target/clover-runner-DEV-SNAPSHOT-runner ${RUN_PARAMS}
-
 run: install
 	java ${RUN_PARAMS} -jar runner/target/clover-runner-DEV-SNAPSHOT-runner.jar
 
