@@ -85,7 +85,7 @@
     <properties>
         <awt-color-factory.version>1.0.1</awt-color-factory.version>
         <itextpdf.version>7.1.11</itextpdf.version>
-        <webp-imageio.version>0.1.1</webp-imageio.version>
+        <webp-imageio.version>0.1.5</webp-imageio.version>
     </properties>
 
 </project>
