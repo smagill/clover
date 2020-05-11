@@ -2,14 +2,19 @@ package net.kemitix.clover.service;
 
 import net.kemitix.clover.spi.CenteredTextEffect;
 import net.kemitix.clover.spi.CloverProperties;
+import net.kemitix.clover.spi.RightAlignTextEffect;
 import net.kemitix.clover.spi.images.FontFace;
 import net.kemitix.clover.spi.images.Image;
+import net.kemitix.clover.spi.images.Region;
 import net.kemitix.clover.spi.images.XY;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.function.Function;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class FrontCover implements Function<Image, Image> {
@@ -22,6 +27,7 @@ public class FrontCover implements Function<Image, Image> {
     private IssueConfig issueConfig;
     private Dimensions dimensions;
     private CenteredTextEffect centeredText;
+    private RightAlignTextEffect rightAlignText;
 
     public FrontCover() {
     }
@@ -31,12 +37,14 @@ public class FrontCover implements Function<Image, Image> {
             CloverProperties cloverProperties,
             IssueConfig issueConfig,
             Dimensions dimensions,
-            CenteredTextEffect centeredText
+            CenteredTextEffect centeredText,
+            RightAlignTextEffect rightAlignText
     ) {
         this.cloverProperties = cloverProperties;
         this.issueConfig = issueConfig;
         this.dimensions = dimensions;
         this.centeredText = centeredText;
+        this.rightAlignText = rightAlignText;
     }
 
 
@@ -59,12 +67,11 @@ public class FrontCover implements Function<Image, Image> {
                                 cloverProperties.getDropShadowYOffset()));
         return image -> {
             LOGGER.info("Drawing title...");
-            // TODO - get the title from Issue, line-split it and use
-            //  Framing to center
+            var text = String.join("\n", issueConfig.getPublicationTitle().split(" "));
             return centeredText
                     .fontFace(fontFace)
-                    .region(dimensions.getFrontCrop().withPadding(90))
-                    .text("Cossmass\nInfinities")
+                    .region(dimensions.getFrontCrop().withPadding(85))
+                    .text(text)
                     .apply(image);
         };
     }
@@ -77,22 +84,39 @@ public class FrontCover implements Function<Image, Image> {
         final FontFace fontFace =
                 FontFace.of(
                         cloverProperties.getFontFile(),
-                        36,
+                        48,
                         issueConfig.getSubTitleColour(),
                         XY.at(
                                 cloverProperties.getDropShadowXOffset(),
                                 cloverProperties.getDropShadowYOffset()));
         return image -> {
             LOGGER.info("Drawing subtitle...");
-            return image
+            return drawDateSubtitle(fontFace)
+                    .andThen(drawBannerSubtitle(fontFace))
+                    .apply(image)
                     .withText(String.format("Issue %s", issueConfig.getIssue()),
-                            XY.at(60 + frontLeftEdge(), 485), fontFace)
-                    .withText(issueConfig.getDate(),
-                            //TODO use a right-edge and the text width to find X
-                            XY.at(1200 + frontLeftEdge(), 485), fontFace)
-                    .withText("Science Fiction and Fantasy",
-                            XY.at(760 + frontLeftEdge(), 109), fontFace);
+                            XY.at(85 + frontLeftEdge(), 475), fontFace)
+                    ;
         };
+    }
+
+    private Function<Image, Image> drawBannerSubtitle(FontFace fontFace) {
+        return image ->
+                rightAlignText.fontFace(fontFace)
+                        .region(dimensions.getFrontCrop().toBuilder()
+                               .top(10).build().withPadding(85))
+                        .text("Science Fiction and Fantasy")
+                        .apply(image);
+    }
+
+    private Function<Image, Image> drawDateSubtitle(FontFace fontFace) {
+        return rightAlignText.fontFace(fontFace)
+                .region(Region.builder()
+                        .top(390).left(frontLeftEdge())
+                        .width(dimensions.getFrontCrop().getWidth())
+                        .height(dimensions.getFrontCrop().getHeight())
+                        .build().withPadding(85))
+                .text(issueConfig.getDate());
     }
 
     private Function<Image, Image> drawAuthors() {

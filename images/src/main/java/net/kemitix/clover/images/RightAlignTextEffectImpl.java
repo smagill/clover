@@ -4,26 +4,26 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import net.kemitix.clover.spi.CenteredTextEffect;
 import net.kemitix.clover.spi.FontCache;
+import net.kemitix.clover.spi.RightAlignTextEffect;
+import net.kemitix.clover.spi.TextEffect;
 import net.kemitix.clover.spi.images.*;
 import net.kemitix.clover.spi.images.Image;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.awt.*;
-import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.util.function.Function;
 
 @ApplicationScoped
 @Builder(toBuilder = true)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class CentredTextEffectImpl
+public class RightAlignTextEffectImpl
     extends AbstractTextEffect
-        implements CenteredTextEffect,
-        CenteredTextEffect.TextNext,
-        CenteredTextEffect.RegionNext,
+        implements RightAlignTextEffect,
+        TextEffect.RegionNext,
+        TextEffect.TextNext,
         Function<Image, Image> {
 
     private String text;
@@ -34,43 +34,33 @@ public class CentredTextEffectImpl
     @Getter
     private Region region;
 
-    public CentredTextEffectImpl() {
+    public RightAlignTextEffectImpl() {
     }
 
     @Inject
-    public CentredTextEffectImpl(FontCache fontCache) {
+    public RightAlignTextEffectImpl(FontCache fontCache) {
         this.fontCache = fontCache;
     }
 
     @Override
     public Image apply(Image image) {
-        return image.withGraphics(graphics2d -> {
+        return image.withGraphics(graphics2D -> {
             int lineCount = 0;
             for (String line : text.split("\n")) {
-                drawText(image, graphics2d, lineCount, line);
-                lineCount++;
+                drawText(image, graphics2D, lineCount, line);
             }
         });
     }
 
-    private void drawText(Image image, Graphics2D graphics2d, int lineCount, String line) {
-        Rectangle2D stringBounds = getStringBounds(graphics2d, line);
-        int lineHeight = (int) stringBounds.getHeight();
+    private void drawText(Image image, Graphics2D graphics2D, int lineCount, String line) {
+        Rectangle2D stringBounds = getStringBounds(graphics2D, line);
         int lineWidth = (int) stringBounds.getWidth();
         CloverImage.drawText(line, framing -> {
-                    XY centered = framing.toBuilder()
-                            .outer(region.getArea())
-                            .inner(Area.of(lineWidth, region.getHeight()))
-                            .build().centered();
-                    return XY.at(centered.getX() + region.getLeft(),
-                            centered.getY() + region.getTop() + (lineHeight * lineCount));
+                    int left = region.getRight() - lineWidth;
+                    int top = region.getTop();
+                    return XY.at(left, top);
                 },
-                fontFace, graphics2d, fontCache, image.getBufferedImage());
-    }
-
-    @Override
-    public Function<Image, Image> text(String text) {
-        return toBuilder().text(text).build();
+                fontFace, graphics2D, fontCache, image.getBufferedImage());
     }
 
     @Override
@@ -83,4 +73,8 @@ public class CentredTextEffectImpl
         return toBuilder().region(region).build();
     }
 
+    @Override
+    public Function<Image, Image> text(String text) {
+        return toBuilder().text(text).build();
+    }
 }
