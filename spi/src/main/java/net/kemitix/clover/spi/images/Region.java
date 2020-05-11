@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+import java.awt.geom.Rectangle2D;
+
 @Getter
 @Builder(toBuilder = true)
 @EqualsAndHashCode
@@ -40,6 +42,15 @@ public class Region {
         }
     }
 
+    public void mustContain(Rectangle2D area) {
+        if (area.getWidth() > getWidth()) {
+            notContains("is wider than", area);
+        }
+        if (area.getHeight() > getHeight()) {
+            notContains("is taller than", area);
+        }
+    }
+
     public void mustBeBiggerThan(Region inner) {
         if (inner.getWidth() > getWidth()) {
             notContains("is wider than", inner);
@@ -47,6 +58,16 @@ public class Region {
         if (inner.getHeight() > getHeight()) {
             notContains("is taller than", inner);
         }
+    }
+
+    private void notContains(final String message, final Rectangle2D inner) {
+        throw new IllegalArgumentException(String.format(
+                "Inner %s container:\n" +
+                        " Container: %s - right=%d, bottom=%d\n" +
+                        "     Inner: %s",
+                message,
+                this, getRight(), getBottom(),
+                inner));
     }
 
     private void notContains(final String message, final Region inner) {
@@ -79,4 +100,19 @@ public class Region {
                 '}';
     }
 
+    public Region withPadding(int padding) {
+        return Region.builder()
+                .top(top + padding)
+                .left(left + padding)
+                .width(width - (2 * padding))
+                .height(height - (2 * padding))
+                .build();
+    }
+
+    public Area getArea() {
+        return Area.builder()
+                .width(width)
+                .height(height)
+                .build();
+    }
 }

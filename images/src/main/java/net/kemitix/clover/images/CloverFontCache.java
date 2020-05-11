@@ -4,7 +4,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import net.kemitix.clover.spi.images.FontFace;
 
-import javax.enterprise.context.Dependent;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.awt.*;
 import java.io.File;
 import java.util.HashMap;
@@ -12,23 +13,25 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
-@Dependent
-public class FontCache {
+@ApplicationScoped
+public class CloverFontCache implements net.kemitix.clover.spi.FontCache {
 
     private static final Logger LOGGER =
             Logger.getLogger(
-                    FontCache.class.getName());
+                    CloverFontCache.class.getName());
 
     private final Map<File, Font> fileCache = new HashMap<>();
 
-    private final Map<FontAndSize, Font> fontcache = new HashMap<>();
+    private final Map<FontAndSize, Font> fontCache = new HashMap<>();
 
     private final FontLoader fontLoader;
 
-    public FontCache(final FontLoader fontLoader) {
+    @Inject
+    public CloverFontCache(final FontLoader fontLoader) {
         this.fontLoader = fontLoader;
     }
 
+    @Override
     public Font loadFont(final FontFace fontFace) {
         LOGGER.finest(String.format("Requesting %s %d",
                 fontFace.getFont(), fontFace.getSize()));
@@ -36,7 +39,7 @@ public class FontCache {
                 fileCache.computeIfAbsent(
                         fontFace.getFont(),
                         loadNewFontFile(fontFace));
-        return fontcache.computeIfAbsent(
+        return fontCache.computeIfAbsent(
                 FontAndSize.of(baseFont, fontFace.getSize()),
                 resizeFont());
     }

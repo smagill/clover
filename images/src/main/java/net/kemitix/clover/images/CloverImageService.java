@@ -1,11 +1,14 @@
 package net.kemitix.clover.images;
 
 import net.kemitix.clover.spi.CloverProperties;
+import net.kemitix.clover.spi.FatalCloverError;
+import net.kemitix.clover.spi.FontCache;
 import net.kemitix.clover.spi.images.Image;
 import net.kemitix.clover.spi.images.ImageService;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Instance;
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import java.awt.image.BufferedImage;
@@ -37,7 +40,12 @@ public class CloverImageService implements ImageService {
     @Override
     public Image load(final File file) throws IOException {
         LOGGER.info("Loading " + file.getCanonicalPath());
-        final BufferedImage image = ImageIO.read(file);
+        BufferedImage image;
+        try {
+            image = ImageIO.read(file);
+        } catch (IIOException e) {
+            throw new FatalCloverError("Error loading file: " + file, e);
+        }
         LOGGER.info(String.format("Loaded: (%dx%d)",
                 image.getWidth(),
                 image.getHeight()));

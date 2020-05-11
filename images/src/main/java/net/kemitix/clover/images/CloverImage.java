@@ -2,6 +2,7 @@ package net.kemitix.clover.images;
 
 import net.kemitix.clover.spi.CloverProperties;
 import net.kemitix.clover.spi.FatalCloverError;
+import net.kemitix.clover.spi.FontCache;
 import net.kemitix.clover.spi.images.Image;
 import net.kemitix.clover.spi.images.*;
 import net.kemitix.properties.typed.TypedProperties;
@@ -9,7 +10,6 @@ import org.beryx.awt.color.ColorFactory;
 
 import javax.enterprise.inject.Instance;
 import java.awt.*;
-import java.awt.font.LineMetrics;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -17,6 +17,7 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
@@ -73,13 +74,12 @@ class CloverImage implements Image {
         final int height = (int) area.getHeight();
         final BufferedImage resized =
                 new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        resized.createGraphics()
-                .drawImage(
+        return useGraphics(resized, graphics2D ->
+                graphics2D.drawImage(
                         image.getScaledInstance(width, height, SCALE_SMOOTH),
                         0,
                         0,
-                        null);
-        return new CloverImage(resized, config, fontCache, imageWriters);
+                        null));
     }
 
     private int getHeight() {
@@ -97,17 +97,16 @@ class CloverImage implements Image {
         getRegion().mustContain(region);
         final BufferedImage cropped =
                 new BufferedImage(
-                        (int) region.getWidth(), (int) region.getHeight(),
+                        region.getWidth(), region.getHeight(),
                         BufferedImage.TYPE_INT_ARGB);
-        cropped.createGraphics()
-                .drawImage(image.getSubimage(
-                        (int) region.getLeft(),
-                        (int) region.getTop(),
-                        (int) region.getWidth(),
-                        (int) region.getHeight()),
-                        0, 0, null);
-        LOGGER.info("cropped");
-        return new CloverImage(cropped, config, fontCache, imageWriters);
+        return useGraphics(cropped, graphics2D ->
+                graphics2D.drawImage(
+                        image.getSubimage(
+                                region.getLeft(),
+                                region.getTop(),
+                                region.getWidth(),
+                                region.getHeight()),
+                        0, 0, null));
     }
 
     @Override
@@ -116,6 +115,16 @@ class CloverImage implements Image {
                 .width(image.getWidth())
                 .height(image.getHeight())
                 .build();
+    }
+
+    @Override
+    public Image withGraphics(Consumer<Graphics2D> graphics2DEffect) {
+        return useGraphics(copyImage(), graphics2DEffect);
+    }
+
+    @Override
+    public BufferedImage getBufferedImage() {
+        return image;
     }
 
     @Override
@@ -148,17 +157,17 @@ class CloverImage implements Image {
                 topLeft.getX(),
                 topLeft.getY(),
                 fontFace.getSize()));
-        final BufferedImage withText = copyImage();
-        final Graphics2D graphics = withText.createGraphics();
-        drawText(text, framing -> topLeft, fontFace, graphics);
-        return new CloverImage(withText, config, fontCache, imageWriters);
+        return withGraphics(graphics2D ->
+                drawText(text, framing -> topLeft, fontFace, graphics2D, fontCache, image));
     }
 
-    private void drawText(
+    public static void drawText(
             final String text,
             final Function<Framing, XY> positioning,
             final FontFace fontFace,
-            final Graphics2D graphics
+            final Graphics2D graphics,
+            final FontCache fontCache,
+            final BufferedImage image
     ) {
         final Font font = fontCache.loadFont(fontFace);
         graphics.setRenderingHint(
@@ -197,14 +206,12 @@ class CloverImage implements Image {
             final FontFace fontFace
     ) {
         return head(text)
-                .map(head ->
-                        withText(head, topLeft, fontFace)
-                                .withText(
-                                        tail(text),
-                                        XY.at(
-                                                topLeft.getX(),
-                                                topLeft.getY() + lineHeight(head, fontFace)),
-                                        fontFace))
+                .map(head -> withText(head, topLeft, fontFace)
+                        .withText(tail(text),
+                                XY.at(topLeft.getX(), topLeft.getY() +
+                                        ((int) textArea(head, fontFace)
+                                                .getHeight())),
+                                fontFace))
                 .orElse(this);
     }
 
@@ -224,17 +231,16 @@ class CloverImage implements Image {
             final Region region,
             final String fillColour
     ) {
-        final int top = (int) region.getTop();
-        final int left = (int) region.getLeft();
-        final int width = (int) region.getWidth();
-        final int height = (int) region.getHeight();
+        final int top = region.getTop();
+        final int left = region.getLeft();
+        final int width = region.getWidth();
+        final int height = region.getHeight();
         LOGGER.fine(String.format("Filled Area: %dx%d by %dx%d",
                 left, top, width, height));
-        final BufferedImage withFilledArea = copyImage();
-        final Graphics2D graphics = withFilledArea.createGraphics();
-        graphics.setPaint(getColor(fillColour));
-        graphics.fillRect(left, top, width, height);
-        return new CloverImage(withFilledArea, config, fontCache, imageWriters);
+        return withGraphics(graphics2D -> {
+            graphics2D.setPaint(getColor(fillColour));
+            graphics2D.fillRect(left, top, width, height);
+        });
     }
 
     @Override
@@ -245,24 +251,23 @@ class CloverImage implements Image {
     ) {
         LOGGER.info(String.format("Drawing text: %s - %d",
                 text, fontFace.getSize()));
-        final BufferedImage withText = copyImage();
-        final Graphics2D graphics = withText.createGraphics();
-        graphics.rotate(Math.PI / 2);
-        drawText(text,
-                framing -> framing
-                        .toBuilder()
-                        .outer(Area.builder()
-                                .width(region.getHeight())
-                                .height(region.getWidth())
-                                .build())
-                        .build()
-                        .centered()
-                        .map(xy -> XY.at(
-                                (int) (xy.getX() + region.getTop()),
-                                (int) (framing.getInner().getHeight() + region.getLeft() + xy.getY())))
-                        .map(xy -> XY.at(xy.getX(), -xy.getY())),
-                fontFace, graphics);
-        return new CloverImage(withText, config, fontCache, imageWriters);
+        return withGraphics(graphics2D -> {
+            graphics2D.rotate(Math.PI / 2);
+            CloverImage.drawText(text,
+                    framing -> framing
+                            .toBuilder()
+                            .outer(Area.builder()
+                                    .width(region.getHeight())
+                                    .height(region.getWidth())
+                                    .build())
+                            .build()
+                            .centered()
+                            .map(xy -> XY.at(
+                                    xy.getX() + region.getTop(),
+                                    (int) (framing.getInner().getHeight() + region.getLeft() + xy.getY())))
+                            .map(xy -> XY.at(xy.getX(), -xy.getY())),
+                    fontFace, graphics2D, fontCache, image);
+        });
     }
 
     @Override
@@ -272,15 +277,17 @@ class CloverImage implements Image {
                 .height(image.getHeight()).build();
     }
 
-    private int lineHeight(
-            final String head,
+    @Override
+    public Area textArea(
+            final String text,
             final FontFace fontFace
     ) {
         final Graphics2D graphics = image.createGraphics();
-        final FontMetrics fontMetrics = graphics.getFontMetrics(fontCache.loadFont(fontFace));
-        final LineMetrics lineMetrics = fontMetrics.getLineMetrics(head, graphics);
-        final float height = lineMetrics.getHeight();
-        return (int) height;
+        final FontMetrics fontMetrics =
+                graphics.getFontMetrics(fontCache.loadFont(fontFace));
+        return Area.of(
+                fontMetrics.stringWidth(text),
+                fontMetrics.getHeight());
     }
 
     private List<String> tail(final List<String> list) {
@@ -297,7 +304,7 @@ class CloverImage implements Image {
         return Optional.ofNullable(list.get(0));
     }
 
-    private Color getColor(final String colour) {
+    private static Color getColor(final String colour) {
         return Optional.ofNullable(
                 ColorFactory.valueOf(colour))
                 .orElseThrow(() ->
@@ -328,6 +335,18 @@ class CloverImage implements Image {
                         () -> LOGGER.warning(String.format(
                                 "No ImageWriter found for %s",
                                 format)));
+    }
+
+    public Image useGraphics(
+            BufferedImage bufferedImage,
+            Consumer<Graphics2D> graphics2DEffect
+    ) {
+        graphics2DEffect.accept(bufferedImage.createGraphics());
+        return withBufferedImage(bufferedImage);
+    }
+
+    private Image withBufferedImage(BufferedImage newImage) {
+        return new CloverImage(newImage, config, fontCache, imageWriters);
     }
 
 }
