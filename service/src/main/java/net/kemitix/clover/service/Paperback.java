@@ -10,6 +10,8 @@ import net.kemitix.properties.typed.TypedProperties;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
@@ -22,7 +24,7 @@ public class Paperback implements CloverFormat {
     private Spine spine;
     private BackCover backCover;
     @Getter
-    private Image image;
+    private List<Image> images;
 
     public Paperback() {
     }
@@ -44,20 +46,13 @@ public class Paperback implements CloverFormat {
 
     @PostConstruct
     public void init() {
-        image = rescale(dimensions.getScaleFromOriginal())
-                .andThen(crop(dimensions.getWrapCrop()))
-                .andThen(frontCover)
-                .andThen(spine)
-                .andThen(backCover)
-                .apply(coverArtImage);
-    }
-
-    private Function<Image, Image> crop(Region cropRegion) {
-        return image -> image.crop(cropRegion);
-    }
-
-    private Function<Image, Image> rescale(float factor) {
-        return image -> image.rescale(factor);
+        images = Collections.singletonList(
+                rescale(dimensions.getScaleFromOriginal())
+                        .andThen(crop(dimensions.getWrapCrop()))
+                        .andThen(frontCover)
+                        .andThen(spine)
+                        .andThen(backCover)
+                        .apply(coverArtImage));
     }
 
     @Override

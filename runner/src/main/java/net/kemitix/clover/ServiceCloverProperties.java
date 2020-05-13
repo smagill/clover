@@ -1,4 +1,4 @@
-package net.kemitix.clover.service;
+package net.kemitix.clover;
 
 import lombok.Getter;
 import net.kemitix.clover.spi.CloverProperties;
@@ -7,7 +7,6 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Dependent;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -78,6 +77,7 @@ public class ServiceCloverProperties implements CloverProperties {
     }
 
     @Override
+    @Deprecated
     public Area getKindleFrontArea() {
         return Area.builder()
                 .width((int) getWidth())

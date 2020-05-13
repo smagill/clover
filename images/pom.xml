@@ -19,6 +19,11 @@
             <artifactId>jakarta.jakartaee-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
 
         <dependency>
             <groupId>net.kemitix.clover</groupId>
@@ -29,29 +34,6 @@
             <groupId>org.beryx</groupId>
             <artifactId>awt-color-factory</artifactId>
             <version>${awt-color-factory.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.twelvemonkeys.imageio</groupId>
-            <artifactId>imageio-jpeg</artifactId>
-            <version>3.5</version>
-            <!-- FIXME: This not being registered correctly -->
-        </dependency>
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>pdfa</artifactId>
-            <version>${itextpdf.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>layout</artifactId>
-            <version>${itextpdf.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.sejda.imageio</groupId>
-            <artifactId>webp-imageio</artifactId>
-            <version>${webp-imageio.version}</version>
         </dependency>
 
         <!-- tests -->
@@ -75,17 +57,10 @@
             <artifactId>assertj-core</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
     </dependencies>
 
     <properties>
         <awt-color-factory.version>1.0.1</awt-color-factory.version>
-        <itextpdf.version>7.1.11</itextpdf.version>
-        <webp-imageio.version>0.1.5</webp-imageio.version>
     </properties>
 
 </project>

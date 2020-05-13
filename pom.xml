@@ -12,6 +12,7 @@
 
     <properties>
         <maven.install.skip>true</maven.install.skip>
+        <maven-graph-plugin.version>1.45</maven-graph-plugin.version>
     </properties>
 
     <modules>
@@ -20,6 +21,32 @@
         <module>runner</module>
         <module>images</module>
         <module>spi</module>
+        <module>image-io</module>
+        <module>image-effects</module>
     </modules>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.fusesource.mvnplugins</groupId>
+                <artifactId>maven-graph-plugin</artifactId>
+                <version>${maven-graph-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>reactor</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <hideTransitive>true</hideTransitive>
+                    <hideVersion>true</hideVersion>
+                    <hideScopes>test</hideScopes>
+                    <hideOptional>true</hideOptional>
+                    <target>${project.basedir}/doc/images/reactor-graph.png</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

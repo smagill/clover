@@ -7,7 +7,9 @@ import net.kemitix.properties.typed.TypedProperties;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class PaperbackPreview implements CloverFormat {
@@ -28,9 +30,11 @@ public class PaperbackPreview implements CloverFormat {
     }
 
     @Override
-    public Image getImage() {
-        return drawBarcodeSpacer()
-                .apply(paperback.getImage());
+    public List<Image> getImages() {
+        return paperback.getImages()
+                .stream()
+                .map(drawBarcodeSpacer())
+                .collect(Collectors.toList());
     }
 
     @Override

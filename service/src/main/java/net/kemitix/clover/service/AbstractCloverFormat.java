@@ -2,7 +2,7 @@ package net.kemitix.clover.service;
 
 import net.kemitix.clover.spi.CloverProperties;
 import net.kemitix.clover.spi.images.Image;
-import net.kemitix.clover.spi.images.ImageService;
+import net.kemitix.clover.spi.images.ImageFactory;
 import net.kemitix.properties.typed.TypedProperties;
 
 import javax.annotation.PostConstruct;
@@ -19,16 +19,16 @@ public abstract class AbstractCloverFormat {
 
     private final CloverProperties config;
     private final Issue issue;
-    private final ImageService imageService;
+    private final ImageFactory imageFactory;
     private Image cover;
 
     protected AbstractCloverFormat(
             final CloverProperties config,
             final Issue issue,
-            final ImageService imageService) {
+            final ImageFactory imageFactory) {
         this.config = config;
         this.issue = issue;
-        this.imageService = imageService;
+        this.imageFactory = imageFactory;
     }
 
     @PostConstruct

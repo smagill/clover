@@ -10,8 +10,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public interface Image {
-    Image scaleToCover(Area area);
-
     Image crop(Region region);
 
     default Image apply(final Function<Image, Image> function) {
@@ -20,21 +18,9 @@ public interface Image {
 
     void write(Path path, String name, TypedProperties properties);
 
-    Image withText(
-            String title,
-            XY topLeft,
-            FontFace fontFace);
-
-    Image withText(
-            List<String> title,
-            XY topLeft,
-            FontFace fontFace);
-
     Image rescale(float scale);
 
     Image withFilledArea(Region region, String fillColour);
-
-    Image withRotatedCenteredText(String text, Region region, FontFace fontFace);
 
     Area getArea();
 
@@ -42,7 +28,5 @@ public interface Image {
 
     Image withGraphics(Consumer<Graphics2D> graphics2DEffect);
 
-    BufferedImage getBufferedImage();
-
-    Area textArea(String text, FontFace fontFace);
+    String getNameQualifier();
 }

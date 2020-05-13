@@ -1,8 +1,8 @@
-package net.kemitix.clover.images;
+package net.kemitix.clover.image.io;
 
-import javax.enterprise.context.Dependent;
+import javax.enterprise.context.ApplicationScoped;
 
-@Dependent
+@ApplicationScoped
 public class WebpImageWriter
         extends AbstractImageIOImageWriter {
 

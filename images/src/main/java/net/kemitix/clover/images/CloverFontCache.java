@@ -2,6 +2,7 @@ package net.kemitix.clover.images;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import net.kemitix.clover.spi.FontLoader;
 import net.kemitix.clover.spi.images.FontFace;
 
 import javax.enterprise.context.ApplicationScoped;

@@ -1,4 +1,4 @@
-package net.kemitix.clover.images;
+package net.kemitix.clover.image.effects;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 @ApplicationScoped
 @Builder(toBuilder = true)
@@ -44,23 +45,29 @@ public class RightAlignTextEffectImpl
 
     @Override
     public Image apply(Image image) {
-        return image.withGraphics(graphics2D -> {
-            int lineCount = 0;
-            for (String line : text.split("\n")) {
-                drawText(image, graphics2D, lineCount, line);
-            }
+        return image.withGraphics(graphics2d -> {
+            String[] split = text.split("\n");
+            IntStream.range(0, split.length)
+                    .forEach(lineNumber -> {
+                        String lineOfText = split[lineNumber];
+                        if (lineOfText.length() > 0) {
+                            drawText(graphics2d, lineNumber, lineOfText, image.getArea());
+                        }
+                    });
         });
     }
 
-    private void drawText(Image image, Graphics2D graphics2D, int lineCount, String line) {
+    private void drawText(
+            Graphics2D graphics2D,
+            int lineCount,
+            String line,
+            Area area
+    ) {
         Rectangle2D stringBounds = getStringBounds(graphics2D, line);
-        int lineWidth = (int) stringBounds.getWidth();
-        CloverImage.drawText(line, framing -> {
-                    int left = region.getRight() - lineWidth;
-                    int top = region.getTop();
-                    return XY.at(left, top);
-                },
-                fontFace, graphics2D, fontCache, image.getBufferedImage());
+        int top = region.getTop() + ((int) stringBounds.getHeight() * lineCount);
+        int left = region.getRight() - (int) stringBounds.getWidth();
+        AbstractTextEffect.drawText(line, framing -> XY.at(left, top),
+                fontFace, graphics2D, fontCache, area);
     }
 
     @Override

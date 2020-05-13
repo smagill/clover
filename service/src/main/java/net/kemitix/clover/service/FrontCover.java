@@ -1,8 +1,6 @@
 package net.kemitix.clover.service;
 
-import net.kemitix.clover.spi.CenteredTextEffect;
-import net.kemitix.clover.spi.CloverProperties;
-import net.kemitix.clover.spi.RightAlignTextEffect;
+import net.kemitix.clover.spi.*;
 import net.kemitix.clover.spi.images.FontFace;
 import net.kemitix.clover.spi.images.Image;
 import net.kemitix.clover.spi.images.Region;
@@ -10,11 +8,8 @@ import net.kemitix.clover.spi.images.XY;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.function.Function;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class FrontCover implements Function<Image, Image> {
@@ -23,30 +18,18 @@ public class FrontCover implements Function<Image, Image> {
             Logger.getLogger(
                     FrontCover.class.getName());
 
-    private CloverProperties cloverProperties;
-    private IssueConfig issueConfig;
-    private Dimensions dimensions;
-    private CenteredTextEffect centeredText;
-    private RightAlignTextEffect rightAlignText;
-
-    public FrontCover() {
-    }
-
     @Inject
-    public FrontCover(
-            CloverProperties cloverProperties,
-            IssueConfig issueConfig,
-            Dimensions dimensions,
-            CenteredTextEffect centeredText,
-            RightAlignTextEffect rightAlignText
-    ) {
-        this.cloverProperties = cloverProperties;
-        this.issueConfig = issueConfig;
-        this.dimensions = dimensions;
-        this.centeredText = centeredText;
-        this.rightAlignText = rightAlignText;
-    }
-
+    CloverProperties cloverProperties;
+    @Inject
+    IssueConfig issueConfig;
+    @Inject
+    Dimensions dimensions;
+    @Inject
+    CenteredTextEffect centeredText;
+    @Inject
+    RightAlignTextEffect rightAlignText;
+    @Inject
+    SimpleTextEffect simpleTextEffect;
 
     @Override
     public Image apply(Image image) {
@@ -67,7 +50,8 @@ public class FrontCover implements Function<Image, Image> {
                                 cloverProperties.getDropShadowYOffset()));
         return image -> {
             LOGGER.info("Drawing title...");
-            var text = String.join("\n", issueConfig.getPublicationTitle().split(" "));
+            var text = String.join("\n",
+                    issueConfig.getPublicationTitle().split(" "));
             return centeredText
                     .fontFace(fontFace)
                     .region(dimensions.getFrontCrop().withPadding(85))
@@ -93,10 +77,22 @@ public class FrontCover implements Function<Image, Image> {
             LOGGER.info("Drawing subtitle...");
             return drawDateSubtitle(fontFace)
                     .andThen(drawBannerSubtitle(fontFace))
-                    .apply(image)
-                    .withText(String.format("Issue %s", issueConfig.getIssue()),
-                            XY.at(85 + frontLeftEdge(), 475), fontFace)
-                    ;
+                    .andThen(issueNumber(fontFace))
+                    .apply(image);
+        };
+    }
+
+    private Function<Image, Image> issueNumber(FontFace fontFace) {
+        return image -> {
+            LOGGER.info("issueNumber");
+            return simpleTextEffect.fontFace(fontFace)
+                    .region(Region.builder()
+                            .top(475).left(85 + frontLeftEdge())
+                            .width((int) image.getArea().getWidth() - (85 + frontLeftEdge()))
+                            .height((int) image.getArea().getHeight() - 475)
+                            .build())
+                    .text(String.format("Issue %s", issueConfig.getIssue()))
+                    .apply(image);
         };
     }
 
@@ -104,7 +100,7 @@ public class FrontCover implements Function<Image, Image> {
         return image ->
                 rightAlignText.fontFace(fontFace)
                         .region(dimensions.getFrontCrop().toBuilder()
-                               .top(10).build().withPadding(85))
+                                .top(10).build().withPadding(85))
                         .text("Science Fiction and Fantasy")
                         .apply(image);
     }
@@ -130,12 +126,16 @@ public class FrontCover implements Function<Image, Image> {
                                 cloverProperties.getDropShadowYOffset()));
         return image -> {
             LOGGER.info("Drawing authors...");
-            return image
-                    .withText(issueConfig.getAuthors(),
-                            XY.at(
-                                    issueConfig.getAuthorsXOffset() + frontLeftEdge(),
-                                    issueConfig.getAuthorsYOffset()),
-                            fontFace);
+            int top = issueConfig.getAuthorsYOffset();
+            int left = issueConfig.getAuthorsXOffset() + frontLeftEdge();
+            return simpleTextEffect.fontFace(fontFace)
+                    .region(Region.builder()
+                            .top(top).left(left)
+                            .width(image.getRegion().getWidth() - left)
+                            .height(image.getRegion().getHeight() - top)
+                            .build())
+                    .text(String.join("\n", issueConfig.authors()))
+                    .apply(image);
         };
     }
 }

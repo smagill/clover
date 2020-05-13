@@ -1,5 +1,6 @@
-package net.kemitix.clover.images;
+package net.kemitix.clover.image.io;
 
+import net.kemitix.clover.spi.images.ImageWriter;
 import net.kemitix.properties.typed.TypedProperties;
 
 import javax.imageio.ImageIO;

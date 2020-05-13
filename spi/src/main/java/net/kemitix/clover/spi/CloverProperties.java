@@ -40,5 +40,6 @@ public interface CloverProperties {
 
     String getBarcodeFillColour();
 
+    @Deprecated(since = "issue-3")
     Area getKindleFrontArea();
 }

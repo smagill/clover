@@ -1,23 +1,19 @@
 package net.kemitix.clover.service;
 
+import net.kemitix.clover.spi.CloverProperties;
 import net.kemitix.files.FileReader;
-import net.kemitix.files.FileReaderWriter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.AdditionalMatchers.eq;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -25,14 +21,17 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
 public class IssueConfigLoaderTest {
 
-    private final ServiceCloverProperties cloverConfig =
-            new ServiceCloverProperties();
+    private final CloverProperties cloverConfig;
     private final String issueNumber = UUID.randomUUID().toString();
     private final Jsonb jsonb = JsonbBuilder.create();
     private final IssueConfigLoader issueLoader = new IssueConfigLoader();
     private final FileReader fileReader;
 
-    public IssueConfigLoaderTest(@Mock FileReader fileReader) {
+    public IssueConfigLoaderTest(
+            @Mock CloverProperties cloverConfig,
+            @Mock FileReader fileReader
+    ) {
+        this.cloverConfig = cloverConfig;
         this.fileReader = fileReader;
     }
 
@@ -40,8 +39,8 @@ public class IssueConfigLoaderTest {
     @DisplayName("Loads the clover.json file")
     public void loadIssueJson() throws IOException {
         //given
-        cloverConfig.issueDir = "dir";
-        cloverConfig.configFile = "clover.json";
+        given(cloverConfig.getIssueDir()).willReturn("dir");
+        given(cloverConfig.getConfigFile()).willReturn("clover.json");
         final String content =
                 String.format("{" +
                         "\"issue\":\"%s\"," +

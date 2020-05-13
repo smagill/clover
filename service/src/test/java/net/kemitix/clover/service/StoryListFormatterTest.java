@@ -3,9 +3,7 @@ package net.kemitix.clover.service;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,15 +13,17 @@ public class StoryListFormatterTest {
             new StoryListFormatter();
     private final String header = "Header";
     private final String title1 = "Title 1";
-    private final String author1 = "Author 1";
+    private final IssueConfig.Author author1 =
+            new IssueConfig.Author("Author", "1");
     private final String title2 = "Title 2";
-    private final String author2 = "Author 2";
+    private final IssueConfig.Author author2 =
+            new IssueConfig.Author("Author", "2");
 
     @Test
     @DisplayName("Formats empty list")
     public void formatsEmptyList() {
         //given
-        final List<List<String>> stories = new ArrayList<>();
+        final List<IssueConfig.Story> stories = new ArrayList<>();
         //when
         final List<String> lines = formatter.format(header, stories);
         //then
@@ -35,11 +35,8 @@ public class StoryListFormatterTest {
     @DisplayName("Formats a single story")
     public void formatsSingleStory() {
         //given
-        final List<List<String>> stories = new ArrayList<>();
-        final List<String> story = Arrays.asList(
-                title1, author1
-        );
-        stories.add(story);
+        final List<IssueConfig.Story> stories = Collections.singletonList(
+                new IssueConfig.Story(author1, title1, "..."));
         //when
         final List<String> lines = formatter.format(header, stories);
         //then
@@ -54,11 +51,8 @@ public class StoryListFormatterTest {
     @DisplayName("Formats a story with line breaks in title")
     public void formatsStoryWithLineBreaksInTitle() {
         //given
-        final List<List<String>> stories = new ArrayList<>();
-        final List<String> story = Arrays.asList(
-                title1 + "\n" + title2, author1
-        );
-        stories.add(story);
+        final List<IssueConfig.Story> stories = Collections.singletonList(
+                new IssueConfig.Story(author1, title1 + "\n" + title2, "..."));
         //when
         final List<String> lines = formatter.format(header, stories);
         //then
@@ -74,11 +68,12 @@ public class StoryListFormatterTest {
     @DisplayName("Formats a story with line breaks in author")
     public void formatsStoryWithLineBreaksInAuthor() {
         //given
-        final List<List<String>> stories = new ArrayList<>();
-        final List<String> story = Arrays.asList(
-                title1, author1 + "\n" + author2
-        );
-        stories.add(story);
+        final List<IssueConfig.Story> stories = Collections.singletonList(
+                new IssueConfig.Story(
+                        new IssueConfig.Author(
+                                author1.authorName(),
+                                "\n" + author2.authorName()),
+                        title1, "..."));
         //when
         final List<String> lines = formatter.format(header, stories);
         //then
@@ -86,17 +81,17 @@ public class StoryListFormatterTest {
                 header,
                 "",
                 title1,
-                "by " + author1,
-                author2);
+                "by " + author1.authorName(),
+                author2.authorName());
     }
 
     @Test
     @DisplayName("Formats multiple stories")
     public void formatsMultipleStories() {
         //given
-        final List<List<String>> stories = new ArrayList<>();
-        stories.add(Arrays.asList(title1, author1));
-        stories.add(Arrays.asList(title2, author2));
+        final List<IssueConfig.Story> stories = Arrays.asList(
+                new IssueConfig.Story(author1, title1, "..."),
+                new IssueConfig.Story(author2, title2, "..."));
         //when
         final List<String> lines = formatter.format(header, stories);
         //then

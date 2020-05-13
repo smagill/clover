@@ -1,4 +1,4 @@
-package net.kemitix.clover.images;
+package net.kemitix.clover.image.io;
 
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
@@ -9,9 +9,10 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Image;
 import net.kemitix.clover.spi.PdfHeight;
 import net.kemitix.clover.spi.PdfWidth;
+import net.kemitix.clover.spi.images.ImageWriter;
 import net.kemitix.properties.typed.TypedProperties;
 
-import javax.enterprise.context.Dependent;
+import javax.enterprise.context.ApplicationScoped;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -19,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-@Dependent
+@ApplicationScoped
 public class PdfImageWriter implements ImageWriter {
 
     private static final String FORMAT_NAME = "pdf";

@@ -8,7 +8,8 @@ import java.util.function.Function;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode
 @ToString
-public class XY {
+public class XY
+        implements RotateQuadrant<XY>, FlipAxis<XY> {
 
     private final int x;
     private final int y;
@@ -21,4 +22,23 @@ public class XY {
         return f.apply(this);
     }
 
+    @Override
+    public XY rotateCW() {
+        return XY.at(-y, x);
+    }
+
+    @Override
+    public XY rotateCCW() {
+        return XY.at(y, -x);
+    }
+
+    @Override
+    public XY flipVertically(int axis) {
+        return XY.at(x, (axis - y) + axis);
+    }
+
+    @Override
+    public XY flipHorizontally(int axis) {
+        return XY.at((axis - x) + axis, y);
+    }
 }

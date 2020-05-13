@@ -11,16 +11,16 @@ import java.util.stream.Stream;
 public class StoryListFormatter {
 
     public List<String> format(
-            final String title,
-            final List<List<String>> stories
+            final String label,
+            final List<IssueConfig.Story> stories
     ) {
         final List<String> list = new ArrayList<>();
-        list.add(title);
+        list.add(label);
         list.addAll(stories.stream()
                 .flatMap(story -> Stream.of(
                         "",
-                        story.get(0),
-                        "by " + story.get(1)))
+                        story.getTitle(),
+                        "by " + story.getAuthor().authorName()))
                 .flatMap(this::splitOnLineBreaks)
                 .collect(Collectors.toList()));
         return list;

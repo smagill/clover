@@ -4,12 +4,14 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 @Getter
 @Builder(toBuilder = true)
 @EqualsAndHashCode
-public class Region {
+public class Region
+        implements RotateQuadrant<Region>, FlipAxis<Region> {
 
     @Builder.Default
     private final int top = 0;
@@ -17,6 +19,24 @@ public class Region {
     private final int left = 0;
     private final int width;
     private final int height;
+
+    public static Region from(Rectangle2D rectangle2D) {
+        Rectangle bounds = rectangle2D.getBounds();
+        return Region.builder()
+                .top(bounds.y)
+                .left(bounds.x)
+                .width(bounds.width)
+                .height(bounds.height)
+                .build();
+    }
+
+    public static Region from(Area area) {
+        return Region.builder()
+                .top(0).left(0)
+                .width((int) area.getWidth())
+                .height((int) area.getHeight())
+                .build();
+    }
 
     public int getRight() {
         return getLeft() + getWidth();
@@ -113,6 +133,43 @@ public class Region {
         return Area.builder()
                 .width(width)
                 .height(height)
+                .build();
+    }
+
+    public Region transposed() {
+        return Region.builder()
+                .top(left).left(top)
+                .width(height).height(width)
+                .build();
+    }
+
+    public Region rotateCW() {
+        return Region.builder()
+                .top(left).left(-(top + height))
+                .width(height).height(width)
+                .build();
+    }
+    public Region rotateCCW() {
+        return Region.builder()
+                .top(-(left + width)).left(this.top)
+                .width(height).height(width)
+                .build();
+    }
+
+    public Region flipVertically(int axis) {
+        return toBuilder().top((axis - top) + axis)
+                .build();
+    }
+
+    public Region flipHorizontally(int axis) {
+        return toBuilder().left((axis - left) + axis)
+                .build();
+    }
+
+    public Region withOffset(int x, int y) {
+        return toBuilder()
+                .left(left + y)
+                .top(top + x)
                 .build();
     }
 }

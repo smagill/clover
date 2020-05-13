@@ -1,6 +1,7 @@
 package net.kemitix.clover.images;
 
 import net.kemitix.clover.spi.FatalCloverError;
+import net.kemitix.clover.spi.FontLoader;
 import net.kemitix.clover.spi.images.FontFace;
 
 import javax.enterprise.context.Dependent;

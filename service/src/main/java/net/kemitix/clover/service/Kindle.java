@@ -5,6 +5,9 @@ import net.kemitix.properties.typed.TypedProperties;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class Kindle implements CloverFormat {
@@ -25,9 +28,10 @@ public class Kindle implements CloverFormat {
     }
 
     @Override
-    public Image getImage() {
-        return paperback.getImage()
-                .crop(dimensions.getFrontCrop());
+    public List<Image> getImages() {
+        return paperback.getImages().stream()
+                .map(image -> image.crop(dimensions.getFrontCrop()))
+                .collect(Collectors.toList());
     }
 
     @Override

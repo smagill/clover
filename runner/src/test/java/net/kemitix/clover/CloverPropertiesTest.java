@@ -1,6 +1,7 @@
-package net.kemitix.clover.service;
+package net.kemitix.clover;
 
 import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -8,9 +9,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class CloverPropertiesTest {
+public class CloverPropertiesTest
+        implements WithAssertions {
 
     private final ServiceCloverProperties cloverConfig =
             new ServiceCloverProperties();
@@ -62,7 +62,6 @@ public class CloverPropertiesTest {
     @DisplayName("Get plain values")
     public void getPlainValues() {
         //given
-        final String baseDir = UUID.randomUUID().toString();
         final String issueDir = UUID.randomUUID().toString();
         final Random random = new Random();
         final int width = random.nextInt();

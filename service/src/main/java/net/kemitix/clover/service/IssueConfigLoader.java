@@ -2,7 +2,8 @@ package net.kemitix.clover.service;
 
 import net.kemitix.clover.spi.CloverProperties;
 import net.kemitix.clover.spi.images.Image;
-import net.kemitix.clover.spi.images.ImageService;
+import net.kemitix.clover.spi.images.ImageFactory;
+import net.kemitix.clover.spi.images.ImageLoader;
 import net.kemitix.files.FileReader;
 import net.kemitix.files.FileReaderWriter;
 
@@ -45,12 +46,12 @@ public class IssueConfigLoader {
     public Image coverArtImage(
             final CloverProperties cloverProperties,
             final IssueConfig issueConfig,
-            final ImageService imageService
+            final ImageLoader imageLoader
     ) throws IOException {
         final Path coverArtPath = Paths.get(
                 cloverProperties.getIssueDir(),
                 issueConfig.getCoverArt());
-        return imageService.load(coverArtPath.toFile());
+        return imageLoader.load(coverArtPath.toFile());
     }
 
 }
