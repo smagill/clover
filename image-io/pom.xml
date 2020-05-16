@@ -41,6 +41,11 @@
             <!-- FIXME: This not being registered correctly -->
         </dependency>
         <dependency>
+            <groupId>org.sejda.imageio</groupId>
+            <artifactId>webp-imageio</artifactId>
+            <version>${webp-imageio.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>pdfa</artifactId>
             <version>${itextpdf.version}</version>
