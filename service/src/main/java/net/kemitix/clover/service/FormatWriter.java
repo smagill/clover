@@ -1,5 +1,6 @@
 package net.kemitix.clover.service;
 
+import net.kemitix.clover.spi.CloverFormat;
 import net.kemitix.clover.spi.CloverProperties;
 
 import javax.enterprise.context.ApplicationScoped;

@@ -1,6 +1,7 @@
 package net.kemitix.clover.service;
 
 import net.kemitix.clover.spi.CloverProperties;
+import net.kemitix.clover.spi.IssueConfig;
 import net.kemitix.files.FileReader;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

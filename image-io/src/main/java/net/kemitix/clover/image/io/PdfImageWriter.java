@@ -7,13 +7,15 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Image;
+import net.kemitix.clover.spi.CloverProperties;
 import net.kemitix.clover.spi.PdfHeight;
 import net.kemitix.clover.spi.PdfWidth;
-import net.kemitix.clover.spi.images.ImageWriter;
+import net.kemitix.clover.spi.ImageWriter;
 import net.kemitix.properties.typed.TypedProperties;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -28,9 +30,11 @@ public class PdfImageWriter implements ImageWriter {
             Logger.getLogger(
                     PdfImageWriter.class.getName());
 
+    @Inject CloverProperties cloverProperties;
+
     @Override
     public boolean accepts(final String format) {
-        return FORMAT_NAME.equals(format);
+        return FORMAT_NAME.equals(format) && cloverProperties.isEnablePdf();
     }
 
     @Override
@@ -45,7 +49,6 @@ public class PdfImageWriter implements ImageWriter {
         final int pageHeight =
                 properties.find(PdfHeight.class, Integer.class)
                         .orElseGet(srcImage::getHeight);
-        LOGGER.info(String.format("Writing %s", file));
         try {
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(srcImage, "png", baos);

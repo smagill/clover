@@ -1,5 +1,8 @@
 package net.kemitix.clover.service;
 
+import net.kemitix.clover.spi.IssueAuthor;
+import net.kemitix.clover.spi.IssueStory;
+import net.kemitix.clover.spi.StoryListFormatter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,20 +13,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class StoryListFormatterTest {
 
     private final StoryListFormatter formatter =
-            new StoryListFormatter();
+            new StoryListFormatterImpl();
     private final String header = "Header";
     private final String title1 = "Title 1";
-    private final IssueConfig.Author author1 =
-            new IssueConfig.Author("Author", "1");
+    private final IssueAuthor author1 = author("Author", "1");
+
+
     private final String title2 = "Title 2";
-    private final IssueConfig.Author author2 =
-            new IssueConfig.Author("Author", "2");
+    private final IssueAuthor author2 = author("Author", "2");
 
     @Test
     @DisplayName("Formats empty list")
     public void formatsEmptyList() {
         //given
-        final List<IssueConfig.Story> stories = new ArrayList<>();
+        final List<ServiceIssueConfig.Story> stories = new ArrayList<>();
         //when
         final List<String> lines = formatter.format(header, stories);
         //then
@@ -35,8 +38,8 @@ public class StoryListFormatterTest {
     @DisplayName("Formats a single story")
     public void formatsSingleStory() {
         //given
-        final List<IssueConfig.Story> stories = Collections.singletonList(
-                new IssueConfig.Story(author1, title1, "..."));
+        final List<IssueStory> stories = Collections.singletonList(
+                story(author1, title1, "..."));
         //when
         final List<String> lines = formatter.format(header, stories);
         //then
@@ -51,8 +54,8 @@ public class StoryListFormatterTest {
     @DisplayName("Formats a story with line breaks in title")
     public void formatsStoryWithLineBreaksInTitle() {
         //given
-        final List<IssueConfig.Story> stories = Collections.singletonList(
-                new IssueConfig.Story(author1, title1 + "\n" + title2, "..."));
+        final List<IssueStory> stories = Collections.singletonList(
+                story(author1, title1 + "\n" + title2, "..."));
         //when
         final List<String> lines = formatter.format(header, stories);
         //then
@@ -68,9 +71,9 @@ public class StoryListFormatterTest {
     @DisplayName("Formats a story with line breaks in author")
     public void formatsStoryWithLineBreaksInAuthor() {
         //given
-        final List<IssueConfig.Story> stories = Collections.singletonList(
-                new IssueConfig.Story(
-                        new IssueConfig.Author(
+        final List<IssueStory> stories = Collections.singletonList(
+                story(
+                        author(
                                 author1.authorName(),
                                 "\n" + author2.authorName()),
                         title1, "..."));
@@ -89,9 +92,9 @@ public class StoryListFormatterTest {
     @DisplayName("Formats multiple stories")
     public void formatsMultipleStories() {
         //given
-        final List<IssueConfig.Story> stories = Arrays.asList(
-                new IssueConfig.Story(author1, title1, "..."),
-                new IssueConfig.Story(author2, title2, "..."));
+        final List<IssueStory> stories = Arrays.asList(
+                story(author1, title1, "..."),
+                story(author2, title2, "..."));
         //when
         final List<String> lines = formatter.format(header, stories);
         //then
@@ -104,4 +107,38 @@ public class StoryListFormatterTest {
                 title2,
                 "by " + author2);
     }
+
+    private IssueAuthor author(String forename, String surname) {
+        return new IssueAuthor() {
+            @Override
+            public String getForename() {
+                return forename;
+            }
+
+            @Override
+            public String getSurname() {
+                return surname;
+            }
+        };
+    }
+
+    private IssueStory story(IssueAuthor author, String title1, String sample) {
+        return new IssueStory() {
+            @Override
+            public IssueAuthor getAuthor() {
+                return author;
+            }
+
+            @Override
+            public String getTitle() {
+                return title1;
+            }
+
+            @Override
+            public String getSample() {
+                return sample;
+            }
+        };
+    }
+
 }

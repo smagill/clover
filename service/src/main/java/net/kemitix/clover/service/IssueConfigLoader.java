@@ -1,9 +1,9 @@
 package net.kemitix.clover.service;
 
 import net.kemitix.clover.spi.CloverProperties;
-import net.kemitix.clover.spi.images.Image;
-import net.kemitix.clover.spi.images.ImageFactory;
-import net.kemitix.clover.spi.images.ImageLoader;
+import net.kemitix.clover.spi.Image;
+import net.kemitix.clover.spi.ImageLoader;
+import net.kemitix.clover.spi.IssueConfig;
 import net.kemitix.files.FileReader;
 import net.kemitix.files.FileReaderWriter;
 
@@ -38,7 +38,7 @@ public class IssueConfigLoader {
                 Paths.get(config.getIssueDir(), config.getConfigFile());
         LOGGER.info("Reading: " + cloverJsonPath);
         final String json = fileReader.read(cloverJsonPath.toFile());
-        return jsonb.fromJson(json, IssueConfig.class);
+        return jsonb.fromJson(json, ServiceIssueConfig.class);
     }
 
     @Produces

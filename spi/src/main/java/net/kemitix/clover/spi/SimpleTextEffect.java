@@ -1,4 +1,4 @@
 package net.kemitix.clover.spi;
 
-public interface SimpleTextEffect extends TextEffect {
+public interface SimpleTextEffect<T> extends TextEffect<T> {
 }

@@ -1,5 +1,5 @@
 package net.kemitix.clover.spi;
 
-public interface RotatedCenteredTextEffect
-        extends TextEffect {
+public interface RotatedCenteredTextEffect<T>
+        extends TextEffect<T> {
 }

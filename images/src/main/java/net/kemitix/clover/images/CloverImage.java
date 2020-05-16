@@ -2,11 +2,8 @@ package net.kemitix.clover.images;
 
 import lombok.Builder;
 import lombok.Getter;
-import net.kemitix.clover.spi.CloverProperties;
-import net.kemitix.clover.spi.FatalCloverError;
-import net.kemitix.clover.spi.FontCache;
-import net.kemitix.clover.spi.images.Image;
-import net.kemitix.clover.spi.images.*;
+import net.kemitix.clover.spi.*;
+import net.kemitix.clover.spi.Image;
 import net.kemitix.properties.typed.TypedProperties;
 import org.beryx.awt.color.ColorFactory;
 
@@ -108,7 +105,6 @@ class CloverImage implements Image {
             final String name,
             final TypedProperties properties
     ) {
-        LOGGER.info(String.format("Writing %s to %s", name, path));
         config.getImageTypes()
                 .forEach(format -> {
                     final File file =
@@ -175,7 +171,6 @@ class CloverImage implements Image {
             final File file,
             final TypedProperties properties
     ) {
-        LOGGER.info(String.format("Writing %s file as %s", format, file));
         imageWriters.stream()
                 .filter(iw -> iw.accepts(format))
                 .findFirst()

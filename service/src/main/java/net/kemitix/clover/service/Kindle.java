@@ -1,31 +1,22 @@
 package net.kemitix.clover.service;
 
-import net.kemitix.clover.spi.images.Image;
+import net.kemitix.clover.spi.CloverFormat;
+import net.kemitix.clover.spi.CloverProperties;
+import net.kemitix.clover.spi.Image;
+import net.kemitix.clover.spi.IssueDimensions;
 import net.kemitix.properties.typed.TypedProperties;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class Kindle implements CloverFormat {
 
-    private Dimensions dimensions;
-    private Paperback paperback;
-
-    public Kindle() {
-    }
-
-    @Inject
-    protected Kindle(
-            Dimensions dimensions,
-            final Paperback paperback
-    ) {
-        this.dimensions = dimensions;
-        this.paperback = paperback;
-    }
+    @Inject IssueDimensions dimensions;
+    @Inject Paperback paperback;
+    @Inject CloverProperties cloverProperties;
 
     @Override
     public List<Image> getImages() {
@@ -42,5 +33,10 @@ public class Kindle implements CloverFormat {
     @Override
     public TypedProperties getImageProperties() {
         return TypedProperties.create();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return cloverProperties.isEnableKindle();
     }
 }

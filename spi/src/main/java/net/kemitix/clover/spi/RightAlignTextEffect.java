@@ -1,4 +1,4 @@
 package net.kemitix.clover.spi;
 
-public interface RightAlignTextEffect extends TextEffect {
+public interface RightAlignTextEffect<T> extends TextEffect<T> {
 }

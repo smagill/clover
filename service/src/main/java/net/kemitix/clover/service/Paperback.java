@@ -1,15 +1,15 @@
 package net.kemitix.clover.service;
 
 import lombok.Getter;
-import net.kemitix.clover.spi.CloverProperties;
-import net.kemitix.clover.spi.PdfHeight;
-import net.kemitix.clover.spi.PdfWidth;
-import net.kemitix.clover.spi.images.*;
+import net.kemitix.clover.spi.*;
+import net.kemitix.clover.spi.Image;
 import net.kemitix.properties.typed.TypedProperties;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
@@ -18,41 +18,32 @@ import java.util.logging.Logger;
 @ApplicationScoped
 public class Paperback implements CloverFormat {
 
-    private Dimensions dimensions;
-    private Image coverArtImage;
-    private FrontCover frontCover;
-    private Spine spine;
-    private BackCover backCover;
+    private static final Logger LOG =
+            Logger.getLogger(
+                    Paperback.class.getName());
+
+    @Inject IssueDimensions dimensions;
+    @Inject Image coverArtImage;
+    @Inject Instance<Block<Graphics2D>> blocks;
+    @Inject CloverProperties cloverProperties;
+
     @Getter
     private List<Image> images;
-
-    public Paperback() {
-    }
-
-    @Inject
-    protected Paperback(
-            final Dimensions dimensions,
-            final Image coverArtImage,
-            final FrontCover frontCover,
-            final Spine spine,
-            final BackCover backCover
-    ) {
-        this.dimensions = dimensions;
-        this.coverArtImage = coverArtImage;
-        this.frontCover = frontCover;
-        this.spine = spine;
-        this.backCover = backCover;
-    }
 
     @PostConstruct
     public void init() {
         images = Collections.singletonList(
                 rescale(dimensions.getScaleFromOriginal())
                         .andThen(crop(dimensions.getWrapCrop()))
-                        .andThen(frontCover)
-                        .andThen(spine)
-                        .andThen(backCover)
+                        .andThen(blocks())
                         .apply(coverArtImage));
+    }
+
+    private Function<Image, Image> blocks() {
+        return image ->
+                image.withGraphics(graphics2D ->
+                    blocks.stream().forEach(block ->
+                            block.draw(graphics2D)));
     }
 
     @Override
@@ -64,8 +55,13 @@ public class Paperback implements CloverFormat {
     public TypedProperties getImageProperties() {
         Region wrapCrop = dimensions.getWrapCrop();
         return TypedProperties.create()
-                .with(PdfWidth.class, (int) wrapCrop.getWidth())
-                .with(PdfHeight.class, (int) wrapCrop.getHeight());
+                .with(PdfWidth.class, wrapCrop.getWidth())
+                .with(PdfHeight.class, wrapCrop.getHeight());
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return cloverProperties.isEnablePaperback();
     }
 
 }

@@ -2,9 +2,9 @@ package net.kemitix.clover.images;
 
 import net.kemitix.clover.spi.CloverProperties;
 import net.kemitix.clover.spi.FontCache;
-import net.kemitix.clover.spi.images.Image;
-import net.kemitix.clover.spi.images.ImageFactory;
-import net.kemitix.clover.spi.images.ImageWriter;
+import net.kemitix.clover.spi.Image;
+import net.kemitix.clover.spi.ImageFactory;
+import net.kemitix.clover.spi.ImageWriter;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;

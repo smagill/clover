@@ -1,14 +1,8 @@
 package net.kemitix.clover.image.effects;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import net.kemitix.clover.spi.FontCache;
-import net.kemitix.clover.spi.RightAlignTextEffect;
-import net.kemitix.clover.spi.TextEffect;
-import net.kemitix.clover.spi.images.*;
-import net.kemitix.clover.spi.images.Image;
+import lombok.*;
+import net.kemitix.clover.spi.*;
+import net.kemitix.clover.spi.Image;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -18,43 +12,33 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 
 @ApplicationScoped
-@Builder(toBuilder = true)
+@With
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 public class RightAlignTextEffectImpl
     extends AbstractTextEffect
-        implements RightAlignTextEffect,
-        TextEffect.RegionNext,
-        TextEffect.TextNext,
-        Function<Image, Image> {
+        implements RightAlignTextEffect<Graphics2D>,
+        TextEffect.RegionNext<Graphics2D>,
+        TextEffect.TextNext<Graphics2D>,
+        Function<Graphics2D, Graphics2D> {
 
     private String text;
-    @Getter
-    private FontCache fontCache;
-    @Getter
-    private FontFace fontFace;
-    @Getter
-    private Region region;
+    @Getter private FontFace fontFace;
+    @Getter private Region region;
 
-    public RightAlignTextEffectImpl() {
-    }
-
-    @Inject
-    public RightAlignTextEffectImpl(FontCache fontCache) {
-        this.fontCache = fontCache;
-    }
+    @Inject @Getter FontCache fontCache;
 
     @Override
-    public Image apply(Image image) {
-        return image.withGraphics(graphics2d -> {
-            String[] split = text.split("\n");
-            IntStream.range(0, split.length)
-                    .forEach(lineNumber -> {
-                        String lineOfText = split[lineNumber];
-                        if (lineOfText.length() > 0) {
-                            drawText(graphics2d, lineNumber, lineOfText, image.getArea());
-                        }
-                    });
-        });
+    public Graphics2D apply(Graphics2D graphics2D) {
+        String[] split = text.split("\n");
+        IntStream.range(0, split.length)
+                .forEach(lineNumber -> {
+                    String lineOfText = split[lineNumber];
+                    if (lineOfText.length() > 0) {
+                        drawText(graphics2D, lineNumber, lineOfText, region.getArea());
+                    }
+                });
+        return graphics2D;
     }
 
     private void drawText(
@@ -71,17 +55,17 @@ public class RightAlignTextEffectImpl
     }
 
     @Override
-    public RegionNext fontFace(FontFace fontFace) {
-        return toBuilder().fontFace(fontFace).build();
+    public RegionNext<Graphics2D> fontFace(FontFace fontFace) {
+        return withFontFace(fontFace);
     }
 
     @Override
-    public TextNext region(Region region) {
-        return toBuilder().region(region).build();
+    public TextNext<Graphics2D> region(Region region) {
+        return withRegion(region);
     }
 
     @Override
-    public Function<Image, Image> text(String text) {
-        return toBuilder().text(text).build();
+    public Function<Graphics2D, Graphics2D> text(String text) {
+        return withText(text);
     }
 }

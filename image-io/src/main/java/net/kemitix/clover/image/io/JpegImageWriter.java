@@ -1,8 +1,10 @@
 package net.kemitix.clover.image.io;
 
+import net.kemitix.clover.spi.CloverProperties;
 import net.kemitix.properties.typed.TypedProperties;
 
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.logging.Logger;
@@ -16,9 +18,11 @@ public class JpegImageWriter
             Logger.getLogger(
                     JpegImageWriter.class.getName());
 
+    @Inject CloverProperties cloverProperties;
+
     @Override
     public boolean accepts(final String format) {
-        return FORMAT_NAME.equals(format);
+        return FORMAT_NAME.equals(format) && cloverProperties.isEnableJpg();
     }
 
     @Override

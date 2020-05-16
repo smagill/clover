@@ -1,7 +1,5 @@
 package net.kemitix.clover.spi;
 
-import net.kemitix.clover.spi.images.Area;
-
 import java.io.File;
 import java.util.List;
 
@@ -42,4 +40,12 @@ public interface CloverProperties {
 
     @Deprecated(since = "issue-3")
     Area getKindleFrontArea();
+
+    boolean isEnablePdf();
+    boolean isEnableWebp();
+    boolean isEnableJpg();
+
+    boolean isEnableKindle();
+    boolean isEnablePaperback();
+    boolean isEnablePaperbackPreview();
 }

@@ -23,6 +23,7 @@
         <module>spi</module>
         <module>image-io</module>
         <module>image-effects</module>
+        <module>issue-cover</module>
     </modules>
 
     <build>

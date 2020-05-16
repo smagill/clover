@@ -3,7 +3,7 @@ package net.kemitix.clover.images;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import net.kemitix.clover.spi.FontLoader;
-import net.kemitix.clover.spi.images.FontFace;
+import net.kemitix.clover.spi.FontFace;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -25,12 +25,8 @@ public class CloverFontCache implements net.kemitix.clover.spi.FontCache {
 
     private final Map<FontAndSize, Font> fontCache = new HashMap<>();
 
-    private final FontLoader fontLoader;
-
     @Inject
-    public CloverFontCache(final FontLoader fontLoader) {
-        this.fontLoader = fontLoader;
-    }
+    FontLoader fontLoader;
 
     @Override
     public Font loadFont(final FontFace fontFace) {

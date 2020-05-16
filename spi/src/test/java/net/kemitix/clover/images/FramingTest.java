@@ -1,9 +1,9 @@
 package net.kemitix.clover.images;
 
 
-import net.kemitix.clover.spi.images.Area;
-import net.kemitix.clover.spi.images.Framing;
-import net.kemitix.clover.spi.images.XY;
+import net.kemitix.clover.spi.Area;
+import net.kemitix.clover.spi.Framing;
+import net.kemitix.clover.spi.XY;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

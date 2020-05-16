@@ -1,5 +1,6 @@
 package net.kemitix.clover.spi.images;
 
+import net.kemitix.clover.spi.XY;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

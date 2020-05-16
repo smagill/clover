@@ -1,5 +1,5 @@
 package net.kemitix.clover.spi;
 
-public interface CenteredTextEffect extends TextEffect {
+public interface CenteredTextEffect<T> extends TextEffect<T> {
 
 }

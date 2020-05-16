@@ -33,6 +33,10 @@
             <groupId>net.kemitix.clover</groupId>
             <artifactId>clover-image-effects</artifactId>
         </dependency>
+        <dependency>
+            <groupId>net.kemitix.clover</groupId>
+            <artifactId>clover-issue-cover</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>

@@ -1,9 +1,9 @@
 package net.kemitix.clover.image.io;
 
 import net.kemitix.clover.spi.FatalCloverError;
-import net.kemitix.clover.spi.images.Image;
-import net.kemitix.clover.spi.images.ImageLoader;
-import net.kemitix.clover.spi.images.ImageFactory;
+import net.kemitix.clover.spi.Image;
+import net.kemitix.clover.spi.ImageLoader;
+import net.kemitix.clover.spi.ImageFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.imageio.IIOException;

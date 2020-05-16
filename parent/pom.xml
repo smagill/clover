@@ -85,7 +85,12 @@
             <dependency>
                 <groupId>net.kemitix.clover</groupId>
                 <artifactId>clover-image-effects</artifactId>
-                <version>DEV-SNAPSHOT</version>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.kemitix.clover</groupId>
+                <artifactId>clover-issue-cover</artifactId>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>

@@ -1,10 +1,8 @@
 package net.kemitix.clover.image.effects;
 
 import lombok.*;
-import net.kemitix.clover.spi.CenteredTextEffect;
-import net.kemitix.clover.spi.FontCache;
-import net.kemitix.clover.spi.images.*;
-import net.kemitix.clover.spi.images.Image;
+import net.kemitix.clover.spi.*;
+import net.kemitix.clover.spi.Image;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -19,32 +17,28 @@ import java.util.stream.IntStream;
 @NoArgsConstructor
 public class CentredTextEffectImpl
         extends AbstractTextEffect
-        implements CenteredTextEffect,
-        CenteredTextEffect.TextNext,
-        CenteredTextEffect.RegionNext,
-        Function<Image, Image> {
+        implements CenteredTextEffect<Graphics2D>,
+        CenteredTextEffect.TextNext<Graphics2D>,
+        CenteredTextEffect.RegionNext<Graphics2D>,
+        Function<Graphics2D, Graphics2D> {
 
-    @Inject
-    @Getter
-    FontCache fontCache;
-    @Getter
-    FontFace fontFace;
-    @Getter
-    Region region;
+    @Inject @Getter FontCache fontCache;
+    @Getter FontFace fontFace;
+    @Getter Region region;
     String text;
 
     @Override
-    public Image apply(Image image) {
-        return image.withGraphics(graphics2d -> {
-            String[] split = text.split("\n");
-            IntStream.range(0, split.length)
-                    .forEach(lineNumber -> {
-                        String lineOfText = split[lineNumber];
-                        if (lineOfText.length() > 0) {
-                            drawText(graphics2d, lineNumber, lineOfText, image.getArea());
-                        }
-                    });
-        });
+    public Graphics2D apply(Graphics2D graphics2D) {
+        String[] split = text.split("\n");
+        IntStream.range(0, split.length)
+                .forEach(lineNumber -> {
+                    String lineOfText = split[lineNumber];
+                    if (lineOfText.length() > 0) {
+                        drawText(graphics2D, lineNumber, lineOfText,
+                                region.getArea());
+                    }
+                });
+        return graphics2D;
     }
 
     private void drawText(
@@ -61,17 +55,17 @@ public class CentredTextEffectImpl
     }
 
     @Override
-    public Function<Image, Image> text(String text) {
+    public Function<Graphics2D, Graphics2D> text(String text) {
         return withText(text);
     }
 
     @Override
-    public RegionNext fontFace(FontFace fontFace) {
+    public RegionNext<Graphics2D> fontFace(FontFace fontFace) {
         return withFontFace(fontFace);
     }
 
     @Override
-    public TextNext region(Region region) {
+    public TextNext<Graphics2D> region(Region region) {
         return withRegion(region);
     }
 

@@ -1,8 +1,6 @@
 package net.kemitix.clover.image.effects;
 
-import net.kemitix.clover.spi.FatalCloverError;
-import net.kemitix.clover.spi.FontCache;
-import net.kemitix.clover.spi.images.*;
+import net.kemitix.clover.spi.*;
 import org.beryx.awt.color.ColorFactory;
 
 import java.awt.*;

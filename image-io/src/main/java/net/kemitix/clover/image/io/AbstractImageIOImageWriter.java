@@ -1,6 +1,6 @@
 package net.kemitix.clover.image.io;
 
-import net.kemitix.clover.spi.images.ImageWriter;
+import net.kemitix.clover.spi.ImageWriter;
 import net.kemitix.properties.typed.TypedProperties;
 
 import javax.imageio.ImageIO;
@@ -12,9 +12,9 @@ import java.util.logging.Logger;
 abstract class AbstractImageIOImageWriter
         implements ImageWriter {
 
-    private static final Logger LOGGER =
+    private final Logger LOGGER =
             Logger.getLogger(
-                    AbstractImageIOImageWriter.class.getName());
+                    this.getClass().getName());
 
     @Override
     public void write(

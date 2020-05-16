@@ -1,8 +1,9 @@
 package net.kemitix.clover.service;
 
+import net.kemitix.clover.spi.CloverFormat;
 import net.kemitix.clover.spi.CloverProperties;
-import net.kemitix.clover.spi.images.Image;
-import net.kemitix.clover.spi.images.Region;
+import net.kemitix.clover.spi.Image;
+import net.kemitix.clover.spi.Region;
 import net.kemitix.properties.typed.TypedProperties;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -14,20 +15,8 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class PaperbackPreview implements CloverFormat {
 
-    private CloverProperties cloverProperties;
-    private Paperback paperback;
-
-    public PaperbackPreview() {
-    }
-
-    @Inject
-    public PaperbackPreview(
-            final CloverProperties cloverProperties,
-            final Paperback paperback
-    ) {
-        this.cloverProperties = cloverProperties;
-        this.paperback = paperback;
-    }
+    @Inject CloverProperties cloverProperties;
+    @Inject Paperback paperback;
 
     @Override
     public List<Image> getImages() {
@@ -45,6 +34,11 @@ public class PaperbackPreview implements CloverFormat {
     @Override
     public TypedProperties getImageProperties() {
         return paperback.getImageProperties();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return cloverProperties.isEnablePaperbackPreview();
     }
 
     private Function<Image, Image> drawBarcodeSpacer() {
