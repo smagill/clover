@@ -15,7 +15,12 @@ public class WebpImageWriter
 
     @Override
     public boolean accepts(final String format) {
-        return FORMAT_NAME.equals(format) && cloverProperties.isEnableWebp();
+        return FORMAT_NAME.equals(format);
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return cloverProperties.isEnableWebp();
     }
 
     @Override

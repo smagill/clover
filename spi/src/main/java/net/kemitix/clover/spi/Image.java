@@ -27,4 +27,6 @@ public interface Image {
     Image withGraphics(Consumer<Graphics2D> graphics2DEffect);
 
     String getNameQualifier();
+
+    Image withNameQualifier(String substring);
 }

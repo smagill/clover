@@ -5,15 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import net.kemitix.clover.spi.CloverProperties;
 import net.kemitix.clover.spi.Area;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
 import java.io.File;
-import java.nio.file.Paths;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Setter
 @Getter
@@ -49,8 +45,8 @@ public class ServiceCloverProperties implements CloverProperties {
     }
 
     @Override
-    public File getFontFile() {
-        return new File(fontFile);
+    public URI getFontLocation() {
+        return new File(fontFile).toURI();
     }
 
     @Override

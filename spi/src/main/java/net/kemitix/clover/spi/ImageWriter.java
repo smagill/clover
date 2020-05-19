@@ -12,4 +12,6 @@ public interface ImageWriter {
             BufferedImage image,
             File file,
             TypedProperties properties);
+
+    boolean isEnabled();
 }

@@ -3,16 +3,17 @@ package net.kemitix.clover.image.effects;
 import net.kemitix.clover.spi.*;
 import org.beryx.awt.color.ColorFactory;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.awt.*;
-import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.util.Optional;
 import java.util.function.Function;
 
-abstract class AbstractTextEffect {
+@ApplicationScoped
+class DrawTextImpl implements DrawText {
 
-    @Deprecated
-    public static void drawText(
+    @Override
+    public void draw(
             final String text,
             final Function<Framing, XY> positioning,
             final FontFace fontFace,
@@ -56,20 +57,4 @@ abstract class AbstractTextEffect {
                                 "Unknown colour: " + colour));
     }
 
-    private Font getFont() {
-        return getFontCache().loadFont(getFontFace());
-    }
-
-    protected abstract FontFace getFontFace();
-
-    protected abstract FontCache getFontCache();
-
-    protected Rectangle2D getStringBounds(Graphics2D graphics2d, String text) {
-        Font font = getFont();
-        FontRenderContext fontRenderContext = graphics2d.getFontRenderContext();
-        Rectangle2D stringBounds = font.getStringBounds(text, fontRenderContext);
-        return stringBounds;
-    }
-
-    protected abstract Region getRegion();
 }

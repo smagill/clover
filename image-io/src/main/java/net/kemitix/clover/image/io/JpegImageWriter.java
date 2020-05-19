@@ -22,7 +22,7 @@ public class JpegImageWriter
 
     @Override
     public boolean accepts(final String format) {
-        return FORMAT_NAME.equals(format) && cloverProperties.isEnableJpg();
+        return FORMAT_NAME.equals(format);
     }
 
     @Override
@@ -32,6 +32,11 @@ public class JpegImageWriter
             final TypedProperties properties
     ) {
         super.write(withoutAlphaChannel(image), file, properties);
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return cloverProperties.isEnableJpg();
     }
 
     @Override
@@ -47,6 +52,5 @@ public class JpegImageWriter
                 .drawImage(image, 0, 0, null);
         return copy;
     }
-
 
 }

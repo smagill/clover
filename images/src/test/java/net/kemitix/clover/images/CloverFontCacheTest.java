@@ -1,6 +1,5 @@
 package net.kemitix.clover.images;
 
-import net.kemitix.clover.spi.FontCache;
 import net.kemitix.clover.spi.FontLoader;
 import net.kemitix.clover.spi.FontFace;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.awt.*;
 import java.io.File;
+import java.net.URI;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 public class CloverFontCacheTest {
 
-    private final File fontFile = new File("font.otf");
+    private final URI fontLocation = new File("font.otf").toURI();
     private final String colour = "colour";
     @Mock
     private FontLoader fontLoader;
@@ -39,7 +39,7 @@ public class CloverFontCacheTest {
         //given
         final CloverFontCache fontCache = new CloverFontCache();
         fontCache.fontLoader = fontLoader;
-        final FontFace fontFace = FontFace.of(fontFile, 26, colour);
+        final FontFace fontFace = FontFace.of(fontLocation, 26, colour);
         //when
         fontCache.loadFont(fontFace);
         //then
@@ -52,9 +52,9 @@ public class CloverFontCacheTest {
         //given
         final CloverFontCache fontCache = new CloverFontCache();
         fontCache.fontLoader = fontLoader;
-        final FontFace previousFontFace = FontFace.of(fontFile, 16, colour);
+        final FontFace previousFontFace = FontFace.of(fontLocation, 16, colour);
         fontCache.loadFont(previousFontFace);
-        final FontFace fontFace = FontFace.of(fontFile, 26, colour);
+        final FontFace fontFace = FontFace.of(fontLocation, 26, colour);
         //when
         fontCache.loadFont(fontFace);
         //then
@@ -68,7 +68,7 @@ public class CloverFontCacheTest {
         //given
         final CloverFontCache fontCache = new CloverFontCache();
         fontCache.fontLoader = fontLoader;
-        final FontFace fontFace = FontFace.of(fontFile, 26, colour);
+        final FontFace fontFace = FontFace.of(fontLocation, 26, colour);
         //when
         fontCache.loadFont(fontFace);
         fontCache.loadFont(fontFace);

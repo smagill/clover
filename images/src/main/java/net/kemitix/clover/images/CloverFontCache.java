@@ -8,7 +8,7 @@ import net.kemitix.clover.spi.FontFace;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.awt.*;
-import java.io.File;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -21,7 +21,7 @@ public class CloverFontCache implements net.kemitix.clover.spi.FontCache {
             Logger.getLogger(
                     CloverFontCache.class.getName());
 
-    private final Map<File, Font> fileCache = new HashMap<>();
+    private final Map<URI, Font> fileCache = new HashMap<>();
 
     private final Map<FontAndSize, Font> fontCache = new HashMap<>();
 
@@ -31,21 +31,21 @@ public class CloverFontCache implements net.kemitix.clover.spi.FontCache {
     @Override
     public Font loadFont(final FontFace fontFace) {
         LOGGER.finest(String.format("Requesting %s %d",
-                fontFace.getFont(), fontFace.getSize()));
+                fontFace.getFontLocation(), fontFace.getSize()));
         final Font baseFont =
                 fileCache.computeIfAbsent(
-                        fontFace.getFont(),
+                        fontFace.getFontLocation(),
                         loadNewFontFile(fontFace));
         return fontCache.computeIfAbsent(
                 FontAndSize.of(baseFont, fontFace.getSize()),
                 resizeFont());
     }
 
-    private Function<File, Font> loadNewFontFile(
+    private Function<URI, Font> loadNewFontFile(
             final FontFace fontFace
     ) {
-        return file -> {
-            LOGGER.fine(String.format("Loading %s", fontFace.getFont()));
+        return uri -> {
+            LOGGER.fine(String.format("Loading %s", uri));
             return fontLoader.loadFont(fontFace);
         };
     }

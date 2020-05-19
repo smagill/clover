@@ -24,6 +24,7 @@
         <module>image-io</module>
         <module>image-effects</module>
         <module>issue-cover</module>
+        <module>story-cards</module>
     </modules>
 
     <build>

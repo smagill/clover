@@ -23,3 +23,6 @@ clean:
 
 quick-build:
 	mvn clean install -DskipTests -DskipITs
+
+kill-runners:
+	ps ax|grep clover-runne[r]|cut -b-5|xargs kill -9

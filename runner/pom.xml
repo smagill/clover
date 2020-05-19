@@ -37,6 +37,10 @@
             <groupId>net.kemitix.clover</groupId>
             <artifactId>clover-issue-cover</artifactId>
         </dependency>
+        <dependency>
+            <groupId>net.kemitix.clover</groupId>
+            <artifactId>clover-story-cards</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>

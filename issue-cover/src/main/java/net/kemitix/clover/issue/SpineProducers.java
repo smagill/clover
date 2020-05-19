@@ -23,7 +23,7 @@ public class SpineProducers {
             CloverProperties cloverProperties
     ) {
         return FontFace.of(
-                cloverProperties.getFontFile(),
+                cloverProperties.getFontLocation(),
                 62,
                 "yellow",
                 XY.at(

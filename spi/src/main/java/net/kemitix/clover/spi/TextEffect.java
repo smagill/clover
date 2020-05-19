@@ -1,17 +1,22 @@
 package net.kemitix.clover.spi;
 
-import java.util.function.Function;
+public interface TextEffect<T> extends Effect<T> {
 
-public interface TextEffect<T> {
+    TextNext<T> fontFace(FontFace fontFace);
+    interface TextNext<T> { VAlignNext<T> text(String text);}
+    interface VAlignNext<T> { HAlignNext<T> vAlign(VAlignment vAlignment);}
+    interface HAlignNext<T> { RegionNext<T> hAlign(HAlignment hAlignment);}
 
-    RegionNext<T> fontFace(FontFace fontFace);
-
-    interface RegionNext<T> {
-        TextNext<T> region(Region region);
+    enum HAlignment {
+        LEFT,
+        RIGHT,
+        CENTRE,
     }
 
-    interface TextNext<T> {
-        Function<T, T> text(String text);
+    enum VAlignment {
+        TOP,
+        BOTTOM,
+        CENTRE,
     }
 
 }

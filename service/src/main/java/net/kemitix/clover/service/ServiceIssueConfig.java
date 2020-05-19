@@ -45,6 +45,8 @@ public class ServiceIssueConfig implements IssueConfig {
     private String publicationTitle;
     @JsonbProperty("front-width")
     private int frontWidth;
+    @JsonbProperty("story-cards")
+    private StoryCards storyCards;
 
     @Setter
     @Getter
@@ -83,5 +85,14 @@ public class ServiceIssueConfig implements IssueConfig {
         private int left;
         private int width;
         private int height;
+    }
+
+    @Setter
+    @Getter
+    public static class StoryCards implements IssueStoryCards {
+        int top;
+        int left;
+        int width;
+        int titleFontSize;
     }
 }

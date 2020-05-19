@@ -12,7 +12,7 @@ public class BackCoverProducers {
             IssueConfig issueConfig
     ) {
         return FontFace.of(
-                cloverProperties.getFontFile(),
+                cloverProperties.getFontLocation(),
                 48,
                 issueConfig.getTextColour(),
                 XY.at(

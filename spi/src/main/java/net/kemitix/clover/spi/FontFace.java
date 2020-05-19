@@ -1,28 +1,28 @@
 package net.kemitix.clover.spi;
 
-import java.io.File;
+import java.net.URI;
 
 public interface FontFace {
     static FontFace of(
-            File fontFile,
+            URI fontUri,
             int size,
             String colour,
             XY shadowOffset
     ) {
         final String shadowColour = FontFaceImpl.shadowColour(colour);
-        return new FontFaceImpl(fontFile, size, colour,
+        return new FontFaceImpl(fontUri, size, colour,
                 shadowColour, shadowOffset);
     }
 
     static FontFace of(
-            File fontFile,
+            URI fontUri,
             int size,
             String colour
     ) {
-        return of(fontFile, size, colour, XY.at(0, 0));
+        return of(fontUri, size, colour, XY.at(0, 0));
     }
 
-    File getFont();
+    URI getFontLocation();
 
     int getSize();
 
@@ -31,4 +31,9 @@ public interface FontFace {
     String getShadowColour();
 
     XY getShadowOffset();
+
+    FontFace withSize(int size);
+    FontFace withColour(String colour);
+    FontFace withShadowColour(String colour);
+    FontFace withShadowOffset(XY offset);
 }

@@ -1,6 +1,6 @@
 package net.kemitix.clover.spi;
 
-import java.io.File;
+import java.net.URI;
 import java.util.List;
 
 public interface CloverProperties {
@@ -20,7 +20,7 @@ public interface CloverProperties {
 
     String getConfigFile();
 
-    File getFontFile();
+    URI getFontLocation();
 
     int getDropShadowXOffset();
 

@@ -34,7 +34,7 @@ public class PdfImageWriter implements ImageWriter {
 
     @Override
     public boolean accepts(final String format) {
-        return FORMAT_NAME.equals(format) && cloverProperties.isEnablePdf();
+        return FORMAT_NAME.equals(format);
     }
 
     @Override
@@ -71,4 +71,10 @@ public class PdfImageWriter implements ImageWriter {
             LOGGER.severe("Failed to write " + file);
         }
     }
+
+    @Override
+    public boolean isEnabled() {
+        return cloverProperties.isEnablePdf();
+    }
+
 }

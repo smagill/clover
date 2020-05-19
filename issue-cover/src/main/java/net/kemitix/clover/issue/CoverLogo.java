@@ -2,6 +2,7 @@ package net.kemitix.clover.issue;
 
 import lombok.Getter;
 import net.kemitix.clover.spi.*;
+import net.kemitix.properties.typed.TypedProperties;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -15,13 +16,13 @@ public class CoverLogo implements Element<Graphics2D> {
 
     @Inject CloverProperties cloverProperties;
     @Inject IssueConfig issueConfig;
-    @Inject CenteredTextEffect<Graphics2D> centeredText;
+    @Inject SimpleTextEffect<Graphics2D> simpleTextEffect;
     @Inject IssueDimensions dimensions;
 
     @Override
-    public void draw(Graphics2D drawable) {
+    public void draw(Graphics2D drawable, TypedProperties typedProperties) {
         FontFace fontFace = FontFace.of(
-                cloverProperties.getFontFile(),
+                cloverProperties.getFontLocation(),
                 217,
                 issueConfig.getTitleColour(),
                 XY.at(
@@ -29,10 +30,12 @@ public class CoverLogo implements Element<Graphics2D> {
                         cloverProperties.getDropShadowYOffset()));
         var text = String.join("\n",
                 issueConfig.getPublicationTitle().split(" "));
-        centeredText
+        simpleTextEffect
                 .fontFace(fontFace)
-                .region(dimensions.getFrontCrop().withPadding(85))
                 .text(text)
-                .apply(drawable);
+                .vAlign(TextEffect.VAlignment.TOP)
+                .hAlign(TextEffect.HAlignment.CENTRE)
+                .region(dimensions.getFrontCrop().withPadding(85))
+                .accept(drawable);
     }
 }

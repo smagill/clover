@@ -2,13 +2,14 @@ package net.kemitix.clover.image.effects;
 
 import lombok.*;
 import net.kemitix.clover.spi.*;
+import net.kemitix.clover.spi.DrawText;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.util.function.Function;
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 @With
@@ -16,22 +17,24 @@ import java.util.stream.IntStream;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class RotatedCenteredTextEffectImpl
-        extends AbstractTextEffect
         implements RotatedCenteredTextEffect<Graphics2D>,
         TextEffect.RegionNext<Graphics2D>,
         TextEffect.TextNext<Graphics2D>,
-        Function<Graphics2D, Graphics2D> {
+        TextEffect.HAlignNext<Graphics2D>,
+        TextEffect.VAlignNext<Graphics2D> {
 
-    @Inject
-    @Getter
-    FontCache fontCache;
+    @Inject @Getter FontCache fontCache;
+    @Inject DrawText drawText;
+
+    VAlignment VAlignment;
+    HAlignment HAlignment;
 
     @Getter FontFace fontFace;
     @Getter Region region;
     @Getter String text;
 
     @Override
-    public Graphics2D apply(Graphics2D graphics2d) {
+    public void accept(Graphics2D graphics2d) {
         graphics2d.setTransform(
                 AffineTransform.getQuadrantRotateInstance(1));
         String[] split = text.split("\n");
@@ -47,7 +50,6 @@ public class RotatedCenteredTextEffectImpl
                         );
                     }
                 });
-        return graphics2d;
     }
 
     private void drawText(
@@ -57,25 +59,49 @@ public class RotatedCenteredTextEffectImpl
             Area imageArea,
             Region region
     ) {
-        Rectangle2D stringBounds = getStringBounds(graphics2d, line);
-        int top = region.getTop() + ((int) stringBounds.getHeight() * lineCount) - region.getHeight();
-        int left = region.getWidth() + region.getLeft() + ((region.getWidth() - (int) stringBounds.getWidth()) / 2);
-        AbstractTextEffect.drawText(line, framing -> XY.at(left, top),
+        Font font = fontCache.loadFont(fontFace);
+        Rectangle2D stringBounds =
+                font.getStringBounds(line, graphics2d.getFontRenderContext());
+        int top = getTop(lineCount, region, (int) stringBounds.getHeight());
+        int left = getLeft(region, (int) stringBounds.getWidth());
+        drawText.draw(line, framing -> XY.at(left, top),
                 fontFace, graphics2d, fontCache, imageArea);
     }
 
+    private int getLeft(Region region, int lineWidth) {
+        return region.getWidth()
+                + region.getLeft()
+                + ((region.getWidth() - lineWidth) / 2);
+    }
+
+    private int getTop(int lineCount, Region region, int lineHeight) {
+        return region.getTop()
+                + (lineHeight * lineCount)
+                - region.getHeight();
+    }
+
     @Override
-    public RegionNext<Graphics2D> fontFace(FontFace fontFace) {
+    public TextNext<Graphics2D> fontFace(FontFace fontFace) {
         return withFontFace(fontFace);
     }
 
     @Override
-    public TextNext<Graphics2D> region(Region region) {
+    public Consumer<Graphics2D> region(Region region) {
         return withRegion(region);
     }
 
     @Override
-    public Function<Graphics2D, Graphics2D> text(String text) {
+    public VAlignNext<Graphics2D> text(String text) {
         return withText(text);
+    }
+
+    @Override
+    public HAlignNext<Graphics2D> vAlign(VAlignment VAlignment) {
+        return withVAlignment(VAlignment);
+    }
+
+    @Override
+    public RegionNext<Graphics2D> hAlign(HAlignment HAlignment) {
+        return withHAlignment(HAlignment);
     }
 }

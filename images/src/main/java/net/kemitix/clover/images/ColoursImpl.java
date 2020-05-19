@@ -12,11 +12,15 @@ import java.util.Optional;
 public class ColoursImpl implements Colours {
     @Override
     public Paint getColor(String name) {
+        return getColor(name, 1.0D);
+    }
+
+    @Override
+    public Paint getColor(String name, double opacity) {
         return Optional.ofNullable(
-                ColorFactory.valueOf(name))
+                ColorFactory.web(name, opacity))
                 .orElseThrow(() ->
                         new FatalCloverError(
                                 "Unknown colour: " + name));
-
     }
 }

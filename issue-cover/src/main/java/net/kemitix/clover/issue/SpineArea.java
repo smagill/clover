@@ -2,6 +2,7 @@ package net.kemitix.clover.issue;
 
 import lombok.Getter;
 import net.kemitix.clover.spi.*;
+import net.kemitix.properties.typed.TypedProperties;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -22,7 +23,7 @@ public class SpineArea implements Element<Graphics2D> {
     @Inject @Spine Paint paint;
 
     @Override
-    public void draw(Graphics2D graphics2D) {
+    public void draw(Graphics2D graphics2D, TypedProperties typedProperties) {
         Region region = dimensions.getSpineCrop();
         LOG.info("Draw Spine background: " + region);
         graphics2D.setPaint(paint);
