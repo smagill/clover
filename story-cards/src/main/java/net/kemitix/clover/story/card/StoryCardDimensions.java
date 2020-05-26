@@ -17,67 +17,50 @@ public class StoryCardDimensions {
     @Getter private Region sourceRegion;
     @Getter private Region cardRegion;
 
-    private int strips = 9;
-    private int stripHeight;
+    private int rows = 12;
+    private int cols = 12;
+    private int rowHeight;
+    private int colWidth;
 
     @PostConstruct
     void init() {
         Region targetSizeRegion = properties.getRegion();
         cardRegion = targetSizeRegion.toBuilder().top(0).left(0).build();
-        stripHeight = cardRegion.getHeight() / strips;
+        rowHeight = cardRegion.getHeight() / rows;
+        colWidth = cardRegion.getWidth() / cols;
         IssueStoryCards storyCardSpec = issueConfig.getStoryCards();
         scaleFromOriginal = targetSizeRegion.getWidth() / storyCardSpec.getWidth();
         sourceRegion = Region.builder()
                 .top(storyCardSpec.getTop())
                 .left(storyCardSpec.getLeft())
-                .width(storyCardSpec.getWidth())
+                .width(properties.getWidth())
                 .height((int) (targetSizeRegion.getHeight() * scaleFromOriginal))
                 .build();
     }
 
     public Region getLogoRegion() {
-        Region region = cardRegion;
-        int top = 0 * stripHeight;
-        int height = 3 * stripHeight;
-        return region.toBuilder()
-                .top(top)
-                .height(height)
-                .build()
-                .withPadding(properties.getPadding());
+        return gridPosition(0, 0, 12, 2);
     }
 
     public Region getTitleRegion() {
-        Region region = cardRegion;
-        int top = 3 * stripHeight;
-        int height = 3 * stripHeight;
-        return region.toBuilder()
-                .top(top)
-                .height(height)
-                .width(properties.getWidth())
-                .build()
-                .withPadding(properties.getPadding());
+        return gridPosition(3, 0, 7, 6);
     }
 
     public Region getAuthorRegion() {
-        Region region = cardRegion;
-        int top = 6 * stripHeight;
-        int height = (int) (0.6 * stripHeight);
-        return region.toBuilder()
-                .top(top)
-                .height(height)
-                .width(properties.getWidth())
-                .build()
-                .withPadding(properties.getPadding());
+        return gridPosition(10, 0, 12, 2);
     }
 
-    public Region getSampleRegion() {
-        Region region = cardRegion;
-        int top = 7 * stripHeight;
-        int height = 2 * stripHeight;
-        return region.toBuilder()
-                .top(top)
-                .height(height)
-                .width(properties.getWidth())
+    private Region gridPosition(
+            int top,
+            int left,
+            int width,
+            int height
+    ) {
+        return cardRegion.toBuilder()
+                .top(top * rowHeight)
+                .left(left * colWidth)
+                .height(height * rowHeight)
+                .width(width * colWidth)
                 .build()
                 .withPadding(properties.getPadding());
     }

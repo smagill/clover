@@ -10,6 +10,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -26,6 +27,7 @@ public class SimpleTextEffectImpl
         TextEffect.RegionNext<Graphics2D>,
         TextEffect.HAlignNext<Graphics2D>,
         TextEffect.VAlignNext<Graphics2D>,
+        TextEffect.WrapFitOrTextNext<Graphics2D>,
         TextEffect<Graphics2D> {
 
     @Inject @Getter FontCache fontCache;
@@ -39,17 +41,16 @@ public class SimpleTextEffectImpl
     HAlignment hAlignment;
     FontFace fontFace;
     String text;
+    boolean wrap = false;
+    boolean fit = false;
 
     @Override
     public void accept(Graphics2D graphics2D) {
         Function<Integer, Font> fontFactory = size ->
                 fontCache.loadFont(fontFace.withSize(size));
-        int size = boxFitter.fit(text, fontFactory, graphics2D,
-                new Rectangle(region.getLeft(), region.getTop(),
-                        region.getWidth(), region.getHeight()));
+        int size = getFit(graphics2D, fontFactory);
         Font font = fontCache.loadFont(fontFace.withSize(size));
-        List<String> split =
-                wordWrapper.wrap(text, font, graphics2D, region.getWidth());
+        List<String> split = getWrap(graphics2D, font);
         int top = topEdge(split.size() * size);
         IntStream.range(0, split.size())
                 .forEach(lineNumber -> {
@@ -59,6 +60,28 @@ public class SimpleTextEffectImpl
                                 region.getArea(), fontFace.withSize(size), top);
                     }
                 });
+    }
+
+    private int getFit(
+            Graphics2D graphics2D,
+            Function<Integer, Font> fontFactory
+    ) {
+        if (fit) {
+            return boxFitter.fit(text, fontFactory, graphics2D,
+                    new Rectangle(region.getLeft(), region.getTop(),
+                            region.getWidth(), region.getHeight()));
+        }
+        return fontFace.getSize();
+    }
+
+    private List<String> getWrap(
+            Graphics2D graphics2D,
+            Font font
+    ) {
+        if (wrap) {
+            return wordWrapper.wrap(text, font, graphics2D, region.getWidth());
+        }
+        return Arrays.asList(text.split("\n"));
     }
 
     private void drawText(
@@ -92,9 +115,10 @@ public class SimpleTextEffectImpl
                 return region.getTop() + (region.getHeight() - height);
             case CENTRE:
                 return region.getTop() + ((region.getHeight() - height) / 2);
+            default:
+                throw new UnsupportedOperationException(
+                        "Unknown Vertical Alignment: " + hAlignment);
         }
-        throw new UnsupportedOperationException(
-                "Unknown Vertical Alignment: " + hAlignment);
     }
 
     private int lineLeftEdge(int width) {
@@ -102,12 +126,13 @@ public class SimpleTextEffectImpl
             case LEFT:
                 return region.getLeft();
             case RIGHT:
-                return region.getWidth() - width;
+                return region.getLeft() + region.getWidth() - width;
             case CENTRE:
                 return region.getLeft() + ((region.getWidth() - width) / 2);
+            default:
+                throw new UnsupportedOperationException(
+                        "Unknown Horizontal Alignment: " + hAlignment);
         }
-        throw new UnsupportedOperationException(
-                "Unknown Horizontal Alignment: " + hAlignment);
     }
 
     @Override
@@ -116,7 +141,7 @@ public class SimpleTextEffectImpl
     }
 
     @Override
-    public TextNext<Graphics2D> fontFace(FontFace fontFace) {
+    public WrapFitOrTextNext<Graphics2D> fontFace(FontFace fontFace) {
         return withFontFace(fontFace);
     }
 
@@ -133,5 +158,15 @@ public class SimpleTextEffectImpl
     @Override
     public HAlignNext<Graphics2D> vAlign(VAlignment vAlignment) {
         return withVAlignment(vAlignment);
+    }
+
+    @Override
+    public TextNext<Graphics2D> wrap() {
+        return withWrap(true);
+    }
+
+    @Override
+    public TextNext<Graphics2D> fit() {
+        return withFit(true).wrap();
     }
 }

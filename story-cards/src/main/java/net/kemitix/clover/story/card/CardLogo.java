@@ -25,11 +25,19 @@ public class CardLogo implements Element<Graphics2D> {
         Region region = dimensions.getLogoRegion();
         simpleTextEffect
                 .fontFace(fontFace())
+                .fit()
                 .text(text())
-                .vAlign(TextEffect.VAlignment.CENTRE)
+                .vAlign(TextEffect.VAlignment.TOP)
                 .hAlign(TextEffect.HAlignment.CENTRE)
                 .region(region)
                 .accept(drawable);
+        drawable.setStroke(new BasicStroke(3));
+        drawable.drawLine(
+                region.getLeft(),
+                region.getBottom(),
+                region.getRight(),
+                region.getBottom()
+        );
 
 //        drawable.drawRect(region.getLeft(), region.getTop(),
 //                region.getWidth(), region.getHeight());

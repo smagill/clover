@@ -2,7 +2,9 @@ package net.kemitix.clover.spi;
 
 public interface TextEffect<T> extends Effect<T> {
 
-    TextNext<T> fontFace(FontFace fontFace);
+    WrapFitOrTextNext<T> fontFace(FontFace fontFace);
+    interface WrapFitOrTextNext<T> extends FitOrTextNext<T> { TextNext<T> wrap();}
+    interface FitOrTextNext<T> extends TextNext<T> { TextNext<T> fit();}
     interface TextNext<T> { VAlignNext<T> text(String text);}
     interface VAlignNext<T> { HAlignNext<T> vAlign(VAlignment vAlignment);}
     interface HAlignNext<T> { RegionNext<T> hAlign(HAlignment hAlignment);}

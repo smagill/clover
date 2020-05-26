@@ -21,6 +21,7 @@ public class RotatedCenteredTextEffectImpl
         TextEffect.RegionNext<Graphics2D>,
         TextEffect.TextNext<Graphics2D>,
         TextEffect.HAlignNext<Graphics2D>,
+        TextEffect.WrapFitOrTextNext<Graphics2D>,
         TextEffect.VAlignNext<Graphics2D> {
 
     @Inject @Getter FontCache fontCache;
@@ -81,7 +82,7 @@ public class RotatedCenteredTextEffectImpl
     }
 
     @Override
-    public TextNext<Graphics2D> fontFace(FontFace fontFace) {
+    public WrapFitOrTextNext<Graphics2D> fontFace(FontFace fontFace) {
         return withFontFace(fontFace);
     }
 
@@ -103,5 +104,15 @@ public class RotatedCenteredTextEffectImpl
     @Override
     public RegionNext<Graphics2D> hAlign(HAlignment HAlignment) {
         return withHAlignment(HAlignment);
+    }
+
+    @Override
+    public TextNext<Graphics2D> wrap() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public TextNext<Graphics2D> fit() {
+        throw new UnsupportedOperationException();
     }
 }

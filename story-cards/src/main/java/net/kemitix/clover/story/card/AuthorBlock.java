@@ -35,12 +35,13 @@ public class AuthorBlock implements Element<Graphics2D> {
         var text = "by " + story.getAuthor().authorName();
         Region region = dimensions.getAuthorRegion();
         opaqueFill
-                .opacity(0.7D)
-                .colour("gray")
+                .opacity(0.25D)
+                .colour("white")
                 .region(region)
                 .accept(drawable);
         simpleTextEffect
                 .fontFace(fontFace)
+                .fit()
                 .text(text)
                 .vAlign(TextEffect.VAlignment.CENTRE)
                 .hAlign(TextEffect.HAlignment.CENTRE)
