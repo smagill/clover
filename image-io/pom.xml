@@ -14,7 +14,7 @@
 
     <properties>
         <itextpdf.version>7.1.11</itextpdf.version>
-        <webp-imageio.version>0.1.5</webp-imageio.version>
+        <webp-imageio.version>0.1.6</webp-imageio.version>
     </properties>
 
     <dependencies>
