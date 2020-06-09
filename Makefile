@@ -1,3 +1,5 @@
+VERSION=DEV-SNAPSHOT
+
 ISSUE_DIR=-Dissue-dir=${HOME}/cossmass/issues/002-2020-05-may
 # ISSUE_DIR=-Dissue-dir=${HOME}/cossmass/issues/003-2020-09-september
 FONT_FILE=-Dfont-file=${HOME}/cossmass/binder/fonts/Snowslider/SnowSL_Std.OTF
@@ -26,3 +28,9 @@ quick-build:
 
 kill-runners:
 	ps ax|grep clover-runne[r]|cut -b-5|xargs kill -9
+
+native:
+	mvn verify -Pnative -DskipTests -DskipITs -Dpitest.skip
+
+run-native:
+	./runner/target/clover-runner-${VERSION}-runner
