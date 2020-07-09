@@ -50,7 +50,6 @@ public class StoryCardFactory {
                         .replace(",", "-")
                         .replace("\n", "-")
                         .toLowerCase()
-                        .substring(0, Math.min(20, issueStory.getTitle().length()))
                         .replace("--", "-")
                         .replaceAll("-$", "")
                 ;
