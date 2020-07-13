@@ -37,7 +37,7 @@
         <dependency>
             <groupId>com.twelvemonkeys.imageio</groupId>
             <artifactId>imageio-jpeg</artifactId>
-            <version>3.5</version>
+            <version>3.6</version>
             <!-- FIXME: This not being registered correctly -->
         </dependency>
         <dependency>
