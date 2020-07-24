@@ -13,7 +13,7 @@
     <artifactId>clover-image-io</artifactId>
 
     <properties>
-        <itextpdf.version>7.1.11</itextpdf.version>
+        <itextpdf.version>7.1.12</itextpdf.version>
         <webp-imageio.version>0.1.6</webp-imageio.version>
     </properties>
 
