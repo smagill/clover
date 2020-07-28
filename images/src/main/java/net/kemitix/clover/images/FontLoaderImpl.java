@@ -26,7 +26,7 @@ public class FontLoaderImpl implements FontLoader {
         URI fontUri = fontFace.getFontLocation();
         LOGGER.info(String.format("Loading %s", fontUri));
         final Map<TextAttribute, Object> map = new HashMap<>();
-        map.put(TextAttribute.LIGATURES, TextAttribute.LIGATURES_ON);
+        //map.put(TextAttribute.LIGATURES, TextAttribute.LIGATURES_ON);
         map.put(TextAttribute.KERNING, TextAttribute.KERNING_ON);
         try {
             return Font.createFont(Font.TRUETYPE_FONT, new File(fontUri))

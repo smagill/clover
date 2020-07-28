@@ -53,4 +53,15 @@ public interface IssueConfig {
 
     IssueStoryCards getStoryCards();
 
+    int getReprintTop();
+
+    int getReprintLeft();
+
+    int getFantasyTop();
+
+    int getFantasyLeft();
+
+    int getSfTop();
+
+    int getSfLeft();
 }

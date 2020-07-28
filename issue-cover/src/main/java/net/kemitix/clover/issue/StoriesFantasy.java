@@ -14,9 +14,6 @@ public class StoriesFantasy implements Element<Graphics2D> {
 
     @Getter private final int priority = 10;
 
-    private final int top = 1100;
-    private final int left = 500;
-
     @Inject @BackCover FontFace fontFace;
     @Inject SimpleTextEffect<Graphics2D> simpleTextEffect;
     @Inject StoryListFormatter storyListFormatter;
@@ -34,14 +31,15 @@ public class StoriesFantasy implements Element<Graphics2D> {
 
     private Region region() {
         return Region.builder()
-                .top(top).left(left)
+                .top(issueConfig.getFantasyTop())
+                .left(issueConfig.getFantasyLeft())
                 .build();
     }
 
     private String text() {
         return String.join("\n",
                 storyListFormatter.format(
-                        "Fantasy Stories",
+                        "Original Fantasy",
                         issueConfig.getStories().getFantasy()));
     }
 
