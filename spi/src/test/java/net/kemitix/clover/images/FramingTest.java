@@ -2,6 +2,7 @@ package net.kemitix.clover.images;
 
 
 import net.kemitix.clover.spi.Area;
+import net.kemitix.clover.spi.FatalCloverError;
 import net.kemitix.clover.spi.Framing;
 import net.kemitix.clover.spi.XY;
 import org.junit.jupiter.api.DisplayName;
@@ -33,9 +34,9 @@ class FramingTest {
         final Framing framing =
                 Framing.builder().inner(inner).outer(outer).build();
         //then
-        assertThatExceptionOfType(IllegalArgumentException.class)
+        assertThatExceptionOfType(FatalCloverError.class)
                 .isThrownBy(framing::centered)
-                .withMessageContaining("taller");
+                .withMessageStartingWith("Inner is taller than outer");
     }
 
     @Test
@@ -47,9 +48,9 @@ class FramingTest {
         final Framing framing =
                 Framing.builder().inner(inner).outer(outer).build();
         //then
-        assertThatExceptionOfType(IllegalArgumentException.class)
+        assertThatExceptionOfType(FatalCloverError.class)
                 .isThrownBy(framing::centered)
-                .withMessageContaining("wider");
+                .withMessageStartingWith("Inner is wider than outer");
     }
 
     @Test

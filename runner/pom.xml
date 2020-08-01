@@ -116,6 +116,9 @@
     </dependencyManagement>
 
     <build>
+
+        <finalName>clover</finalName>
+
         <plugins>
 
             <plugin>

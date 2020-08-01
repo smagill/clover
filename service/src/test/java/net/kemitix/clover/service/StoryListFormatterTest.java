@@ -119,6 +119,11 @@ public class StoryListFormatterTest {
             public String getSurname() {
                 return surname;
             }
+
+            @Override
+            public String toString() {
+                return String.format("%s %s", forename, surname);
+            }
         };
     }
 

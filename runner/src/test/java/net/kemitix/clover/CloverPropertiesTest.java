@@ -62,7 +62,7 @@ public class CloverPropertiesTest
     @DisplayName("Get plain values")
     public void getPlainValues() {
         //given
-        final String issueDir = UUID.randomUUID().toString();
+        final String issueDir = System.getProperty("user.dir");
         final Random random = new Random();
         final int width = random.nextInt();
         final int height = random.nextInt();
@@ -71,7 +71,6 @@ public class CloverPropertiesTest
         final int dropShadowYOffset = random.nextInt();
         //when
         final ServiceCloverProperties config = new ServiceCloverProperties();
-        config.issueDir = issueDir;
         config.width = width;
         config.height = height;
         config.dpi = dpi;

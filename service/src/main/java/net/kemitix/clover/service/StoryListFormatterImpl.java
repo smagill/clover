@@ -26,6 +26,7 @@ public class StoryListFormatterImpl implements StoryListFormatter {
                         story.getTitle(),
                         "by " + story.getAuthor().authorName()))
                 .flatMap(this::splitOnLineBreaks)
+                .map(String::trim)
                 .collect(Collectors.toList()));
         return list;
     }

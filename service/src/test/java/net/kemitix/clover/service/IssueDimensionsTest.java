@@ -38,13 +38,13 @@ public class IssueDimensionsTest
                 .willReturn(Region.builder()
                         .width(4000)
                         .height(2000).build());
-        given(cloverProperties.getWidth()).willReturn(5f);
-        given(cloverProperties.getHeight()).willReturn(8f);
-        given(cloverProperties.getDpi()).willReturn(320);
+        given(cloverProperties.getWidth()).willReturn(5f);// inches
+        given(cloverProperties.getHeight()).willReturn(8f);// inches
+        given(cloverProperties.getDpi()).willReturn(320);// dots per inch
         given(issueConfig.getKindleXOffset()).willReturn(2500);
         given(issueConfig.getKindleYOffset()).willReturn(0);
         given(issueConfig.getFrontWidth()).willReturn(1250);
-        given(issueConfig.getSpine()).willReturn(0.53f);
+        given(issueConfig.getSpine()).willReturn(0.53f);//inches
         dimensions =
                 new IssueDimensionsImpl(coverArtImage, cloverProperties, issueConfig);
     }
@@ -79,7 +79,7 @@ public class IssueDimensionsTest
         assertThat(dimensions.getFrontCrop())
                 .isEqualTo(Region.builder()
                         .top(0)
-                        .left(3200)
+                        .left(1769)
                         .width(1600)
                         .height(2560).build());
     }
@@ -93,7 +93,7 @@ public class IssueDimensionsTest
         assertThat(dimensions.getSpineCrop())
                 .isEqualTo(Region.builder()
                         .top(0)
-                        .left(3030)
+                        .left(1600)
                         .width(169)
                         .height(2560).build());
     }
@@ -107,7 +107,7 @@ public class IssueDimensionsTest
         assertThat(dimensions.getWrapCrop())
                 .isEqualTo(Region.builder()
                         .top(0)
-                        .left(1430)
+                        .left(1431)
                         .width(3369)
                         .height(2560).build());
     }

@@ -23,6 +23,9 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
+        <tiles-maven-plugin.version>2.13</tiles-maven-plugin.version>
+        <kemitix-tiles.version>2.7.0</kemitix-tiles.version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>
             UTF-8
@@ -148,24 +151,26 @@
         </dependencies>
     </dependencyManagement>
 
-
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
+                <groupId>io.repaint.maven</groupId>
+                <artifactId>tiles-maven-plugin</artifactId>
+                <version>${tiles-maven-plugin.version}</version>
+                <extensions>true</extensions>
                 <configuration>
-                    <compilerArgs>
-                        <arg>-Xlint:unchecked</arg>
-                    </compilerArgs>
-                    <showDeprecation>true</showDeprecation>
-                    <showWarnings>true</showWarnings>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <tiles>
+                        <tile>net.kemitix.tiles:maven-plugins:${kemitix-tiles.version}</tile>
+                        <tile>net.kemitix.tiles:enforcer:${kemitix-tiles.version}</tile>
+                        <tile>net.kemitix.tiles:compiler-jdk-${java.version}:${kemitix-tiles.version}</tile>
+                        <tile>net.kemitix.tiles:huntbugs:${kemitix-tiles.version}</tile>
+                        <tile>net.kemitix.tiles:pmd:${kemitix-tiles.version}</tile>
+                        <tile>net.kemitix.tiles:digraph:${kemitix-tiles.version}</tile>
+                        <tile>net.kemitix.tiles:testing:${kemitix-tiles.version}</tile>
+                        <tile>net.kemitix.tiles:pitest:${kemitix-tiles.version}</tile>
+                    </tiles>
                 </configuration>
-            </plugin><!-- maven-compiler-plugin -->
+            </plugin>
         </plugins>
     </build>
 

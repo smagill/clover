@@ -18,7 +18,6 @@ public class ServiceCloverProperties implements CloverProperties {
 
     String configFile;
     String imageTypes;
-    String issueDir;
     float width;
     float height;
     int dpi;
@@ -42,6 +41,11 @@ public class ServiceCloverProperties implements CloverProperties {
     @Override
     public List<String> getImageTypes() {
         return Arrays.asList(imageTypes.split(","));
+    }
+
+    @Override
+    public String getIssueDir() {
+        return System.getProperty("user.dir");
     }
 
     @Override
