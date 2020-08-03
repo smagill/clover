@@ -60,7 +60,7 @@
     </dependencies>
 
     <properties>
-        <awt-color-factory.version>1.0.1</awt-color-factory.version>
+        <awt-color-factory.version>1.0.2</awt-color-factory.version>
     </properties>
 
 </project>
