@@ -48,4 +48,6 @@ public interface CloverProperties {
     boolean isEnableKindle();
     boolean isEnablePaperback();
     boolean isEnablePaperbackPreview();
+
+    float getTrim();//inches
 }

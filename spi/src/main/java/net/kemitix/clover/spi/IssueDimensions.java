@@ -8,4 +8,8 @@ public interface IssueDimensions {
     float getScaleFromOriginal();
 
     Region getFrontCrop();
+
+    Region getPaperbackCover();
+
+    Region getPaperbackCoverWithTrim();
 }

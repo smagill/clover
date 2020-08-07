@@ -59,10 +59,11 @@ public class Paperback implements CloverFormat {
 
     @Override
     public TypedProperties getImageProperties() {
-        Region wrapCrop = dimensions.getWrapCrop();
+        float width = dimensions.getPaperbackCoverWithTrim().getWidth();
+        float height = dimensions.getPaperbackCoverWithTrim().getHeight();
         return TypedProperties.create()
-                .with(PdfWidth.class, wrapCrop.getWidth())
-                .with(PdfHeight.class, wrapCrop.getHeight());
+                .with(PdfWidth.class, width)
+                .with(PdfHeight.class, height);
     }
 
     @Override

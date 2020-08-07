@@ -30,6 +30,11 @@ public class PdfImageWriter implements ImageWriter {
             Logger.getLogger(
                     PdfImageWriter.class.getName());
 
+    // From com.itextpdf.kernel.geom.PageSize
+    // Where A4 is defined as new PageSize(595, 842);
+    // Ref: https://www.papersizes.org/a-sizes-in-pixels.htm
+    private static final float pdfPPI = 72f;
+
     @Inject CloverProperties cloverProperties;
 
     @Override
@@ -43,12 +48,17 @@ public class PdfImageWriter implements ImageWriter {
             final File file,
             final TypedProperties properties
     ) {
-        final int pageWidth =
-                properties.find(PdfWidth.class, Integer.class)
-                        .orElseGet(srcImage::getWidth);
-        final int pageHeight =
-                properties.find(PdfHeight.class, Integer.class)
-                        .orElseGet(srcImage::getHeight);
+        final float ppiScale = pdfPPI / cloverProperties.getDpi();
+        final float pageWidth =
+                ppiScale *
+                        properties.find(PdfWidth.class, Float.class)
+                                .map(Float::intValue)
+                                .orElseGet(srcImage::getWidth);
+        final float pageHeight =
+                ppiScale *
+                        properties.find(PdfHeight.class, Float.class)
+                                .map(Float::intValue)
+                                .orElseGet(srcImage::getHeight);
         try {
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(srcImage, "png", baos);

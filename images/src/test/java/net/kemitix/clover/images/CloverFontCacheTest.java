@@ -5,8 +5,10 @@ import net.kemitix.clover.spi.FontFace;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.awt.*;
 import java.io.File;
@@ -18,6 +20,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
+@ExtendWith(MockitoExtension.class)
 public class CloverFontCacheTest {
 
     private final URI fontLocation = new File("font.otf").toURI();
@@ -29,7 +32,6 @@ public class CloverFontCacheTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
         given(fontLoader.loadFont(any())).willReturn(loadedFont);
     }
 

@@ -3,7 +3,6 @@ package net.kemitix.clover.service;
 import lombok.Getter;
 import lombok.extern.java.Log;
 import net.kemitix.clover.spi.*;
-import net.kemitix.clover.spi.Issue;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -23,12 +22,15 @@ public class IssueDimensionsImpl implements IssueDimensions {
     private float kindleWidthInches;
     private float kindleHeightInches;
     private float spineWidthInches;
+    private float paperbackTrimInches;
     // Calculated
     private float scaleFromOriginal;
     private Region frontCrop;
     private Region spineCrop;
     private Region wrapCrop;
     private Region scaledCoverArt;
+    private Region paperbackCover;
+    private Region paperbackCoverWithTrim;
 
     public IssueDimensionsImpl() {
     }
@@ -47,6 +49,7 @@ public class IssueDimensionsImpl implements IssueDimensions {
         this.widthFrontCoverOriginal = issueConfig.getFrontWidth();
         this.dpi = cloverProperties.getDpi();
         this.spineWidthInches = issueConfig.getSpine();
+        this.paperbackTrimInches = cloverProperties.getTrim();//0.25f;
     }
 
     @PostConstruct
@@ -60,6 +63,15 @@ public class IssueDimensionsImpl implements IssueDimensions {
                 .width((int) (fullImageOriginal.getWidth() * scaleFromOriginal))
                 .height((int) (fullImageOriginal.getHeight() * scaleFromOriginal))
                 .build();
+        int spineWidth = (int) (spineWidthInches * dpi);
+        paperbackCover = kindleCover.toBuilder()
+                .width((kindleCover.getWidth() * 2) + spineWidth)
+                .build();
+        int trim = (int) (paperbackTrimInches * dpi);
+        paperbackCoverWithTrim = paperbackCover.toBuilder()
+                .width(paperbackCover.getWidth() + trim)
+                .height(paperbackCover.getHeight() + trim)
+                .build();
 
         log.info("Select front cover region on scaled cover art");
         Region frontRegion = kindleCover.toBuilder()
@@ -67,7 +79,6 @@ public class IssueDimensionsImpl implements IssueDimensions {
                 .left((int) (leftFrontCoverOriginal * scaleFromOriginal)).build();
         scaledCoverArt.mustContain(frontRegion);
 
-        int spineWidth = (int) (spineWidthInches * dpi);
 
         // backCrop is relative to scaledCoverArt
         log.info("Select back cover region on scaled cover art");

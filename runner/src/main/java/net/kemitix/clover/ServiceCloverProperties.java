@@ -29,6 +29,7 @@ public class ServiceCloverProperties implements CloverProperties {
     float barcodeWidth;
     float barcodeHeight;
     String barcodeFillColour;
+    float trim;
 
     boolean enablePdf;
     boolean enableWebp;

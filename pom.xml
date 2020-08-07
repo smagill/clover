@@ -46,6 +46,7 @@
                     <hideTransitive>true</hideTransitive>
                     <hideVersion>true</hideVersion>
                     <hideScopes>test,provided</hideScopes>
+                    <hideGroupId>true</hideGroupId>
                     <hideOptional>true</hideOptional>
                     <target>${project.basedir}/doc/images/reactor-graph.png</target>
                 </configuration>

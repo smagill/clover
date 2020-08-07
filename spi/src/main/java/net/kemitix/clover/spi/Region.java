@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.util.function.Function;
 
 @Getter
 @Builder(toBuilder = true)
@@ -172,4 +173,81 @@ public class Region
                 .top(top + x)
                 .build();
     }
+
+    public Region withTop(int top) {
+        return toBuilder()
+                .top(top)
+                .build();
+    }
+
+    public Region withTop(Function<Integer, Integer> f) {
+        return toBuilder()
+                .top(f.apply(top))
+                .build();
+    }
+
+    public Region withLeft(int left) {
+        return toBuilder()
+                .left(left)
+                .build();
+    }
+
+    public Region withLeft(Function<Integer, Integer> f) {
+        return toBuilder()
+                .left(f.apply(left))
+                .build();
+    }
+
+    public Region withWidth(int width) {
+        return toBuilder()
+                .width(width)
+                .build();
+    }
+
+    public Region withWidth(Function<Integer, Integer> f) {
+        return toBuilder()
+                .width(f.apply(width))
+                .build();
+    }
+
+    public Region withHeight(int height) {
+        return toBuilder()
+                .height(height)
+                .build();
+    }
+
+    public Region withHeight(Function<Integer, Integer> f) {
+        return toBuilder()
+                .height(f.apply(height))
+                .build();
+    }
+
+    public Region withBottom(int bottom) {
+        return toBuilder()
+                .height(bottom - top)
+                .build();
+    }
+
+    public Region withBottom(Function<Integer, Integer> f) {
+        int bottom = top + height;
+        int nBottom = f.apply(bottom);
+        return toBuilder()
+                .height(nBottom - height)
+                .build();
+    }
+
+    public Region withRight(int right) {
+        return toBuilder()
+                .width(right - left)
+                .build();
+    }
+
+    public Region withRight(Function<Integer, Integer> f) {
+        int right = left + width;
+        int nRight = f.apply(right);
+        return toBuilder()
+                .width(nRight - width)
+                .build();
+    }
+
 }
