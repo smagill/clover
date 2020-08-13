@@ -97,7 +97,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <quarkus.version>1.7.0.Final</quarkus.version>
-        <yasson.version>1.0.6</yasson.version>
+        <yasson.version>1.0.8</yasson.version>
 
         <!-- disabled until there is some code to mutate -->
         <pitest.skip>true</pitest.skip>

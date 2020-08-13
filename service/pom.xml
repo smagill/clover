@@ -69,7 +69,7 @@
         <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <yasson.version>1.0.6</yasson.version>
+        <yasson.version>1.0.8</yasson.version>
     </properties>
 
 </project>
