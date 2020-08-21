@@ -1,11 +1,10 @@
 package net.kemitix.clover.service;
 
-import lombok.Getter;
-import net.kemitix.clover.spi.*;
+import lombok.extern.java.Log;
 import net.kemitix.clover.spi.Image;
+import net.kemitix.clover.spi.*;
 import net.kemitix.properties.typed.TypedProperties;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -13,14 +12,10 @@ import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
-import java.util.logging.Logger;
 
+@Log
 @ApplicationScoped
 public class Paperback implements CloverFormat {
-
-    private static final Logger LOG =
-            Logger.getLogger(
-                    Paperback.class.getName());
 
     @Inject IssueDimensions dimensions;
     @Inject Image coverArtImage;
@@ -32,7 +27,9 @@ public class Paperback implements CloverFormat {
     @Override
     public List<Image> getImages() {
         if (images == null) {
+            log.info("Generating Paperback images...");
             init();
+            log.info("Generated Paperback images");
         }
         return images;
     }
@@ -46,10 +43,10 @@ public class Paperback implements CloverFormat {
     }
 
     private Function<Image, Image> blocks() {
+        var properties = TypedProperties.create();
         return image ->
                 image.withGraphics(graphics2D ->
-                    blocks.stream().forEach(block ->
-                            block.draw(graphics2D, TypedProperties.create())));
+                        Drawable.draw(blocks, graphics2D, properties));
     }
 
     @Override

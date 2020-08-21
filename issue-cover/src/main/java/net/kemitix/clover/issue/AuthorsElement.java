@@ -1,6 +1,7 @@
 package net.kemitix.clover.issue;
 
 import lombok.Getter;
+import lombok.extern.java.Log;
 import net.kemitix.clover.spi.*;
 import net.kemitix.properties.typed.TypedProperties;
 
@@ -8,9 +9,10 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.awt.*;
 
+@Log
 @FrontCover
 @ApplicationScoped
-public class AuthorsElement implements Element<Graphics2D> {
+public class AuthorsElement extends AbstractElement {
 
     @Getter private final int priority = 50;
 
@@ -21,6 +23,7 @@ public class AuthorsElement implements Element<Graphics2D> {
 
     @Override
     public void draw(Graphics2D drawable, TypedProperties typedProperties) {
+        log.info("Drawing author list");
         int top = issueConfig.getAuthorsYOffset();
         int left = issueConfig.getAuthorsXOffset() +
                 issueDimensions.getFrontCrop().getLeft();

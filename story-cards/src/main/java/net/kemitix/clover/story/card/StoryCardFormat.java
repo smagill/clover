@@ -1,5 +1,6 @@
 package net.kemitix.clover.story.card;
 
+import lombok.extern.java.Log;
 import net.kemitix.clover.spi.CloverFormat;
 import net.kemitix.clover.spi.Image;
 import net.kemitix.clover.spi.IssueConfig;
@@ -11,6 +12,7 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log
 @ApplicationScoped
 public class StoryCardFormat implements CloverFormat {
 
@@ -23,7 +25,9 @@ public class StoryCardFormat implements CloverFormat {
     @Override
     public List<Image> getImages() {
         if (images == null) {
+            log.info("Generating Story Card images...");
             images = buildImages();
+            log.info("Generated Story Card images");
         }
         return images;
     }

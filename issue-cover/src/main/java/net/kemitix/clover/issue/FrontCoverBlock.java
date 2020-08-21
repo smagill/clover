@@ -11,7 +11,7 @@ import java.awt.*;
 @ApplicationScoped
 public class FrontCoverBlock extends AbstractBlock {
 
-    @Getter private final int priority = 30;
+    @Getter private final int priority = 20;
 
     @Getter
     @Inject @FrontCover Instance<Element<Graphics2D>> elements;

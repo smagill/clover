@@ -1,6 +1,7 @@
 package net.kemitix.clover.issue;
 
 import lombok.Getter;
+import lombok.extern.java.Log;
 import net.kemitix.clover.spi.*;
 import net.kemitix.properties.typed.TypedProperties;
 
@@ -8,9 +9,10 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.awt.*;
 
+@Log
 @FrontCover
 @ApplicationScoped
-public class CoverLogo implements Element<Graphics2D> {
+public class CoverLogo extends AbstractElement {
 
     @Getter private final int priority = 10;
 
@@ -21,6 +23,7 @@ public class CoverLogo implements Element<Graphics2D> {
 
     @Override
     public void draw(Graphics2D drawable, TypedProperties typedProperties) {
+        log.info("Drawing cover logo");
         FontFace fontFace = FontFace.of(
                 cloverProperties.getFontLocation(),
                 217,

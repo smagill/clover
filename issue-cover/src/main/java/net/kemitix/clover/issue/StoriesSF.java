@@ -10,7 +10,7 @@ import java.awt.*;
 
 @BackCover
 @ApplicationScoped
-public class StoriesSF implements Element<Graphics2D> {
+public class StoriesSF extends AbstractElement {
 
     @Getter private final int priority = 10;
 

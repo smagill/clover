@@ -10,7 +10,7 @@ import java.awt.*;
 
 @StoryCard
 @ApplicationScoped
-public class StoryTitle implements Element<Graphics2D> {
+public class StoryTitle extends AbstractElement {
 
     @Getter private final int priority = 20;
 

@@ -1,6 +1,7 @@
 package net.kemitix.clover.issue;
 
 import lombok.Getter;
+import lombok.extern.java.Log;
 import net.kemitix.clover.spi.*;
 import net.kemitix.properties.typed.TypedProperties;
 
@@ -9,9 +10,10 @@ import javax.inject.Inject;
 import java.awt.*;
 import java.util.function.Consumer;
 
+@Log
 @FrontCover
 @ApplicationScoped
-public class LogoStraps implements Element<Graphics2D> {
+public class LogoStraps extends AbstractElement {
 
     @Getter private final int priority = 20;
 
@@ -30,6 +32,7 @@ public class LogoStraps implements Element<Graphics2D> {
     }
 
     private Consumer<Graphics2D> strapLine(FontFace fontFace) {
+        log.info("Drawing strap-line");
         return simpleTextEffect.fontFace(fontFace)
                 .text("Science Fiction and Fantasy")
                 .vAlign(TextEffect.VAlignment.TOP)
@@ -40,6 +43,7 @@ public class LogoStraps implements Element<Graphics2D> {
     }
 
     private Consumer<Graphics2D> issueDate(FontFace fontFace) {
+        log.info("Drawing issue date");
         int top = 390;
         return simpleTextEffect.fontFace(fontFace)
                 .text(issueConfig.getDate())
@@ -52,6 +56,7 @@ public class LogoStraps implements Element<Graphics2D> {
     }
 
     private Consumer<Graphics2D> issueNumber(FontFace fontFace) {
+        log.info("Drawing issue number");
         int top = 475;
         int left = 85;
         return simpleTextEffect.fontFace(fontFace)

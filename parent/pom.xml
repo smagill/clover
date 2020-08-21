@@ -165,7 +165,6 @@
                         <tile>net.kemitix.tiles:compiler-jdk-${java.version}:${kemitix-tiles.version}</tile>
                         <tile>net.kemitix.tiles:huntbugs:${kemitix-tiles.version}</tile>
                         <tile>net.kemitix.tiles:pmd:${kemitix-tiles.version}</tile>
-                        <tile>net.kemitix.tiles:digraph:${kemitix-tiles.version}</tile>
                         <tile>net.kemitix.tiles:testing:${kemitix-tiles.version}</tile>
                         <tile>net.kemitix.tiles:pitest:${kemitix-tiles.version}</tile>
                     </tiles>

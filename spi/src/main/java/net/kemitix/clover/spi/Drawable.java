@@ -17,7 +17,12 @@ public interface Drawable<T> extends Prioritised  {
     ) {
         drawables.stream()
                 .sorted(byPriority())
+                .peek(element -> element.logInfo("Drawing " +
+                        element.getClass().getSimpleName()
+                                .replace("_ClientProxy", "")))
                 .forEach(element -> element.draw(graphics2D, typedProperties));
     }
+
+    void logInfo(String message);
 
 }

@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 @Spine
 @ApplicationScoped
-public class SpineText implements Element<Graphics2D> {
+public class SpineText extends AbstractElement {
 
     private static final Logger LOG =
             Logger.getLogger(

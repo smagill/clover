@@ -1,5 +1,6 @@
 package net.kemitix.clover.story.card;
 
+import lombok.extern.java.Log;
 import net.kemitix.clover.spi.Drawable;
 import net.kemitix.clover.spi.Element;
 import net.kemitix.clover.spi.Image;
@@ -12,6 +13,7 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.awt.*;
 
+@Log
 @ApplicationScoped
 public class StoryCardFactory {
 
@@ -31,6 +33,7 @@ public class StoryCardFactory {
     }
 
     public Image create(IssueStory issueStory) {
+        log.info("Generating Story Card: " + issueStory.getTitle());
         return backgroundImage
                 .withGraphics(graphics2D ->
                         Drawable.draw(elements, graphics2D,
