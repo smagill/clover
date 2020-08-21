@@ -1,5 +1,3 @@
-VERSION=DEV-SNAPSHOT
-
 FONT_FILE=-Dfont-file=${HOME}/cossmass/binder/fonts/Snowslider/SnowSL_Std.OTF
 RUN_PARAMS=${ISSUE_DIR} ${FONT_FILE}
 
@@ -19,7 +17,7 @@ dev:
 	mvn -pl runner quarkus:dev ${RUN_PARAMS}
 
 run: install
-	java ${RUN_PARAMS} -jar runner/target/clover-runner-DEV-SNAPSHOT-runner.jar
+	java ${RUN_PARAMS} -jar runner/target/clover-runner.jar
 
 clean:
 	mvn clean
@@ -35,4 +33,4 @@ native:
 	mvn verify -Pnative -DskipTests -DskipITs -Dpitest.skip
 
 run-native:
-	./runner/target/clover-runner-${VERSION}-runner
+	./runner/target/clover-runner

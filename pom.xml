@@ -7,7 +7,7 @@
     <groupId>net.kemitix.clover</groupId>
     <artifactId>clover-root</artifactId>
     <name>clover-root</name>
-    <version>DEV-SNAPSHOT</version>
+    <version>2.1.0</version>
     <packaging>pom</packaging>
 
     <properties>
