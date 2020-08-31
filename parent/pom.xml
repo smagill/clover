@@ -32,7 +32,7 @@
         </project.reporting.outputEncoding>
 
         <junit.version>5.6.2</junit.version>
-        <assertj.version>3.17.0</assertj.version>
+        <assertj.version>3.17.1</assertj.version>
         <file-reader-writer.version>1.0.0</file-reader-writer.version>
         <jakartaee-api.version>8.0.0</jakartaee-api.version>
         <microprofile-config-api.version>1.4</microprofile-config-api.version>
