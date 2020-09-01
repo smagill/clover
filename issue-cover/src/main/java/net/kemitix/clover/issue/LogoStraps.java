@@ -37,8 +37,10 @@ public class LogoStraps extends AbstractElement {
                 .text("Science Fiction and Fantasy")
                 .vAlign(TextEffect.VAlignment.TOP)
                 .hAlign(TextEffect.HAlignment.RIGHT)
-                .region(issueDimensions.getFrontCrop().toBuilder()
-                        .top(10).build().withPadding(85))
+                .region(issueDimensions.getFrontCrop()
+                        .withTop(10)
+                        .withWidth(w -> w - 30)
+                        .withPadding(85))
                 ;
     }
 
@@ -49,8 +51,9 @@ public class LogoStraps extends AbstractElement {
                 .text(issueConfig.getDate())
                 .vAlign(TextEffect.VAlignment.TOP)
                 .hAlign(TextEffect.HAlignment.RIGHT)
-                .region(issueDimensions.getFrontCrop().toBuilder()
-                        .top(top).build()
+                .region(issueDimensions.getFrontCrop()
+                        .withTop(top)
+                        .withWidth(w -> w - 30)
                         .withPadding(85))
                 ;
     }
@@ -64,7 +67,8 @@ public class LogoStraps extends AbstractElement {
                 .vAlign(TextEffect.VAlignment.TOP)
                 .hAlign(TextEffect.HAlignment.LEFT)
                 .region(Region.builder()
-                        .top(top).left(left + issueDimensions.getFrontCrop().getLeft())
+                        .top(top)
+                        .left(left + issueDimensions.getFrontCrop().getLeft() + 30)
                         .width(issueDimensions.getFrontCrop().getWidth() -
                                 (left + issueDimensions.getFrontCrop().getLeft()))
                         .height(issueDimensions.getFrontCrop().getHeight() - top)
