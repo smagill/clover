@@ -1,6 +1,7 @@
 package net.kemitix.clover.issue;
 
 import net.kemitix.clover.spi.*;
+import net.kemitix.fontface.FontFace;
 
 import javax.enterprise.inject.Produces;
 
@@ -15,8 +16,7 @@ public class BackCoverProducers {
                 cloverProperties.getFontLocation(),
                 48,
                 issueConfig.getTextColour(),
-                XY.at(
-                        cloverProperties.getDropShadowXOffset(),
-                        cloverProperties.getDropShadowYOffset()));
+                cloverProperties.getDropShadowXOffset(),
+                cloverProperties.getDropShadowYOffset());
     }
 }

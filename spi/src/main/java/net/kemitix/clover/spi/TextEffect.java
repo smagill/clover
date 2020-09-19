@@ -1,5 +1,7 @@
 package net.kemitix.clover.spi;
 
+import net.kemitix.fontface.FontFace;
+
 public interface TextEffect<T> extends Effect<T> {
 
     WrapFitOrTextNext<T> fontFace(FontFace fontFace);

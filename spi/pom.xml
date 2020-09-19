@@ -39,7 +39,10 @@
             <artifactId>assertj-core</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>net.kemitix</groupId>
+            <artifactId>fontface</artifactId>
+        </dependency>
 
     </dependencies>
 </project>

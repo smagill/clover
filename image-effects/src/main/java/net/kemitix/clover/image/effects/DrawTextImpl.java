@@ -1,6 +1,8 @@
 package net.kemitix.clover.image.effects;
 
 import net.kemitix.clover.spi.*;
+import net.kemitix.fontface.FontCache;
+import net.kemitix.fontface.FontFace;
 import org.beryx.awt.color.ColorFactory;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -33,7 +35,8 @@ class DrawTextImpl implements DrawText {
                 .inner(Area.of(((int) stringBounds.getWidth()), ((int) stringBounds.getHeight())))
                 .build());
         // Drop Shadow
-        final XY shadowOffset = fontFace.getShadowOffset();
+        final XY shadowOffset =
+                XY.at(fontFace.getShadowOffsetX(), fontFace.getShadowOffsetY());
         if (shadowOffset.getX() != 0 || shadowOffset.getY() != 0) {
             graphics.setPaint(getColor(fontFace.getShadowColour()));
             graphics.drawString(text,

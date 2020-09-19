@@ -1,6 +1,7 @@
 package net.kemitix.clover.issue;
 
 import net.kemitix.clover.spi.*;
+import net.kemitix.fontface.FontFace;
 
 import javax.enterprise.inject.Produces;
 import java.awt.*;
@@ -26,8 +27,7 @@ public class SpineProducers {
                 cloverProperties.getFontLocation(),
                 62,
                 "yellow",
-                XY.at(
-                        cloverProperties.getDropShadowXOffset(),
-                        cloverProperties.getDropShadowYOffset()));
+                cloverProperties.getDropShadowXOffset(),
+                cloverProperties.getDropShadowYOffset());
     }
 }

@@ -2,6 +2,7 @@ package net.kemitix.clover.story.card;
 
 import lombok.Getter;
 import net.kemitix.clover.spi.*;
+import net.kemitix.fontface.FontFace;
 import net.kemitix.properties.typed.TypedProperties;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -53,8 +54,7 @@ public class CardLogo extends AbstractElement {
                 cloverProperties.getFontLocation(),
                 properties.getLogoFontSize(),
                 issueConfig.getTitleColour(),
-                XY.at(
-                        cloverProperties.getDropShadowXOffset(),
-                        cloverProperties.getDropShadowYOffset()));
+                cloverProperties.getDropShadowXOffset(),
+                cloverProperties.getDropShadowYOffset());
     }
 }

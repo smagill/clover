@@ -3,6 +3,7 @@ package net.kemitix.clover.issue;
 import lombok.Getter;
 import lombok.extern.java.Log;
 import net.kemitix.clover.spi.*;
+import net.kemitix.fontface.FontFace;
 import net.kemitix.properties.typed.TypedProperties;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -28,9 +29,8 @@ public class CoverLogo extends AbstractElement {
                 cloverProperties.getFontLocation(),
                 217,
                 issueConfig.getTitleColour(),
-                XY.at(
-                        cloverProperties.getDropShadowXOffset(),
-                        cloverProperties.getDropShadowYOffset()));
+                cloverProperties.getDropShadowXOffset(),
+                cloverProperties.getDropShadowYOffset());
         var text = String.join("\n",
                 issueConfig.getPublicationTitle().split(" "));
         simpleTextEffect

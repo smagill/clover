@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import net.kemitix.clover.spi.*;
 import net.kemitix.clover.spi.Image;
+import net.kemitix.fontface.FontCache;
 import net.kemitix.properties.typed.TypedProperties;
 import org.beryx.awt.color.ColorFactory;
 

@@ -3,6 +3,8 @@ package net.kemitix.clover.image.effects;
 import lombok.*;
 import net.kemitix.clover.spi.*;
 import net.kemitix.clover.spi.DrawText;
+import net.kemitix.fontface.FontCache;
+import net.kemitix.fontface.FontFace;
 import net.kemitix.text.fit.BoxFitter;
 import net.kemitix.text.fit.WordWrapper;
 
@@ -30,7 +32,8 @@ public class SimpleTextEffectImpl
         TextEffect.WrapFitOrTextNext<Graphics2D>,
         TextEffect<Graphics2D> {
 
-    @Inject @Getter FontCache fontCache;
+    @Inject @Getter
+    FontCache fontCache;
     @Inject WordWrapper wordWrapper;
     @Inject BoxFitter boxFitter;
     @Inject DrawText drawText;

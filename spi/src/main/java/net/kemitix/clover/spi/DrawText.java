@@ -1,5 +1,8 @@
 package net.kemitix.clover.spi;
 
+import net.kemitix.fontface.FontCache;
+import net.kemitix.fontface.FontFace;
+
 import java.awt.*;
 import java.util.function.Function;
 

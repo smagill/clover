@@ -3,6 +3,8 @@ package net.kemitix.clover.image.effects;
 import lombok.*;
 import net.kemitix.clover.spi.*;
 import net.kemitix.clover.spi.DrawText;
+import net.kemitix.fontface.FontCache;
+import net.kemitix.fontface.FontFace;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -24,7 +26,8 @@ public class RotatedCenteredTextEffectImpl
         TextEffect.WrapFitOrTextNext<Graphics2D>,
         TextEffect.VAlignNext<Graphics2D> {
 
-    @Inject @Getter FontCache fontCache;
+    @Inject @Getter
+    FontCache fontCache;
     @Inject DrawText drawText;
 
     VAlignment VAlignment;
